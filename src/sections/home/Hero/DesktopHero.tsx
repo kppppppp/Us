@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowUpRight, Sparkles, Layers, Cpu, Cloud, Heart, Activity, Building, ShoppingBag } from 'lucide-react';
+import { ArrowUpRight, Heart, Activity, Building, ShoppingBag } from 'lucide-react';
 import sculptureImg from '../../../assets/purple_glass_sculpture.jpg';
 
 export const DesktopHero: React.FC = () => {
@@ -24,12 +24,7 @@ export const DesktopHero: React.FC = () => {
     }
   };
 
-  const impactItems = [
-    { title: 'Intelligent Systems', icon: Sparkles },
-    { title: 'Digital Platforms', icon: Layers },
-    { title: 'AI & Automation', icon: Cpu },
-    { title: 'Cloud & DevOps', icon: Cloud }
-  ];
+
 
   const industryItems = [
     { name: 'Healthcare', icon: Heart },
@@ -50,7 +45,16 @@ export const DesktopHero: React.FC = () => {
           <img 
             src={sculptureImg} 
             alt="Unexpected Solutions abstract glass sculpture" 
-            className="w-full h-full object-contain object-right transform translate-x-12 scale-110"
+className="
+relative
+z-10
+w-full
+h-full
+object-contain
+object-center
+translate-x-2
+scale-95
+"
           />
         </div>
       </div>
@@ -159,48 +163,7 @@ export const DesktopHero: React.FC = () => {
         </motion.div>
 
         {/* Right Side: Impact Card (Glassmorphism overlay) */}
-        <motion.div 
-          className="col-span-12 lg:col-span-4 lg:col-start-9 self-center z-20 mt-12 lg:mt-0"
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
-        >
-          <div className="bg-white/40 backdrop-blur-xl border border-white/60 rounded-3xl p-6 shadow-brand-lg relative overflow-hidden">
-            {/* Top title line */}
-            <div className="flex justify-between items-center mb-6">
-              <span className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-brand-purple flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-brand-purple animate-pulse" />
-                We Create Impact
-              </span>
-              <div className="w-1.5 h-1.5 rounded-full bg-brand-purple" />
-            </div>
-
-            {/* List */}
-            <div className="flex flex-col gap-1">
-              {impactItems.map((item, idx) => {
-                const Icon = item.icon;
-                return (
-                  <motion.a
-                    key={idx}
-                    href={`#solutions/${item.title.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-')}`}
-                    className="flex items-center justify-between p-3.5 rounded-2xl hover:bg-white/60 transition-colors duration-300 group"
-                    whileHover={{ x: 4 }}
-                  >
-                    <div className="flex items-center gap-3.5">
-                      <div className="w-9 h-9 rounded-xl bg-white flex items-center justify-center text-brand-text shadow-brand-sm group-hover:bg-brand-purple group-hover:text-white transition-colors duration-300">
-                        <Icon className="w-4 h-4" />
-                      </div>
-                      <span className="text-sm font-semibold text-brand-text group-hover:text-brand-purple transition-colors">
-                        {item.title}
-                      </span>
-                    </div>
-                    <ArrowUpRight className="w-4 h-4 text-neutral-400 group-hover:text-brand-purple group-hover:translate-x-[2px] group-hover:translate-y-[-2px] transition-all" />
-                  </motion.a>
-                );
-              })}
-            </div>
-          </div>
-        </motion.div>
+        
 
       </div>
     </section>

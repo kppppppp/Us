@@ -2,6 +2,7 @@ import React from 'react';
 import { DesktopHero } from '../sections/home/Hero/DesktopHero';
 import { MobileHero } from '../sections/home/Hero/MobileHero';
 import { Services } from '../sections/home/Services/Services';
+import { CaseStudies } from '../sections/home/CaseStudies/CaseStudies';
 
 export const Home: React.FC = () => {
   return (
@@ -17,12 +18,8 @@ export const Home: React.FC = () => {
       {/* Reusable Services Section */}
       <Services />
 
-      <section className="py-24 px-6 md:px-8 max-w-[1500px] mx-auto text-center bg-neutral-50 rounded-3xl" id="case-studies">
-        <h2 className="text-3xl md:text-5xl font-semibold mb-6">Case Studies</h2>
-        <p className="text-neutral-500 max-w-xl mx-auto mb-12">
-          Read detailed breakdowns of how our digital platform designs scale core operations.
-        </p>
-      </section>
+      {/* Case Studies Section */}
+      <CaseStudies />
 
       <section className="py-24 px-6 md:px-8 max-w-[1500px] mx-auto text-center" id="about-us">
         <h2 className="text-3xl md:text-5xl font-semibold mb-6">About Us</h2>
