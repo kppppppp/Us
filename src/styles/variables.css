@@ -1,0 +1,16 @@
+:root {
+  --color-bg: #ffffff;
+  --color-text: #141414;
+  --color-purple: #5d46d8;
+  --color-deep-purple: #43258d;
+  --color-border: rgba(0, 0, 0, 0.06);
+  --color-light-purple: rgba(93, 70, 216, 0.08);
+  
+  --font-body: 'Inter', sans-serif;
+  
+  --shadow-sm: 0 2px 8px -1px rgba(0, 0, 0, 0.03), 0 1px 3px -1px rgba(0, 0, 0, 0.02);
+  --shadow-md: 0 4px 20px -2px rgba(0, 0, 0, 0.04), 0 2px 8px -1px rgba(0, 0, 0, 0.02);
+  --shadow-lg: 0 10px 30px -4px rgba(0, 0, 0, 0.05), 0 4px 12px -2px rgba(0, 0, 0, 0.03);
+  --shadow-navbar: 0 10px 40px -10px rgba(93, 70, 216, 0.05), 0 2px 20px -5px rgba(0, 0, 0, 0.03);
+  --shadow-navbar-scrolled: 0 12px 45px -8px rgba(93, 70, 216, 0.08), 0 4px 25px -4px rgba(0, 0, 0, 0.04);
+}

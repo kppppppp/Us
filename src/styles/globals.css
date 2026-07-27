@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+@import "./variables.css";
+@import "./typography.css";
+
+@theme {
+  --color-brand-purple: var(--color-purple);
+  --color-brand-deep: var(--color-deep-purple);
+  --color-brand-text: var(--color-text);
+  --color-brand-border: var(--color-border);
+  --color-brand-light-purple: var(--color-light-purple);
+  
+  --shadow-brand-sm: var(--shadow-sm);
+  --shadow-brand-md: var(--shadow-md);
+  --shadow-brand-lg: var(--shadow-lg);
+  --shadow-navbar: var(--shadow-navbar);
+  --shadow-navbar-scrolled: var(--shadow-navbar-scrolled);
+}
+
+/* Base custom styles */
+html, body {
+  overflow-x: hidden;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #c7c7c7;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Lenis smooth scrolling support */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overflow: clip;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
