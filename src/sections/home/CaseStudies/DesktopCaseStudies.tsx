@@ -82,13 +82,16 @@ export const DesktopCaseStudies: React.FC<DesktopCaseStudiesProps> = ({
         {/* Right Column: WebGL Gallery (approx 60% width) */}
         <div 
           data-reveal="gallery"
-          className="col-span-7 h-[650px] relative rounded-3xl overflow-hidden border border-neutral-100/50 bg-gradient-to-tr from-brand-purple/[0.01] to-[#FF9FFC]/[0.01] shadow-inner"
+          className="col-span-7 h-[650px] relative rounded-3xl border border-neutral-100/50 bg-gradient-to-tr from-brand-purple/[0.01] to-[#FF9FFC]/[0.01] shadow-inner"
         >
           <CaseStudiesGallery 
             items={galleryItems}
-            bend={1.0}
-            scrollSpeed={1.2}
-            scrollEase={0.015}
+            bend={1.5}
+            textColor="#5d46d8"
+            borderRadius={0.08}
+            scrollSpeed={2}
+            scrollEase={0.05}
+            font="600 24px Outfit"
             onActiveIndexChange={setActiveIndex}
           />
         </div>

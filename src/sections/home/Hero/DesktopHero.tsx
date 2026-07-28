@@ -34,10 +34,22 @@ export const DesktopHero: React.FC = () => {
   ];
 
   return (
-    <section className="relative min-h-screen w-full bg-gradient-to-b from-[#F9F8FF] to-white flex items-center pt-[120px] pb-16 px-8 overflow-hidden select-none">
+    <section className="relative h-[850px] w-full bg-gradient-to-b from-[#F9F8FF] to-white flex items-center pt-[140px] pb-16 px-8 overflow-hidden select-none">
       
       {/* Background Flowing Sculpture */}
-      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1/2 h-full max-h-[85vh] pointer-events-none select-none z-10 opacity-90">
+     <div
+  className="
+  absolute
+  top-0
+  right-[-8%]
+  w-[68%]
+  h-[calc(100%+140px)]
+  pointer-events-none
+  select-none
+  z-10
+  overflow-visible
+  "
+>
         <div className="relative w-full h-full flex items-center justify-end">
           {/* Subtle purple radial background glow */}
           <div className="absolute right-1/4 top-1/3 w-[500px] h-[500px] rounded-full bg-brand-purple/10 blur-[120px]" />
@@ -46,14 +58,14 @@ export const DesktopHero: React.FC = () => {
             src={sculptureImg} 
             alt="Unexpected Solutions abstract glass sculpture" 
 className="
-relative
-z-10
+absolute
+top-[-70px]
+right-0
 w-full
 h-full
 object-contain
-object-center
-translate-x-2
-scale-95
+object-right
+scale-[1.22]
 "
           />
         </div>

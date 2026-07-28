@@ -7,7 +7,7 @@ export const CaseStudies: React.FC = () => {
   const { activeIndex, setActiveIndex } = useActiveProject();
 
   return (
-    <section className="relative w-full bg-[#F5F2FA] py-16 lg:py-[120px] overflow-hidden select-none">
+    <section className="relative w-full bg-[#F5F2FA] py-16 lg:py-[120px] select-none">
       {/* Background decorations matching Services & Hero sections */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[linear-gradient(to_right,#5d46d8_1px,transparent_1px),linear-gradient(to_bottom,#5d46d8_1px,transparent_1px)] bg-[size:40px_40px]" />
       

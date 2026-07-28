@@ -1,5 +1,6 @@
 import { Camera, Mesh, Plane, Program, Renderer, Texture, Transform } from 'ogl';
 import React, { useEffect, useRef } from 'react';
+import './CircularGallery.css';
 
 type GL = Renderer['gl'];
 
@@ -13,6 +14,202 @@ function debounce<T extends (...args: any[]) => void>(func: T, wait: number) {
 
 function lerp(p1: number, p2: number, t: number): number {
   return p1 + (p2 - p1) * t;
+}
+
+function autoBind(instance: any): void {
+  const proto = Object.getPrototypeOf(instance);
+  Object.getOwnPropertyNames(proto).forEach(key => {
+    if (key !== 'constructor' && typeof instance[key] === 'function') {
+      instance[key] = instance[key].bind(instance);
+    }
+  });
+}
+
+const DEFAULT_FONT = 'bold 30px Figtree';
+const DEFAULT_FONT_URL = 'https://fonts.googleapis.com/css2?family=Figtree:wght@400;700&display=swap';
+
+function deriveFontFamilyFromUrl(url: string): string {
+  const fileName = (url.split('/').pop() || 'custom-font').split('?')[0];
+  const base = fileName.replace(/\.(woff2?|ttf|otf|eot)$/i, '');
+  return base.replace(/[^a-zA-Z0-9-_ ]/g, '').trim() || 'CircularGalleryFont';
+}
+
+async function loadFontFromStylesheet(url: string): Promise<string> {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`Failed to fetch font stylesheet (${response.status})`);
+  const cssText = await response.text();
+  const faceBlocks = cssText.match(/@font-face\s*{[^}]*}/g) || [];
+  let family: string | null = null;
+  const fontFaces: FontFace[] = [];
+  for (const block of faceBlocks) {
+    const familyMatch = block.match(/font-family:\s*['"]?([^;'"]+)['"]?/);
+    const urlMatch = block.match(/url\(\s*['"]?([^'")]+)['"]?\s*\)/);
+    if (!familyMatch || !urlMatch) continue;
+    family = familyMatch[1].trim();
+    const descriptors: FontFaceDescriptors = {};
+    const weightMatch = block.match(/font-weight:\s*([^;]+);/);
+    const styleMatch = block.match(/font-style:\s*([^;]+);/);
+    const rangeMatch = block.match(/unicode-range:\s*([^;]+);/);
+    if (weightMatch) descriptors.weight = weightMatch[1].trim();
+    if (styleMatch) descriptors.style = styleMatch[1].trim();
+    if (rangeMatch) descriptors.unicodeRange = rangeMatch[1].trim();
+    fontFaces.push(new FontFace(family, `url(${urlMatch[1]})`, descriptors));
+  }
+  if (!family) throw new Error('No @font-face rule found in the stylesheet');
+  await Promise.allSettled(
+    fontFaces.map(async face => {
+      await face.load();
+      document.fonts.add(face);
+    })
+  );
+  return family;
+}
+
+async function loadFontFromFile(url: string): Promise<string> {
+  const family = deriveFontFamilyFromUrl(url);
+  const fontFace = new FontFace(family, `url(${url})`);
+  await fontFace.load();
+  document.fonts.add(fontFace);
+  return family;
+}
+
+async function loadCustomFont(fontUrl: string): Promise<string> {
+  const isStylesheet = fontUrl.includes('fonts.googleapis.com') || /\.css(\?.*)?$/i.test(fontUrl);
+  return isStylesheet ? loadFontFromStylesheet(fontUrl) : loadFontFromFile(fontUrl);
+}
+
+async function resolveFont(font: string, fontUrl?: string): Promise<string> {
+  const effectiveUrl = fontUrl || (font === DEFAULT_FONT ? DEFAULT_FONT_URL : null);
+  if (!effectiveUrl) {
+    if (document.fonts && document.fonts.load) {
+      try {
+        await document.fonts.load(font);
+        await document.fonts.ready;
+      } catch {
+        // Ignore
+      }
+    }
+    return font;
+  }
+  try {
+    const family = await loadCustomFont(effectiveUrl);
+    const sizeMatch = font.match(/^\s*(.*?\d+px)/);
+    const prefix = sizeMatch ? sizeMatch[1].trim() : 'bold 30px';
+    const resolved = `${prefix} "${family}"`;
+    if (document.fonts && document.fonts.load) {
+      try {
+        await document.fonts.load(resolved);
+      } catch {
+        // Ignore
+      }
+    }
+    return resolved;
+  } catch (error) {
+    console.error('CircularGallery: unable to load font from', fontUrl, error);
+    return font;
+  }
+}
+
+function getFontSize(font: string): number {
+  const match = font.match(/(\d+)px/);
+  return match ? parseInt(match[1], 10) : 30;
+}
+
+function createTextTexture(
+  gl: GL,
+  text: string,
+  font: string = 'bold 30px Figtree',
+  color: string = 'black'
+): { texture: Texture; width: number; height: number } {
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d');
+  if (!context) throw new Error('Could not get 2d context');
+
+  context.font = font;
+  const metrics = context.measureText(text);
+  const textWidth = Math.ceil(metrics.width);
+  const textHeight = Math.ceil(getFontSize(font) * 1.2);
+
+  canvas.width = textWidth + 20;
+  canvas.height = textHeight + 20;
+
+  context.font = font;
+  context.fillStyle = color;
+  context.textBaseline = 'middle';
+  context.textAlign = 'center';
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  context.fillText(text, canvas.width / 2, canvas.height / 2);
+
+  const texture = new Texture(gl, { generateMipmaps: false });
+  texture.image = canvas;
+  return { texture, width: canvas.width, height: canvas.height };
+}
+
+interface TitleProps {
+  gl: GL;
+  plane: Mesh;
+  renderer: Renderer;
+  text: string;
+  textColor?: string;
+  font?: string;
+}
+
+class Title {
+  gl: GL;
+  plane: Mesh;
+  renderer: Renderer;
+  text: string;
+  textColor: string;
+  font: string;
+  mesh!: Mesh;
+
+  constructor({ gl, plane, renderer, text, textColor = '#545050', font = '30px Figtree' }: TitleProps) {
+    autoBind(this);
+    this.gl = gl;
+    this.plane = plane;
+    this.renderer = renderer;
+    this.text = text;
+    this.textColor = textColor;
+    this.font = font;
+    this.createMesh();
+  }
+
+  createMesh() {
+    const { texture, width, height } = createTextTexture(this.gl, this.text, this.font, this.textColor);
+    const geometry = new Plane(this.gl);
+    const program = new Program(this.gl, {
+      vertex: `
+        attribute vec3 position;
+        attribute vec2 uv;
+        uniform mat4 modelViewMatrix;
+        uniform mat4 projectionMatrix;
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragment: `
+        precision highp float;
+        uniform sampler2D tMap;
+        varying vec2 vUv;
+        void main() {
+          vec4 color = texture2D(tMap, vUv);
+          if (color.a < 0.1) discard;
+          gl_FragColor = color;
+        }
+      `,
+      uniforms: { tMap: { value: texture } },
+      transparent: true
+    });
+    this.mesh = new Mesh(this.gl, { geometry, program });
+    const aspect = width / height;
+    const textHeight = this.plane.scale.y * 0.15;
+    const textWidth = textHeight * aspect;
+    this.mesh.scale.set(textWidth, textHeight, 1);
+    this.mesh.position.y = -this.plane.scale.y * 0.5 - textHeight * 0.5 - 0.05;
+    this.mesh.setParent(this.plane);
+  }
 }
 
 interface ScreenSize {
@@ -34,9 +231,12 @@ interface MediaProps {
   renderer: Renderer;
   scene: Transform;
   screen: ScreenSize;
+  text: string;
   viewport: Viewport;
   bend: number;
+  textColor: string;
   borderRadius?: number;
+  font: string;
 }
 
 class Media {
@@ -49,11 +249,15 @@ class Media {
   renderer: Renderer;
   scene: Transform;
   screen: ScreenSize;
+  text: string;
   viewport: Viewport;
   bend: number;
+  textColor: string;
   borderRadius: number;
+  font: string;
   program!: Program;
   plane!: Mesh;
+  title!: Title;
   scale!: number;
   padding!: number;
   width!: number;
@@ -72,9 +276,12 @@ class Media {
     renderer,
     scene,
     screen,
+    text,
     viewport,
     bend,
-    borderRadius = 0.12
+    textColor,
+    borderRadius = 0,
+    font
   }: MediaProps) {
     this.geometry = geometry;
     this.gl = gl;
@@ -84,11 +291,15 @@ class Media {
     this.renderer = renderer;
     this.scene = scene;
     this.screen = screen;
+    this.text = text;
     this.viewport = viewport;
     this.bend = bend;
+    this.textColor = textColor;
     this.borderRadius = borderRadius;
+    this.font = font;
     this.createShader();
     this.createMesh();
+    this.createTitle();
     this.onResize();
   }
 
@@ -97,8 +308,8 @@ class Media {
       generateMipmaps: true
     });
     this.program = new Program(this.gl, {
-      depthTest: true,
-      depthWrite: true,
+      depthTest: false,
+      depthWrite: false,
       vertex: `
         precision highp float;
         attribute vec3 position;
@@ -111,7 +322,7 @@ class Media {
         void main() {
           vUv = uv;
           vec3 p = position;
-          p.z = (sin(p.x * 4.0 + uTime) * 1.5 + cos(p.y * 2.0 + uTime) * 1.5) * (0.1 + uSpeed * 0.5);
+          p.z = (sin(p.x * 4.0 + uTime) * 1.5 + cos(p.y * 2.0 + uTime) * 1.5) * (0.08 + uSpeed * 0.12);
           gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
         }
       `,
@@ -174,6 +385,17 @@ class Media {
     this.plane.setParent(this.scene);
   }
 
+  createTitle() {
+    this.title = new Title({
+      gl: this.gl,
+      plane: this.plane,
+      renderer: this.renderer,
+      text: this.text,
+      textColor: this.textColor,
+      font: this.font
+    });
+  }
+
   update(scroll: { current: number; last: number }, direction: 'right' | 'left') {
     this.plane.position.x = this.x - scroll.current - this.extra;
 
@@ -200,7 +422,8 @@ class Media {
 
     this.speed = scroll.current - scroll.last;
     this.program.uniforms.uTime.value += 0.04;
-    this.program.uniforms.uSpeed.value = this.speed;
+    this.program.uniforms.uSpeed.value =
+  Math.min(Math.abs(this.speed), 6) / 6;
 
     const planeOffset = this.plane.scale.x / 2;
     const viewportOffset = this.viewport.width / 2;
@@ -220,12 +443,15 @@ class Media {
     if (screen) this.screen = screen;
     if (viewport) {
       this.viewport = viewport;
+      if (this.plane.program.uniforms.uViewportSizes) {
+        this.plane.program.uniforms.uViewportSizes.value = [this.viewport.width, this.viewport.height];
+      }
     }
     this.scale = this.screen.height / 1500;
     this.plane.scale.y = (this.viewport.height * (900 * this.scale)) / this.screen.height;
     this.plane.scale.x = (this.viewport.width * (700 * this.scale)) / this.screen.width;
     this.plane.program.uniforms.uPlaneSizes.value = [this.plane.scale.x, this.plane.scale.y];
-    this.padding = 1.6;
+    this.padding = 2;
     this.width = this.plane.scale.x + this.padding;
     this.widthTotal = this.width * this.length;
     this.x = this.width * this.index;
@@ -235,13 +461,15 @@ class Media {
 interface AppConfig {
   items: { image: string; text: string }[];
   bend: number;
+  textColor?: string;
   borderRadius?: number;
+  font?: string;
   scrollSpeed?: number;
   scrollEase?: number;
   onActiveIndexChange?: (index: number) => void;
 }
 
-class GalleryApp {
+class App {
   container: HTMLElement;
   scrollSpeed: number;
   scroll: {
@@ -280,10 +508,12 @@ class GalleryApp {
     container: HTMLElement,
     {
       items,
-      bend = 1,
-      borderRadius = 0.12,
-      scrollSpeed = 1.2,
-      scrollEase = 0.015,
+      bend,
+      textColor = '#ffffff',
+      borderRadius = 0,
+      font = 'bold 30px Figtree',
+      scrollSpeed = 2,
+      scrollEase = 0.05,
       onActiveIndexChange
     }: AppConfig
   ) {
@@ -291,13 +521,13 @@ class GalleryApp {
     this.scrollSpeed = scrollSpeed;
     this.scroll = { ease: scrollEase, current: 0, target: 0, last: 0 };
     this.onActiveIndexChange = onActiveIndexChange;
-    this.onCheckDebounce = debounce(this.onCheck.bind(this), 250);
+    this.onCheckDebounce = debounce(this.onCheck.bind(this), 200);
     this.createRenderer();
     this.createCamera();
     this.createScene();
     this.onResize();
     this.createGeometry();
-    this.createMedias(items, bend, borderRadius);
+    this.createMedias(items, bend, textColor, borderRadius, font);
     this.update();
     this.addEventListeners();
   }
@@ -332,11 +562,27 @@ class GalleryApp {
 
   createMedias(
     items: { image: string; text: string }[],
-    bend: number,
-    borderRadius: number
+    bend: number = 1,
+    textColor: string,
+    borderRadius: number,
+    font: string
   ) {
-    // Duplicate array to provide sufficient buffer size for infinite WebGL wrapping coordinates
-    this.mediasImages = items.concat(items);
+    const defaultItems = [
+      { image: `https://picsum.photos/seed/1/800/600?grayscale`, text: 'Bridge' },
+      { image: `https://picsum.photos/seed/2/800/600?grayscale`, text: 'Desk Setup' },
+      { image: `https://picsum.photos/seed/3/800/600?grayscale`, text: 'Waterfall' },
+      { image: `https://picsum.photos/seed/4/800/600?grayscale`, text: 'Strawberries' },
+      { image: `https://picsum.photos/seed/5/800/600?grayscale`, text: 'Deep Diving' },
+      { image: `https://picsum.photos/seed/16/800/600?grayscale`, text: 'Train Track' },
+      { image: `https://picsum.photos/seed/17/800/600?grayscale`, text: 'Santorini' },
+      { image: `https://picsum.photos/seed/8/800/600?grayscale`, text: 'Blurry Lights' },
+      { image: `https://picsum.photos/seed/9/800/600?grayscale`, text: 'New York' },
+      { image: `https://picsum.photos/seed/10/800/600?grayscale`, text: 'Good Boy' },
+      { image: `https://picsum.photos/seed/21/800/600?grayscale`, text: 'Coastline' },
+      { image: `https://picsum.photos/seed/12/800/600?grayscale`, text: 'Palm Trees' }
+    ];
+    const galleryItems = items && items.length ? items : defaultItems;
+    this.mediasImages = galleryItems.concat(galleryItems);
     this.medias = this.mediasImages.map((data, index) => {
       return new Media({
         geometry: this.planeGeometry,
@@ -347,9 +593,12 @@ class GalleryApp {
         renderer: this.renderer,
         scene: this.scene,
         screen: this.screen,
+        text: data.text,
         viewport: this.viewport,
         bend,
-        borderRadius
+        textColor,
+        borderRadius,
+        font
       });
     });
   }
@@ -363,8 +612,7 @@ class GalleryApp {
   onTouchMove(e: MouseEvent | TouchEvent) {
     if (!this.isDown) return;
     const x = 'touches' in e ? e.touches[0].clientX : e.clientX;
-    // Map pixels to coordinate spaces smoothly but responsively
-    const distance = (this.start - x) * (this.scrollSpeed * 0.060);
+    const distance = (this.start - x) * (this.scrollSpeed * 0.04);
     this.scroll.target = (this.scroll.position ?? 0) + distance;
   }
 
@@ -375,10 +623,14 @@ class GalleryApp {
 
   onWheel(e: Event) {
     const wheelEvent = e as WheelEvent;
+    // Stop Lenis/page from consuming this event — must be non-passive on container
     wheelEvent.preventDefault();
-    const delta = wheelEvent.deltaY || (wheelEvent as any).wheelDelta || (wheelEvent as any).detail;
-    // Boost wheel sensitivity so a normal scroll wheel click scrolls across cards
-    this.scroll.target += (delta > 0 ? this.scrollSpeed : -this.scrollSpeed) * 1.5;
+    wheelEvent.stopPropagation();
+    // Normalize delta across browsers (deltaMode 0=px, 1=line, 2=page)
+    let delta = wheelEvent.deltaY;
+    if (wheelEvent.deltaMode === 1) delta *= 30;   // line mode
+    if (wheelEvent.deltaMode === 2) delta *= 300;  // page mode
+    this.scroll.target += (delta > 0 ? this.scrollSpeed : -this.scrollSpeed) * 1.2;
     this.onCheckDebounce();
   }
 
@@ -386,13 +638,23 @@ class GalleryApp {
     switch (e.key) {
       case 'ArrowRight':
         e.preventDefault();
-        this.scroll.target += this.scrollSpeed * 3;
+        this.scroll.target += this.scrollSpeed * 5;
         this.onCheckDebounce();
         break;
+
       case 'ArrowLeft':
         e.preventDefault();
-        this.scroll.target -= this.scrollSpeed * 3;
+        this.scroll.target -= this.scrollSpeed * 5;
         this.onCheckDebounce();
+        break;
+
+      case 'Home':
+        e.preventDefault();
+        this.scroll.target = 0;
+        this.onCheckDebounce();
+        break;
+
+      default:
         break;
     }
   }
@@ -469,27 +731,38 @@ class GalleryApp {
     this.boundOnTouchUp = this.onTouchUp.bind(this);
     this.boundOnKeyDown = this.onKeyDown.bind(this);
 
+    // Resize on window
     window.addEventListener('resize', this.boundOnResize);
+
+    // ⚠️ Wheel ONLY on container — NOT window.
+    // Registering wheel on window conflicts with Lenis smooth scroll which also
+    // intercepts window wheel events and re-dispatches them, causing double-firing
+    // and making the gallery appear frozen.
     this.container.addEventListener('wheel', this.boundOnWheel, { passive: false });
+
+    // Mouse drag: down/up on container, move on window so dragging outside still works
     this.container.addEventListener('mousedown', this.boundOnTouchDown);
     window.addEventListener('mousemove', this.boundOnTouchMove);
     window.addEventListener('mouseup', this.boundOnTouchUp);
+
+    // Touch: container only
     this.container.addEventListener('touchstart', this.boundOnTouchDown, { passive: true });
-    this.container.addEventListener('touchmove', this.boundOnTouchMove, { passive: true });
-    window.addEventListener('touchend', this.boundOnTouchUp);
+    this.container.addEventListener('touchmove', this.boundOnTouchMove, { passive: false });
+    this.container.addEventListener('touchend', this.boundOnTouchUp, { passive: true });
+
     this.container.addEventListener('keydown', this.boundOnKeyDown);
   }
 
   destroy() {
     window.cancelAnimationFrame(this.raf);
     window.removeEventListener('resize', this.boundOnResize);
-    this.container?.removeEventListener('wheel', this.boundOnWheel);
-    this.container?.removeEventListener('mousedown', this.boundOnTouchDown);
     window.removeEventListener('mousemove', this.boundOnTouchMove);
     window.removeEventListener('mouseup', this.boundOnTouchUp);
+    this.container?.removeEventListener('wheel', this.boundOnWheel);
+    this.container?.removeEventListener('mousedown', this.boundOnTouchDown);
     this.container?.removeEventListener('touchstart', this.boundOnTouchDown);
     this.container?.removeEventListener('touchmove', this.boundOnTouchMove);
-    window.removeEventListener('touchend', this.boundOnTouchUp);
+    this.container?.removeEventListener('touchend', this.boundOnTouchUp);
     this.container?.removeEventListener('keydown', this.boundOnKeyDown);
     if (this.renderer && this.renderer.gl && this.renderer.gl.canvas.parentNode) {
       this.renderer.gl.canvas.parentNode.removeChild(this.renderer.gl.canvas as HTMLCanvasElement);
@@ -497,35 +770,44 @@ class GalleryApp {
   }
 }
 
-interface CaseStudiesGalleryProps {
-  items: { image: string; text: string }[];
+interface CircularGalleryProps {
+  items?: { image: string; text: string }[];
   bend?: number;
+  textColor?: string;
   borderRadius?: number;
+  font?: string;
+  fontUrl?: string;
   scrollSpeed?: number;
   scrollEase?: number;
   onActiveIndexChange?: (index: number) => void;
 }
 
-export const CaseStudiesGallery: React.FC<CaseStudiesGalleryProps> = ({
+export const CircularGallery: React.FC<CircularGalleryProps> = ({
   items,
-  bend = 1,
-  borderRadius = 0.12,
-  scrollSpeed = 1.2,
-  scrollEase = 0.015,
+  bend = 3,
+  textColor = '#ffffff',
+  borderRadius = 0.05,
+  font = 'bold 30px Figtree',
+  fontUrl,
+  scrollSpeed = 2,
+  scrollEase = 0.05,
   onActiveIndexChange
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!containerRef.current) return;
-    let app: GalleryApp | undefined;
+    let app: App | undefined;
+    let isMounted = true;
 
-    const initApp = () => {
+    const initApp = (resolvedFont: string) => {
       if (containerRef.current && containerRef.current.clientWidth > 0 && !app) {
-        app = new GalleryApp(containerRef.current, {
-          items,
+        app = new App(containerRef.current, {
+          items: items || [],
           bend,
+          textColor,
           borderRadius,
+          font: resolvedFont,
           scrollSpeed,
           scrollEase,
           onActiveIndexChange
@@ -533,29 +815,38 @@ export const CaseStudiesGallery: React.FC<CaseStudiesGalleryProps> = ({
       }
     };
 
-    initApp();
+    resolveFont(font, fontUrl).then(resolvedFont => {
+      if (!isMounted || !containerRef.current) return;
+      initApp(resolvedFont);
+    });
 
     const handleResize = () => {
-      initApp();
+      if (app) return;
+      resolveFont(font, fontUrl).then(resolvedFont => {
+        if (!isMounted || !containerRef.current) return;
+        initApp(resolvedFont);
+      });
     };
 
     window.addEventListener('resize', handleResize, { passive: true });
 
     return () => {
+      isMounted = false;
       window.removeEventListener('resize', handleResize);
       if (app) app.destroy();
     };
-  }, [items, bend, borderRadius, scrollSpeed, scrollEase, onActiveIndexChange]);
+  }, [items, bend, textColor, borderRadius, font, fontUrl, scrollSpeed, scrollEase, onActiveIndexChange]);
 
   return (
     <div
-      className="w-full h-full overflow-hidden cursor-grab active:cursor-grabbing outline-none"
+      className="circular-gallery"
       ref={containerRef}
       tabIndex={0}
       role="region"
-      aria-label="Case Studies Curved WebGL Gallery. Drag horizontally or use Left and Right arrows to navigate."
+      aria-label="Circular image gallery. Use left and right arrow keys to navigate."
     />
   );
 };
 
-export default CaseStudiesGallery;
+export { CircularGallery as CaseStudiesGallery };
+export default CircularGallery;
