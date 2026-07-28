@@ -31,6 +31,12 @@ export const LenisProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     requestAnimationFrame(raf);
 
+    // Allow external components (e.g. ScrollExpandMedia) to pause / resume Lenis
+    const handleStop  = () => lenis.stop();
+    const handleStart = () => lenis.start();
+    window.addEventListener('lenisStop',  handleStop);
+    window.addEventListener('lenisStart', handleStart);
+
     // Setup global navigation intercepts for smooth scrolling to anchors
     const handleAnchorClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
@@ -57,6 +63,8 @@ export const LenisProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     return () => {
       lenis.destroy();
       document.removeEventListener('click', handleAnchorClick);
+      window.removeEventListener('lenisStop',  handleStop);
+      window.removeEventListener('lenisStart', handleStart);
     };
   }, []);
 

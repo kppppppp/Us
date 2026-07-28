@@ -4,8 +4,10 @@ import { ArrowRight } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import ScrollFloat from '../components/ui/ScrollFloat';
+import ScrollExpandMedia from '../components/ui/ScrollExpandMedia';
 
 import heroImg from '../assets/services_hero.jpg';
+import heroBgImg from '../assets/services_hero_bg.jpg';
 import metaImg from '../assets/services_meta.jpg';
 import ecomImg from '../assets/services_ecom.jpg';
 import webImg from '../assets/services_web.jpg';
@@ -487,8 +489,13 @@ export const Services: React.FC = () => {
           trigger: section,
           start: 'top center',
           end: 'bottom center',
-          onEnter: () => setActiveService(idx),
-          onEnterBack: () => setActiveService(idx),
+          onToggle: (self) => {
+            if (self.isActive) {
+              setActiveService(idx);
+            } else if (idx === 0 && self.progress === 0) {
+              setActiveService(-1);
+            }
+          },
         });
       });
     });
@@ -520,7 +527,9 @@ export const Services: React.FC = () => {
           x: activeService >= 0 ? 0 : -20,
         }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="fixed left-8 top-1/2 -translate-y-1/2 z-40 hidden xl:flex flex-col gap-5"
+        className={`fixed left-8 top-1/2 -translate-y-1/2 z-40 hidden xl:flex flex-col gap-5 ${
+          activeService >= 0 ? '' : 'pointer-events-none'
+        }`}
         aria-label="Service navigation"
       >
         {services.map((s, i) => (
@@ -550,93 +559,49 @@ export const Services: React.FC = () => {
       </motion.nav>
 
       {/* ═══════════════════════════════════════════
-          HERO SECTION
+          HERO SECTION (ScrollExpandMedia)
          ═══════════════════════════════════════════ */}
-      <section
-        ref={heroRef}
-        className="relative min-h-[95vh] flex items-center pt-[180px] pb-32 px-6 md:px-12 z-20"
+      <ScrollExpandMedia
+        mediaSrc={heroImg}
+        bgImageSrc={heroBgImg}
+        title="Every interaction."
+        subtitle="Every conversion. Engineered."
+        scrollToExpand="Scroll to expand"
       >
-        <div className="max-w-[1600px] mx-auto grid grid-cols-12 gap-12 lg:gap-8 items-center w-full">
-          {/* Left: Editorial typography */}
+        <div className="max-w-[1600px] mx-auto grid grid-cols-12 gap-12 items-center w-full min-h-[50vh] py-16">
           <div className="col-span-12 lg:col-span-6 flex flex-col justify-center">
-            <span className="text-[10px] font-bold text-brand-purple tracking-[0.45em] uppercase mb-10 block font-sans">
-              OUR SERVICES
+            <span className="text-[10px] font-bold text-brand-purple tracking-[0.45em] uppercase mb-6 block font-sans">
+              OUR MISSION
             </span>
-            <div className="flex flex-col gap-0 max-w-[650px]">
-              <ScrollFloat
-                animationDuration={0.8}
-                ease="power3.out"
-                scrollStart="top bottom"
-                scrollEnd="bottom center"
-                stagger={0.02}
-                textClassName="!text-left !leading-[1.05] font-sans font-extrabold uppercase text-[clamp(48px,5.5vw,76px)] text-neutral-900"
-              >
-                Every interaction.
-              </ScrollFloat>
-              <ScrollFloat
-                animationDuration={0.8}
-                ease="power3.out"
-                scrollStart="top bottom"
-                scrollEnd="bottom center"
-                stagger={0.02}
-                textClassName="!text-left !leading-[1.05] font-sans font-extrabold uppercase text-[clamp(48px,5.5vw,76px)] text-neutral-900"
-              >
-                Every conversion.
-              </ScrollFloat>
-              <ScrollFloat
-                animationDuration={0.8}
-                ease="power3.out"
-                scrollStart="top bottom"
-                scrollEnd="bottom center"
-                stagger={0.02}
-                textClassName="!text-left !leading-[1.1] font-serif font-normal italic text-[clamp(44px,5vw,68px)] text-neutral-800"
-              >
-                Engineered.
-              </ScrollFloat>
-            </div>
-            <p className="mt-12 text-neutral-500 text-base md:text-lg leading-relaxed max-w-[480px]">
+            <h2 className="text-[clamp(36px,4.5vw,56px)] font-extrabold uppercase font-sans leading-[1.1] text-neutral-900">
+              Ideas become systems.
+            </h2>
+            <h3 className="text-[clamp(30px,3.8vw,48px)] font-normal italic font-serif leading-[1.2] text-neutral-800 mt-1">
+              Systems become growth.
+            </h3>
+            <p className="mt-8 text-neutral-500 text-base md:text-lg leading-relaxed max-w-[480px]">
               From acquisition to automation, we engineer digital experiences
               that create measurable, compounding growth.
             </p>
           </div>
-
-          {/* Right: Hero sculpture */}
-          <div className="col-span-12 lg:col-span-6 flex justify-center lg:justify-end mt-16 lg:mt-0">
-            <div className="relative w-full max-w-[520px] aspect-square">
-              <div className="absolute -inset-20 rounded-full bg-brand-purple/[0.08] blur-[100px] pointer-events-none" />
-              <motion.div
-                className="relative w-full h-full"
-                animate={{ y: [0, -14, 0] }}
-                transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-              >
-                <motion.div
-                  animate={{
-                    rotateX: mousePosition.y * 0.08,
-                    rotateY: mousePosition.x * 0.08,
-                  }}
-                  transition={{ type: 'spring', damping: 20, stiffness: 100 }}
-                  style={{ perspective: 1000 }}
-                >
-                  <img
-                    src={heroImg}
-                    alt="Premium glass sculpture"
-                    className="w-full h-full object-cover rounded-2xl"
-                    style={{
-                      filter: 'drop-shadow(0 30px 60px rgba(0,0,0,0.08))',
-                      WebkitBoxReflect: 'below 20px linear-gradient(transparent 55%, rgba(255,255,255,0.25))',
-                    }}
-                  />
-                </motion.div>
-              </motion.div>
+          <div className="col-span-12 lg:col-span-6">
+            <div className="p-8 border border-neutral-100 rounded-2xl bg-white/50 backdrop-blur-md">
+              <span className="text-xs font-bold text-neutral-400 tracking-[0.2em] uppercase mb-4 block">
+                Unexpected Approach
+              </span>
+              <p className="text-sm text-neutral-600 leading-relaxed">
+                We believe that premium design is not a luxury, but a strategic imperative.
+                Every line of code and visual reflection is engineered intentionally to scale your operations and brand authority.
+              </p>
             </div>
           </div>
         </div>
-      </section>
+      </ScrollExpandMedia>
 
       {/* ═══════════════════════════════════════════
           EDITORIAL INTRO
          ═══════════════════════════════════════════ */}
-      <section className="relative py-32 lg:py-44 px-6 md:px-12 z-20">
+      <section className="relative py-32 lg:py-44 px-6 md:px-12 xl:pl-32 z-20">
         <div className="max-w-[1600px] mx-auto">
           <div className="max-w-[900px]">
             <ScrollFloat
@@ -672,7 +637,7 @@ export const Services: React.FC = () => {
                 key={service.id}
                 id={service.id}
                 ref={(el) => { sectionRefs.current[idx] = el; }}
-                className={`relative w-full px-6 md:px-12 ${service.spacing} overflow-visible`}
+                className={`relative w-full px-6 md:px-12 xl:pl-32 ${service.spacing} overflow-visible`}
               >
                 {/* Ambient section glow */}
                 <div className="absolute inset-0 pointer-events-none overflow-hidden -z-10" aria-hidden="true">
@@ -710,7 +675,7 @@ export const Services: React.FC = () => {
                 key={service.id}
                 id={service.id}
                 ref={(el) => { sectionRefs.current[idx] = el; }}
-                className={`relative w-full px-6 md:px-12 ${service.spacing} overflow-visible`}
+                className={`relative w-full px-6 md:px-12 xl:pl-32 ${service.spacing} overflow-visible`}
               >
                 {/* Ambient section glow */}
                 <div className="absolute inset-0 pointer-events-none overflow-hidden -z-10" aria-hidden="true">
@@ -746,7 +711,7 @@ export const Services: React.FC = () => {
               key={service.id}
               id={service.id}
               ref={(el) => { sectionRefs.current[idx] = el; }}
-              className={`relative w-full px-6 md:px-12 ${service.spacing} overflow-visible`}
+              className={`relative w-full px-6 md:px-12 xl:pl-32 ${service.spacing} overflow-visible`}
             >
               {/* Ambient section glow */}
               <div className="absolute inset-0 pointer-events-none overflow-hidden -z-10" aria-hidden="true">
