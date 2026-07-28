@@ -623,13 +623,12 @@ class App {
 
   onWheel(e: Event) {
     const wheelEvent = e as WheelEvent;
-    // Stop Lenis/page from consuming this event — must be non-passive on container
-    wheelEvent.preventDefault();
-    wheelEvent.stopPropagation();
     // Normalize delta across browsers (deltaMode 0=px, 1=line, 2=page)
     let delta = wheelEvent.deltaY;
     if (wheelEvent.deltaMode === 1) delta *= 30;   // line mode
     if (wheelEvent.deltaMode === 2) delta *= 300;  // page mode
+    // Update gallery scroll without blocking page scroll
+    // This allows Lenis to continue scrolling the page while the gallery also responds
     this.scroll.target += (delta > 0 ? this.scrollSpeed : -this.scrollSpeed) * 1.2;
     this.onCheckDebounce();
   }
@@ -738,7 +737,7 @@ class App {
     // Registering wheel on window conflicts with Lenis smooth scroll which also
     // intercepts window wheel events and re-dispatches them, causing double-firing
     // and making the gallery appear frozen.
-    this.container.addEventListener('wheel', this.boundOnWheel, { passive: false });
+    this.container.addEventListener('wheel', this.boundOnWheel, { passive: true });
 
     // Mouse drag: down/up on container, move on window so dragging outside still works
     this.container.addEventListener('mousedown', this.boundOnTouchDown);

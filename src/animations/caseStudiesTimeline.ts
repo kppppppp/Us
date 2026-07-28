@@ -13,35 +13,40 @@ export const createCaseStudiesTimeline = (container: HTMLElement) => {
   const panel = container.querySelector('[data-reveal="panel"]');
   const bottomCta = container.querySelector('[data-reveal="bottom-cta"]');
 
+  // Set initial hidden states immediately so elements don't flash on mount
+  const allElements = [label, heading, body, cta, stats, gallery, panel, bottomCta].filter(Boolean);
+  gsap.set(allElements, { opacity: 0, y: 20 });
+  if (gallery) gsap.set(gallery, { opacity: 0, scale: 0.98, x: 30, y: 0 });
+
   const tl = gsap.timeline({
     scrollTrigger: {
       trigger: container,
       start: 'top 75%',
-      toggleActions: 'play none none none'
+      toggleActions: 'play none none none',
     }
   });
 
   // Staggered reveal sequence matching homepage design language
-  if (label) tl.fromTo(label, { opacity: 0, y: 25 }, { opacity: 1, y: 0, duration: 0.6 });
-  
+  if (label) tl.to(label, { opacity: 1, y: 0, duration: 0.6 });
+
   if (heading) {
-    tl.fromTo(heading, { opacity: 0, y: 35 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.45');
+    tl.to(heading, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.45');
   }
 
-  if (body) tl.fromTo(body, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6 }, '-=0.5');
-  if (cta) tl.fromTo(cta, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.5 }, '-=0.45');
-  if (stats) tl.fromTo(stats, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.4');
-  
+  if (body) tl.to(body, { opacity: 1, y: 0, duration: 0.6 }, '-=0.5');
+  if (cta) tl.to(cta, { opacity: 1, y: 0, duration: 0.5 }, '-=0.45');
+  if (stats) tl.to(stats, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.4');
+
   if (gallery) {
-    tl.fromTo(gallery, { opacity: 0, scale: 0.98, x: 30 }, { opacity: 1, scale: 1, x: 0, duration: 0.9, ease: 'power3.out' }, '-=0.6');
+    tl.to(gallery, { opacity: 1, scale: 1, x: 0, duration: 0.9, ease: 'power3.out' }, '-=0.6');
   }
 
   if (panel) {
-    tl.fromTo(panel, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.4');
+    tl.to(panel, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, '-=0.4');
   }
 
   if (bottomCta) {
-    tl.fromTo(bottomCta, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.3');
+    tl.to(bottomCta, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.3');
   }
 
   return tl;

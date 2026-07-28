@@ -105,7 +105,7 @@ export const navigationItems: NavItem[] = [
   },
   {
     label: 'Industries',
-    href: '#industries'
+    href: '/industries'
   },
   {
     label: 'Case Studies',

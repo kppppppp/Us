@@ -1,0 +1,192 @@
+/* argent-loop-infinite-slider.css */
+
+.parallax-container {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #050409;
+  z-index: 10;
+}
+
+.project-list {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.project {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  will-change: transform;
+}
+
+.project img {
+  width: 100%;
+  height: 120%;
+  object-fit: cover;
+}
+
+/* Premium Split Glassmorphic Card (Minimap) */
+.minimap {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 1000px;
+  height: 320px; /* matched to state.current.minimapHeight */
+  z-index: 40;
+  overflow: hidden;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+}
+
+@media (max-width: 768px) {
+  .minimap {
+    width: 92%;
+    height: 300px;
+  }
+}
+
+.minimap-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.minimap-img-preview {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 240px;
+  height: 240px;
+  overflow: hidden;
+  z-index: 10;
+}
+
+@media (max-width: 768px) {
+  .minimap-img-preview {
+    width: 180px;
+    height: 180px;
+  }
+}
+
+.minimap-img-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 320px; /* matches s.minimapHeight */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  will-change: transform;
+}
+
+@media (max-width: 768px) {
+  .minimap-img-item {
+    height: 300px;
+  }
+}
+
+.minimap-img-item img {
+  width: 240px;
+  height: 240px;
+  object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .minimap-img-item img {
+    width: 180px;
+    height: 180px;
+  }
+}
+
+.minimap-info-list {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.minimap-item-info {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 320px; /* matches s.minimapHeight */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 40px 50px;
+  color: #000000;
+  will-change: transform;
+  z-index: 20;
+}
+
+@media (max-width: 768px) {
+  .minimap-item-info {
+    padding: 30px;
+    height: 300px;
+  }
+}
+
+.minimap-item-info-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.minimap-item-info-row p {
+  font-family: 'Figtree', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  text-transform: uppercase;
+  color: #000000;
+}
+
+@media (max-width: 640px) {
+  .minimap-item-info-row p {
+    font-size: 11px;
+  }
+}
+
+/* Center Image overlays text slightly or layout columns split */
+.minimap-item-info-row p:nth-child(1) {
+  text-align: left;
+  width: 35%;
+}
+
+.minimap-item-info-row p:nth-child(2) {
+  text-align: right;
+  width: 35%;
+}
+
+.minimap-item-info-row:nth-child(3) {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: auto;
+}
+
+.minimap-item-info-row:nth-child(3) p {
+  text-align: left;
+  width: 50%;
+}
