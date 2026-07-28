@@ -690,14 +690,14 @@ export const Services: React.FC = () => {
                 </div>
 
                 <div className="max-w-[1600px] mx-auto grid grid-cols-12 gap-8 lg:gap-6 items-center">
-                  {/* Image — dominant column (8 cols) */}
-                  <div className={`col-span-12 lg:col-span-8 ${isTextRight ? 'lg:order-1' : 'lg:order-2'}`}>
+                  {/* Image — dominant column (7 cols) */}
+                  <div className={`col-span-12 lg:col-span-7 ${isTextRight ? 'lg:order-1' : 'lg:order-2'}`}>
                     <div className="w-full max-w-[680px] mx-auto lg:mx-0">
                       {renderSculpture(service)}
                     </div>
                   </div>
-                  {/* Text — supporting column (4 cols) */}
-                  <div className={`col-span-12 lg:col-span-4 ${isTextRight ? 'lg:order-2' : 'lg:order-1'}`}>
+                  {/* Text — supporting column (5 cols) */}
+                  <div className={`col-span-12 lg:col-span-5 ${isTextRight ? 'lg:order-2' : 'lg:order-1'}`}>
                     {renderTextBlock(service, 'left')}
                   </div>
                 </div>
