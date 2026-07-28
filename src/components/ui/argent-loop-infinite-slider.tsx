@@ -98,9 +98,12 @@ const getProjectNumber = (index: number) => {
 };
 
 export function Component() {
+  const isMobileDevice = typeof window !== 'undefined' && window.innerWidth < 768;
+  const bufferSize = isMobileDevice ? 2 : CONFIG.BUFFER_SIZE;
+
   const [visibleRange, setVisibleRange] = React.useState({
-    min: -CONFIG.BUFFER_SIZE,
-    max: CONFIG.BUFFER_SIZE,
+    min: -bufferSize,
+    max: bufferSize,
   });
 
   // Refs for state that changes frequently (animation loop)
@@ -141,7 +144,8 @@ export function Component() {
     
     // Optimization: only update if changed significantly
     if (Math.abs(current - target) > 0.01) {
-        img.style.transform = `translateY(${current}px) scale(1.5)`;
+        // GPU acceleration using translate3d
+        img.style.transform = `translate3d(0, ${current}px, 0) scale(1.5)`;
         img.dataset.parallaxCurrent = current.toString();
     }
   };
@@ -172,31 +176,34 @@ export function Component() {
 
   const updatePositions = () => {
     const s = state.current;
+    const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 1024;
     const minimapY = (s.currentY * s.minimapHeight) / s.projectHeight;
 
     // Update Projects
     projectsRef.current.forEach((el, index) => {
       const y = index * s.projectHeight + s.currentY;
-      el.style.transform = `translateY(${y}px)`;
+      el.style.transform = `translate3d(0, ${y}px, 0)`;
       const img = el.querySelector("img");
       updateParallax(img, s.currentY, index, s.projectHeight);
     });
 
-    // Update Minimap Images
+    // Update Minimap Images (Always translate Y to avoid overlapping on mobile)
     minimapRef.current.forEach((el, index) => {
       const y = index * s.minimapHeight + minimapY;
-      el.style.transform = `translateY(${y}px)`;
-      const img = el.querySelector("img");
-      if (img) {
-          // Minimap parallax uses minimapHeight
-          updateParallax(img, minimapY, index, s.minimapHeight);
+      el.style.transform = `translate3d(0, ${y}px, 0)`;
+      if (isDesktop) {
+        const img = el.querySelector("img");
+        if (img) {
+            // Minimap parallax uses minimapHeight
+            updateParallax(img, minimapY, index, s.minimapHeight);
+        }
       }
     });
 
-    // Update Info
+    // Update Info (Always translate Y to avoid overlapping on mobile)
     infoRef.current.forEach((el, index) => {
       const y = index * s.minimapHeight + minimapY;
-      el.style.transform = `translateY(${y}px)`;
+      el.style.transform = `translate3d(0, ${y}px, 0)`;
     });
   };
 
@@ -219,15 +226,15 @@ export function Component() {
   };
   
   // We need the animation loop to be able to trigger a state update.
-  const renderedRange = React.useRef({ min: -CONFIG.BUFFER_SIZE, max: CONFIG.BUFFER_SIZE });
+  const renderedRange = React.useRef({ min: -bufferSize, max: bufferSize });
 
   const animationLoop = () => {
      animate();
      
      const s = state.current;
      const currentIndex = Math.round(-s.targetY / s.projectHeight);
-     const min = currentIndex - CONFIG.BUFFER_SIZE;
-     const max = currentIndex + CONFIG.BUFFER_SIZE;
+     const min = currentIndex - bufferSize;
+     const max = currentIndex + bufferSize;
 
      if (min !== renderedRange.current.min || max !== renderedRange.current.max) {
          renderedRange.current = { min, max };
@@ -266,6 +273,7 @@ export function Component() {
     const onTouchMove = (e: TouchEvent) => {
         const s = state.current;
         if (!s.isDragging) return;
+        e.preventDefault(); // Stop default browser refresh and background scroll bounce
         s.targetY =
             s.dragStart.scrollY +
             (e.touches[0].clientY - s.dragStart.y) * 1.5;
@@ -278,6 +286,7 @@ export function Component() {
 
     const onResize = () => {
         state.current.projectHeight = window.innerHeight;
+        state.current.minimapHeight = window.innerWidth < 768 ? 380 : 320;
         // Sync container height to match JS logic exactly
         const container = document.querySelector('.parallax-container') as HTMLElement;
         if (container) {
@@ -287,11 +296,12 @@ export function Component() {
 
     window.addEventListener("wheel", onWheel, { passive: false });
     window.addEventListener("touchstart", onTouchStart);
-    window.addEventListener("touchmove", onTouchMove);
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
     window.addEventListener("touchend", onTouchEnd);
     window.addEventListener("resize", onResize);
     
     // Initial size sync
+    state.current.minimapHeight = window.innerWidth < 768 ? 380 : 320;
     onResize();
 
     // Start Loop
@@ -329,7 +339,7 @@ export function Component() {
                 else projectsRef.current.delete(i);
               }}
             >
-              <img src={data.image} alt={data.title} className="pointer-events-none opacity-45" />
+              <img src={data.image} alt={data.title} className="pointer-events-none" />
             </div>
           );
         })}

@@ -13,7 +13,7 @@ export interface NavItem {
 export const navigationItems: NavItem[] = [
   {
     label: 'Solutions',
-    href: '#solutions',
+    href: '#',
     hasDropdown: true,
     dropdownItems: [
       {
@@ -108,8 +108,8 @@ export const navigationItems: NavItem[] = [
     href: '/industries'
   },
   {
-    label: 'Case Studies',
-    href: '#case-studies'
+    label: 'Featured Work',
+    href: '/projects'
   },
   {
     label: 'About Us',

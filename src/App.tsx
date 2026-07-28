@@ -13,6 +13,7 @@ import CaseStudyDetail from './pages/CaseStudyDetail';
 import Insights from './pages/Insights';
 import Blog from './pages/Blog';
 import Contact from './pages/Contact';
+import Projects from './pages/Projects';
 
 export const App: React.FC = () => {
   return (
@@ -26,6 +27,7 @@ export const App: React.FC = () => {
             <Route path="services" element={<Services />} />
             <Route path="services/:id" element={<ServiceDetail />} />
             <Route path="industries" element={<Industries />} />
+            <Route path="projects" element={<Projects />} />
             <Route path="case-studies" element={<CaseStudies />} />
             <Route path="case-studies/:id" element={<CaseStudyDetail />} />
             <Route path="insights" element={<Insights />} />
