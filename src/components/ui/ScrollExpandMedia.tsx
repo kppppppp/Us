@@ -168,8 +168,8 @@ const ScrollExpandMedia = ({
   const restWords  = titleWords.slice(1).join(' ');
 
   return (
-    <div ref={sectionRef} className="overflow-x-hidden">
-      <section className="relative flex flex-col items-center justify-start min-h-[100dvh]">
+    <div ref={sectionRef} className="w-full overflow-x-hidden">
+      <section className="relative flex flex-col items-center justify-start min-h-[100dvh] w-full overflow-hidden">
         <div className="relative w-full flex flex-col items-center min-h-[100dvh]">
 
           {/* ── Background image fades out as media expands ── */}
@@ -237,15 +237,15 @@ const ScrollExpandMedia = ({
               </div>
 
               {/* ── Title text — splits left / right as card expands ── */}
-              <div className="flex items-center justify-center text-center gap-4 w-full relative z-10 flex-col mix-blend-difference">
+              <div className="flex items-center justify-center text-center gap-4 w-full relative z-10 flex-col mix-blend-normal drop-shadow-[0_4px_16px_rgba(0,0,0,0.35)]">
                 <motion.h1
-                  className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-extrabold text-white uppercase font-sans tracking-tight leading-none"
+                  className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-extrabold text-white uppercase font-sans tracking-tight leading-none"
                   style={{ transform: `translateX(-${textShift}vw)`, transition: 'none' }}
                 >
                   {firstWord}
                 </motion.h1>
                 <motion.p
-                  className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-normal italic text-white/90 font-serif leading-none"
+                  className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-normal italic text-white/95 font-serif leading-none"
                   style={{ transform: `translateX(${textShift}vw)`, transition: 'none' }}
                 >
                   {restWords || subtitle}
