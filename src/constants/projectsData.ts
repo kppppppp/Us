@@ -24,7 +24,7 @@ export const projectsData: ProjectItem[] = [
  
   {
     id: "ariya",
-    title: "Ariya Wellness Portal",
+    title: "Ariya Jwellery Shop",
     category: "Healthcare & AI Telemetry",
     description: "Pre-clinical telemetry and patient orchestration platform built on zero-trust cloud data systems and secure real-time data flow.",
     image: ariya,
@@ -33,9 +33,42 @@ export const projectsData: ProjectItem[] = [
     year: "2025",
     accentColor: "#8B7FF4"
   },
+    {
+    id: "newstar",
+    title: "Newstar RealEstate",
+    category: "Entertainment & Streaming CDN",
+    description: "High-throughput content delivery hub and subscription system serving millions of stream sessions daily.",
+    image: newstar,
+    technologies: ["Svelte", "Golang", "Kubernetes", "WebRTC"],
+    link: "/contact?project=newstar",
+    year: "2026",
+    accentColor: "#F59E0B"
+  },
+  {
+    id: "yash",
+    title: "Yash Furnitures",
+    category: "Creative Showcase Platform",
+    description: "Editorial portfolio showcase focusing on ultra-minimal design systems and custom WebGL shaders.",
+    image: yash,
+    technologies: ["React", "Three.js", "GSAP", "Tailwind CSS"],
+    link: "/contact?project=yash",
+    year: "2025",
+    accentColor: "#8B5CF6"
+  },
+  {
+    id: "shantabai",
+    title: "Shantabai HomeCook",
+    category: "Social Impact & Community Portal",
+    description: "Philanthropic distribution engine and community platform managing donor resources and program allocations globally.",
+    image: shantabai,
+    technologies: ["React", "Strapi CMS", "GraphQL", "Tailwind CSS"],
+    link: "/contact?project=shantabai",
+    year: "2024",
+    accentColor: "#EC4899"
+  },
   {
     id: "deltaorbit",
-    title: "Delta Orbit Systems",
+    title: "Delta Orbit",
     category: "Aerospace Intelligence & Analytics",
     description: "Interactive telemetry dashboards and predictive orbital pathing mechanics for satellite constellation management.",
     image: deltaorbit,
@@ -57,7 +90,7 @@ export const projectsData: ProjectItem[] = [
   },
   {
     id: "gaimauli",
-    title: "Gaimauli Agro Logistics",
+    title: "Gaimauli Agro ",
     category: "Supply Chain & Automation",
     description: "Algorithmic crop yield logistics and supply chain optimization platform matching cold chain transport networks.",
     image: gaimauli,
@@ -66,42 +99,11 @@ export const projectsData: ProjectItem[] = [
     year: "2025",
     accentColor: "#10B981"
   },
-  {
-    id: "newstar",
-    title: "Newstar Media Hub",
-    category: "Entertainment & Streaming CDN",
-    description: "High-throughput content delivery hub and subscription system serving millions of stream sessions daily.",
-    image: newstar,
-    technologies: ["Svelte", "Golang", "Kubernetes", "WebRTC"],
-    link: "/contact?project=newstar",
-    year: "2026",
-    accentColor: "#F59E0B"
-  },
-  {
-    id: "shantabai",
-    title: "Shantabai Foundation",
-    category: "Social Impact & Community Portal",
-    description: "Philanthropic distribution engine and community platform managing donor resources and program allocations globally.",
-    image: shantabai,
-    technologies: ["React", "Strapi CMS", "GraphQL", "Tailwind CSS"],
-    link: "/contact?project=shantabai",
-    year: "2024",
-    accentColor: "#EC4899"
-  },
-  {
-    id: "yash",
-    title: "Yash Portfolio Portal",
-    category: "Creative Showcase Platform",
-    description: "Editorial portfolio showcase focusing on ultra-minimal design systems and custom WebGL shaders.",
-    image: yash,
-    technologies: ["React", "Three.js", "GSAP", "Tailwind CSS"],
-    link: "/contact?project=yash",
-    year: "2025",
-    accentColor: "#8B5CF6"
-  },
+
+  
   {
     id: "yjp",
-    title: "YJP Retail Network",
+    title: "YJP Jwellers",
     category: "Direct-to-Consumer Commerce",
     description: "Bespoke checkout orchestration and inventory syncing across hundreds of retail distribution branches.",
     image: yjp,

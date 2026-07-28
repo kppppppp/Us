@@ -4,6 +4,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { projectsData } from '../constants/projectsData';
 import type { ProjectItem } from '../constants/projectsData';
+import DotField from '../components/ui/DotField';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -18,19 +19,21 @@ export const Projects: React.FC = () => {
     const container = containerRef.current;
     if (!container) return;
 
-    const ctx = gsap.context(() => {
-      // 1. Hero Text 3D Reveal Timeline
+    const mm = gsap.matchMedia(container);
+
+    // 1. Universal animations (Hero reveal)
+    mm.add("all", () => {
       const heroTl = gsap.timeline();
       heroTl.fromTo(
         '.hero-title span',
         { y: '100%', rotateX: -60, transformOrigin: 'top center', opacity: 0 },
-        { y: '0%', rotateX: 0, opacity: 1, duration: 1.1, stagger: 0.1, ease: 'power4.out' }
+        { y: '0%', rotateX: 0, opacity: 1, duration: 1.0, stagger: 0.08, ease: 'power4.out' }
       );
       heroTl.fromTo(
         '.hero-subtitle-char',
-        { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' },
-        '-=0.7'
+        { y: 15, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' },
+        '-=0.6'
       );
       heroTl.fromTo(
         '.hero-cta',
@@ -39,173 +42,187 @@ export const Projects: React.FC = () => {
         '-=0.5'
       );
 
-      // 2. Desktop Sticky Stack & Modern Transitions (Width >= 768px)
-      const isMobile = window.innerWidth < 768;
-      
-      if (!isMobile) {
-        const sections = gsap.utils.toArray('.project-section');
-        
-        sections.forEach((section: any, index: number) => {
-          const imageWrapper = section.querySelector('.project-img-wrapper');
-          const image = section.querySelector('.project-img');
-          const content = section.querySelector('.project-content');
-          const backgroundNum = section.querySelector('.bg-index-number');
-          
-          // Image Wrapper Clip-path Reveal & Inset Morph
-          if (imageWrapper) {
-            gsap.fromTo(
-              imageWrapper,
-              { clipPath: 'inset(10% 10% 10% 10% round 48px)' },
-              {
-                clipPath: 'inset(0% 0% 0% 0% round 24px)',
-                ease: 'none',
-                scrollTrigger: {
-                  trigger: section,
-                  start: 'top bottom',
-                  end: 'top top',
-                  scrub: true,
-                }
-              }
-            );
-          }
-
-          // Image Inner Parallax (moves opposite to scroll)
-          if (image) {
-            gsap.fromTo(
-              image,
-              { yPercent: -15, scale: 1.1 },
-              {
-                yPercent: 15,
-                scale: 1,
-                ease: 'none',
-                scrollTrigger: {
-                  trigger: section,
-                  start: 'top bottom',
-                  end: 'bottom top',
-                  scrub: true,
-                }
-              }
-            );
-          }
-
-          // Parallax background number translation
-          if (backgroundNum) {
-            gsap.fromTo(
-              backgroundNum,
-              { yPercent: 40, opacity: 0 },
-              {
-                yPercent: -40,
-                opacity: 0.08,
-                ease: 'none',
-                scrollTrigger: {
-                  trigger: section,
-                  start: 'top bottom',
-                  end: 'bottom top',
-                  scrub: true,
-                }
-              }
-            );
-          }
-
-          // Staggered 3D Word-Rotate Reveal
-          if (content) {
-            const words = content.querySelectorAll('.reveal-word');
-            const otherItems = content.querySelectorAll('[data-reveal]');
-            
-            const sectionTl = gsap.timeline({
-              scrollTrigger: {
-                trigger: section,
-                start: 'top 45%',
-                toggleActions: 'play none none none',
-              }
-            });
-
-            if (words.length > 0) {
-              sectionTl.fromTo(
-                words,
-                { y: '100%', rotateX: -60, transformOrigin: 'top center', opacity: 0 },
-                { y: '0%', rotateX: 0, opacity: 1, duration: 0.8, stagger: 0.03, ease: 'power3.out' }
-              );
-            }
-
-            if (otherItems.length > 0) {
-              sectionTl.fromTo(
-                otherItems,
-                { y: 30, opacity: 0 },
-                { y: 0, opacity: 1, duration: 0.5, stagger: 0.08, ease: 'power2.out' },
-                '-=0.5'
-              );
-            }
-          }
-
-          // Card Deck scale down & fade out as next section stacks on top
-          if (index > 0) {
-            const prevSection = sections[index - 1] as HTMLElement;
-            gsap.fromTo(
-              prevSection,
-              { scale: 1, opacity: 1 },
-              {
-                scale: 0.92,
-                opacity: 0.15,
-                ease: 'none',
-                scrollTrigger: {
-                  trigger: section,
-                  start: 'top bottom',
-                  end: 'top top',
-                  scrub: true,
-                }
-              }
-            );
-          }
-        });
-      }
-
-      // 3. Magnetic CTA Buttons Interaction
-      const magneticButtons = container.querySelectorAll('.magnetic-button');
-      magneticButtons.forEach((btn: any) => {
-        const onMouseMove = (e: MouseEvent) => {
-          const rect = btn.getBoundingClientRect();
-          const x = e.clientX - rect.left - rect.width / 2;
-          const y = e.clientY - rect.top - rect.height / 2;
-          
-          gsap.to(btn, {
-            x: x * 0.45,
-            y: y * 0.45,
-            duration: 0.3,
-            ease: 'power2.out'
-          });
-        };
-
-        const onMouseLeave = () => {
-          gsap.to(btn, {
-            x: 0,
-            y: 0,
-            duration: 0.5,
-            ease: 'elastic.out(1.1, 0.4)'
-          });
-        };
-
-        btn.addEventListener('mousemove', onMouseMove);
-        btn.addEventListener('mouseleave', onMouseLeave);
-      });
-
-      // 4. Cursor Follower lighting glow
+      // Subtle background lighting gradient follow
       const glow = container.querySelector('.bg-glow-gradient');
       if (glow) {
-        window.addEventListener('mousemove', (e) => {
+        const onMouseMove = (e: MouseEvent) => {
           gsap.to(glow, {
             x: e.clientX - 250,
             y: e.clientY - 250,
             duration: 1.5,
             ease: 'power2.out'
           });
-        });
+        };
+        window.addEventListener('mousemove', onMouseMove);
+        return () => window.removeEventListener('mousemove', onMouseMove);
       }
+    });
 
-    }, container);
+    // 2. Desktop Only Sticky Stack & Modern Transitions (Width >= 768px)
+    mm.add("(min-width: 768px)", () => {
+      const sections = gsap.utils.toArray('.project-section');
+      
+      sections.forEach((section: any, index: number) => {
+        const imageWrapper = section.querySelector('.project-img-wrapper');
+        const image = section.querySelector('.project-img');
+        const content = section.querySelector('.project-content');
+        const backgroundNum = section.querySelector('.bg-index-number');
+        
+        // Image Wrapper Clip-path Reveal & Inset Morph
+        if (imageWrapper) {
+          gsap.fromTo(
+            imageWrapper,
+            { clipPath: 'inset(10% 10% 10% 10% round 48px)' },
+            {
+              clipPath: 'inset(0% 0% 0% 0% round 24px)',
+              ease: 'none',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top bottom',
+                end: 'top top',
+                scrub: true,
+              }
+            }
+          );
+        }
+
+        // Image Inner Parallax
+        if (image) {
+          gsap.fromTo(
+            image,
+            { yPercent: -15, scale: 1.1 },
+            {
+              yPercent: 15,
+              scale: 1,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: true,
+              }
+            }
+          );
+        }
+
+        // Parallax background number
+        if (backgroundNum) {
+          gsap.fromTo(
+            backgroundNum,
+            { yPercent: 40, opacity: 0 },
+            {
+              yPercent: -40,
+              opacity: 0.08,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: true,
+              }
+            }
+          );
+        }
+
+        // Staggered 3D Word-Rotate Reveal
+        if (content) {
+          const words = content.querySelectorAll('.reveal-word');
+          const otherItems = content.querySelectorAll('[data-reveal]');
+          
+          const sectionTl = gsap.timeline({
+            scrollTrigger: {
+              trigger: section,
+              start: 'top 45%',
+              toggleActions: 'play none none none',
+            }
+          });
+
+          if (words.length > 0) {
+            sectionTl.fromTo(
+              words,
+              { y: '100%', rotateX: -60, transformOrigin: 'top center', opacity: 0 },
+              { y: '0%', rotateX: 0, opacity: 1, duration: 0.8, stagger: 0.03, ease: 'power3.out' }
+            );
+          }
+
+          if (otherItems.length > 0) {
+            sectionTl.fromTo(
+              otherItems,
+              { y: 30, opacity: 0 },
+              { y: 0, opacity: 1, duration: 0.5, stagger: 0.08, ease: 'power2.out' },
+              '-=0.5'
+            );
+          }
+        }
+
+        // Card Deck scale down & fade out as next section stacks on top
+        if (index > 0) {
+          const prevSection = sections[index - 1] as HTMLElement;
+          gsap.fromTo(
+            prevSection,
+            { scale: 1, opacity: 1 },
+            {
+              scale: 0.92,
+              opacity: 0.15,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top bottom',
+                end: 'top top',
+                scrub: true,
+              }
+            }
+          );
+        }
+      });
+    });
+
+    // 3. Mobile Only (Width < 768px)
+    mm.add("(max-width: 767px)", () => {
+      // Ensure all elements are fully visible and not faded
+      const sections = gsap.utils.toArray('.project-section');
+      sections.forEach((section: any) => {
+        const backgroundNum = section.querySelector('.bg-index-number');
+        if (backgroundNum) {
+          gsap.set(backgroundNum, { opacity: 0.08 });
+        }
+        
+        // Ensure section and elements have full opacity on mobile
+        gsap.set(section, { opacity: 1, scale: 1 });
+      });
+    });
+
+    // 4. Magnetic CTA Buttons Interaction (Universal)
+    const magneticButtons = container.querySelectorAll('.magnetic-button');
+    magneticButtons.forEach((btn: any) => {
+      const onMouseMove = (e: MouseEvent) => {
+        const rect = btn.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        
+        gsap.to(btn, {
+          x: x * 0.45,
+          y: y * 0.45,
+          duration: 0.3,
+          ease: 'power2.out'
+        });
+      };
+
+      const onMouseLeave = () => {
+        gsap.to(btn, {
+          x: 0,
+          y: 0,
+          duration: 0.5,
+          ease: 'elastic.out(1.1, 0.4)'
+        });
+      };
+
+      btn.addEventListener('mousemove', onMouseMove);
+      btn.addEventListener('mouseleave', onMouseLeave);
+    });
 
     return () => {
-      ctx.revert();
+      mm.revert();
     };
   }, []);
 
@@ -227,17 +244,17 @@ export const Projects: React.FC = () => {
       return (
         <section 
           key={project.id} 
-          className="project-section w-full h-auto md:h-screen md:sticky md:top-0 bg-[#FAF9FC] flex flex-col justify-center py-16 md:py-24 px-6 md:px-12 border-b border-brand-border md:border-none relative overflow-hidden"
+          className="project-section w-full h-auto md:h-screen md:sticky md:top-0 bg-transparent flex flex-col justify-center py-6 md:py-8 px-6 md:px-12 border-b border-brand-border md:border-none relative overflow-hidden"
         >
           {/* Big outlined parallax index number in background */}
           <div className="bg-index-number absolute right-12 md:right-32 top-10 md:top-24 text-[120px] md:text-[220px] font-extrabold text-transparent select-none pointer-events-none font-serif leading-none tracking-tighter opacity-0" style={{ WebkitTextStroke: '2px rgba(93,70,216,0.12)' }}>
             {numberStr}
           </div>
 
-          <div className="max-w-[1280px] mx-auto w-full flex flex-col justify-center h-full relative z-10">
+          <div className="max-w-[1280px] mx-auto w-full flex flex-col justify-center bg-white rounded-[32px] p-6 md:p-10 border border-brand-border/60 shadow-brand-sm relative z-10">
             {/* Top Large Contained Image wrapper */}
             <div 
-              className="project-img-wrapper relative w-full h-[35vh] md:h-[50vh] rounded-3xl overflow-hidden shadow-brand-lg border border-brand-border flex items-center justify-center p-4 md:p-8 group cursor-pointer shrink-0"
+              className="project-img-wrapper relative w-full h-[30vh] md:h-[38vh] rounded-2xl overflow-hidden border border-brand-border/60 flex items-center justify-center p-4 md:p-6 group cursor-pointer shrink-0"
               style={{ backgroundColor: `${project.accentColor}06` }}
             >
               <img 
@@ -246,13 +263,13 @@ export const Projects: React.FC = () => {
                 className="project-img max-w-full max-h-full object-contain transition-transform duration-700 group-hover:scale-[1.02]" 
               />
               <div 
-                className="absolute inset-0 border-[2px] rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" 
+                className="absolute inset-0 border-[2px] rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" 
                 style={{ borderColor: project.accentColor }}
               />
             </div>
 
             {/* Bottom Editorial details */}
-            <div className="project-content grid grid-cols-1 md:grid-cols-12 gap-6 mt-8 md:mt-10 px-2 shrink-0">
+            <div className="project-content grid grid-cols-1 md:grid-cols-12 gap-6 mt-8 px-2 shrink-0">
               <div className="md:col-span-4 text-left">
                 <span className="text-xs md:text-sm uppercase tracking-[0.25em] font-extrabold text-neutral-400 block mb-1.5">
                   {project.category}
@@ -299,14 +316,14 @@ export const Projects: React.FC = () => {
       return (
         <section 
           key={project.id} 
-          className="project-section w-full h-auto md:h-screen md:sticky md:top-0 bg-[#FAF9FC] flex flex-col justify-center py-16 md:py-24 px-6 md:px-12 border-b border-brand-border md:border-none relative overflow-hidden"
+          className="project-section w-full h-auto md:h-screen md:sticky md:top-0 bg-transparent flex flex-col justify-center py-6 md:py-8 px-6 md:px-12 border-b border-brand-border md:border-none relative overflow-hidden"
         >
           {/* Big outlined parallax index number in background */}
           <div className="bg-index-number absolute left-12 md:left-24 top-10 md:top-24 text-[120px] md:text-[220px] font-extrabold text-transparent select-none pointer-events-none font-serif leading-none tracking-tighter opacity-0" style={{ WebkitTextStroke: '2px rgba(93,70,216,0.12)' }}>
             {numberStr}
           </div>
 
-          <div className="max-w-[1280px] mx-auto w-full flex flex-col md:flex-row items-center gap-10 md:gap-16 justify-center h-full relative z-10">
+          <div className="max-w-[1280px] mx-auto w-full flex flex-col md:flex-row items-center gap-10 md:gap-16 justify-center bg-white rounded-[32px] p-6 md:p-10 border border-brand-border/60 shadow-brand-sm relative z-10">
             {/* Left Details column */}
             <div className="project-content w-full md:w-[45%] flex flex-col items-start text-left">
               <span className="text-xs md:text-sm uppercase tracking-[0.25em] font-extrabold text-neutral-400 block mb-1.5">
@@ -343,7 +360,7 @@ export const Projects: React.FC = () => {
 
             {/* Right Contained Image column */}
             <div 
-              className="project-img-wrapper w-full md:w-[55%] h-[35vh] md:h-[60vh] rounded-3xl overflow-hidden shadow-brand-lg border border-brand-border flex items-center justify-center p-4 md:p-8 group cursor-pointer relative"
+              className="project-img-wrapper w-full md:w-[55%] h-[30vh] md:h-[45vh] rounded-2xl overflow-hidden border border-brand-border/60 flex items-center justify-center p-4 md:p-6 group cursor-pointer relative"
               style={{ backgroundColor: `${project.accentColor}06` }}
             >
               <img 
@@ -352,7 +369,7 @@ export const Projects: React.FC = () => {
                 className="project-img max-w-full max-h-full object-contain transition-transform duration-700 group-hover:scale-[1.02]" 
               />
               <div 
-                className="absolute inset-0 border-[2px] rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" 
+                className="absolute inset-0 border-[2px] rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" 
                 style={{ borderColor: project.accentColor }}
               />
             </div>
@@ -366,16 +383,16 @@ export const Projects: React.FC = () => {
       return (
         <section 
           key={project.id} 
-          className="project-section w-full h-auto md:h-screen md:sticky md:top-0 bg-[#FAF9FC] flex flex-col justify-center py-16 md:py-24 px-6 md:px-12 border-b border-brand-border md:border-none relative overflow-hidden"
+          className="project-section w-full h-auto md:h-screen md:sticky md:top-0 bg-transparent flex flex-col justify-center py-6 md:py-8 px-6 md:px-12 border-b border-brand-border md:border-none relative overflow-hidden"
         >
           {/* Big outlined parallax index number in background */}
           <div className="bg-index-number absolute left-12 md:left-36 top-10 md:top-24 text-[120px] md:text-[220px] font-extrabold text-transparent select-none pointer-events-none font-serif leading-none tracking-tighter opacity-0" style={{ WebkitTextStroke: '2px rgba(93,70,216,0.12)' }}>
             {numberStr}
           </div>
 
-          <div className="max-w-[1280px] mx-auto w-full flex flex-col justify-center h-full relative z-10">
+          <div className="max-w-[1280px] mx-auto w-full flex flex-col justify-center bg-white rounded-[32px] p-6 md:p-10 border border-brand-border/60 shadow-brand-sm relative z-10">
             {/* Top Details Center-Aligned */}
-            <div className="project-content text-center max-w-[700px] mx-auto mb-8 md:mb-10 shrink-0">
+            <div className="project-content text-center max-w-[700px] mx-auto mb-8 shrink-0">
               <span className="text-xs md:text-sm uppercase tracking-[0.25em] font-extrabold text-[#5D46D8] block mb-1.5">
                 {project.category} — {project.year}
               </span>
@@ -410,7 +427,7 @@ export const Projects: React.FC = () => {
 
             {/* Bottom Large Contained Image wrapper */}
             <div 
-              className="project-img-wrapper relative w-full h-[35vh] md:h-[45vh] rounded-3xl overflow-hidden shadow-brand-lg border border-brand-border flex items-center justify-center p-4 md:p-8 group cursor-pointer shrink-0"
+              className="project-img-wrapper relative w-full h-[30vh] md:h-[38vh] rounded-2xl overflow-hidden border border-brand-border/60 flex items-center justify-center p-4 md:p-6 group cursor-pointer shrink-0"
               style={{ backgroundColor: `${project.accentColor}06` }}
             >
               <img 
@@ -419,7 +436,7 @@ export const Projects: React.FC = () => {
                 className="project-img max-w-full max-h-full object-contain transition-transform duration-700 group-hover:scale-[1.02]" 
               />
               <div 
-                className="absolute inset-0 border-[2px] rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" 
+                className="absolute inset-0 border-[2px] rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" 
                 style={{ borderColor: project.accentColor }}
               />
             </div>
@@ -432,14 +449,14 @@ export const Projects: React.FC = () => {
     return (
       <section 
         key={project.id} 
-        className="project-section w-full h-auto md:h-screen md:sticky md:top-0 bg-[#FAF9FC] flex flex-col justify-center py-16 md:py-24 px-6 md:px-12 border-b border-brand-border md:border-none relative overflow-hidden"
+        className="project-section w-full h-auto md:h-screen md:sticky md:top-0 bg-transparent flex flex-col justify-center py-6 md:py-8 px-6 md:px-12 border-b border-brand-border md:border-none relative overflow-hidden"
       >
         {/* Big outlined parallax index number in background */}
         <div className="bg-index-number absolute right-12 md:right-24 top-10 md:top-24 text-[120px] md:text-[220px] font-extrabold text-transparent select-none pointer-events-none font-serif leading-none tracking-tighter opacity-0" style={{ WebkitTextStroke: '2px rgba(93,70,216,0.12)' }}>
           {numberStr}
         </div>
 
-        <div className="max-w-[1280px] mx-auto w-full flex flex-col md:flex-row-reverse items-center gap-10 md:gap-16 justify-center h-full relative z-10">
+        <div className="max-w-[1280px] mx-auto w-full flex flex-col md:flex-row-reverse items-center gap-10 md:gap-16 justify-center bg-white rounded-[32px] p-6 md:p-10 border border-brand-border/60 shadow-brand-sm relative z-10">
           {/* Right Details column */}
           <div className="project-content w-full md:w-[45%] flex flex-col items-start text-left">
             <span className="text-xs md:text-sm uppercase tracking-[0.25em] font-extrabold text-neutral-400 block mb-1.5">
@@ -476,7 +493,7 @@ export const Projects: React.FC = () => {
 
           {/* Left Contained Image column */}
           <div 
-            className="project-img-wrapper w-full md:w-[55%] h-[35vh] md:h-[60vh] rounded-3xl overflow-hidden shadow-brand-lg border border-brand-border flex items-center justify-center p-4 md:p-8 group cursor-pointer relative"
+            className="project-img-wrapper w-full md:w-[55%] h-[30vh] md:h-[45vh] rounded-2xl overflow-hidden border border-brand-border/60 flex items-center justify-center p-4 md:p-6 group cursor-pointer relative"
             style={{ backgroundColor: `${project.accentColor}06` }}
           >
             <img 
@@ -485,7 +502,7 @@ export const Projects: React.FC = () => {
               className="project-img max-w-full max-h-full object-contain transition-transform duration-700 group-hover:scale-[1.03]" 
             />
             <div 
-              className="absolute inset-0 border-[2px] rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" 
+              className="absolute inset-0 border-[2px] rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" 
               style={{ borderColor: project.accentColor }}
             />
           </div>
@@ -497,18 +514,32 @@ export const Projects: React.FC = () => {
   return (
     <div 
       ref={containerRef}
-      className="relative w-full bg-[#FAF9FC] overflow-x-hidden pt-36 md:pt-48 pb-12 select-none"
+      className="relative w-full bg-[#FAF9FC] overflow-x-hidden pt-28 md:pt-36 pb-12 select-none"
     >
+      {/* Global Fixed DotField Canvas Background */}
+      <div className="fixed inset-0 w-full h-full z-0 pointer-events-none opacity-95">
+        <DotField
+          dotRadius={2.8}
+          dotSpacing={16}
+          bulgeStrength={55}
+          glowRadius={180}
+          sparkle={false}
+          waveAmplitude={0}
+          gradientFrom="rgba(0, 0, 0, 0.28)"
+          gradientTo="rgba(0, 0, 0, 0.12)"
+          glowColor="rgba(0, 0, 0, 0.02)"
+        />
+      </div>
+
       {/* Editorial noise overlays */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(93,70,216,0.03),transparent_50%)] pointer-events-none" />
       <div className="bg-glow-gradient absolute top-0 left-0 w-[500px] h-[500px] rounded-full bg-[radial-gradient(circle,rgba(139,127,244,0.04)_0%,transparent_70%)] pointer-events-none hidden lg:block" />
 
-      <div className="max-w-[1400px] mx-auto px-6 md:px-12 relative z-10">
-        
-        {/* Editorial Launch Hero */}
+      {/* Full-bleed Editorial Launch Hero banner */}
+      <div className="relative w-full overflow-hidden border-b border-brand-border/60 bg-white/10 py-16 md:py-24 mb-20 md:mb-32">
         <div 
           ref={heroRef}
-          className="w-full flex flex-col items-start text-left mb-20 md:mb-32"
+          className="relative z-10 max-w-[1400px] mx-auto px-6 md:px-12 w-full flex flex-col items-start text-left"
         >
           <span className="hero-subtitle text-xs md:text-sm font-bold tracking-[0.4em] text-brand-purple uppercase mb-5 block">
             <span className="hero-subtitle-char inline-block">Portfolio Showcase</span>
@@ -533,8 +564,10 @@ export const Projects: React.FC = () => {
             </a>
           </div>
         </div>
+      </div>
 
-        {/* Dynamic Sticky Stacked Project Sections */}
+      {/* Projects list in max-width container */}
+      <div className="max-w-[1400px] mx-auto px-6 md:px-12 relative z-10">
         <div className="w-full relative">
           {projectsData.map((project, idx) => renderProject(project, idx))}
         </div>
