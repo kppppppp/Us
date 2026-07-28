@@ -1,6 +1,6 @@
 import React from 'react';
 import { useFloatingAnimation } from '../../../../hooks/useFloatingAnimation';
-import sculptureImg from '../../../../assets/image.png';
+import sculptureImg from '../../../../assets/image1.png';
 
 export const CenterObject: React.FC = () => {
   const floatRef = useFloatingAnimation();

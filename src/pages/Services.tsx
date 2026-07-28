@@ -6,8 +6,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import ScrollFloat from '../components/ui/ScrollFloat';
 import ScrollExpandMedia from '../components/ui/ScrollExpandMedia';
 
-import heroImg from '../assets/services_hero.jpg';
-import heroBgImg from '../assets/services_hero_bg.jpg';
+import heroImg from '../assets/image3.png';
+import heroBgImg from '../assets/image2.png';
 import metaImg from '../assets/services_meta.jpg';
 import ecomImg from '../assets/services_ecom.jpg';
 import webImg from '../assets/services_web.jpg';
@@ -246,8 +246,8 @@ const services: ServiceItem[] = [
   {
     id: 'digital-marketing-strategy',
     num: '06',
-    titleLine1: 'DIGITAL MARKETING',
-    titleLine2: 'Strategy',
+    titleLine1: 'DIGITAL',
+    titleLine2: 'Marketing Strategy',
     desc: 'Complete digital growth systems built around measurable business goals and long-term market dominance.',
     features: ['Funnel Architecture', 'Growth Roadmaps', 'Conversion Optimization', 'Analytics Integration', 'Scaling Systems'],
     image: strategyImg,
