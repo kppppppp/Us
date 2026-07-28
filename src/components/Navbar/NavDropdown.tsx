@@ -23,12 +23,12 @@ export const NavDropdown: React.FC<NavDropdownProps> = ({ isOpen, items }) => {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 10, scale: 0.95 }}
           transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[480px] bg-white border border-[rgba(0,0,0,0.06)] rounded-3xl shadow-brand-lg p-5 z-[100] origin-top backdrop-blur-xl"
+          className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[700px] bg-white border border-[rgba(0,0,0,0.06)] rounded-3xl shadow-brand-lg p-6 z-[100] origin-top backdrop-blur-xl"
         >
           {/* Arrow indicator */}
           <div className="absolute -top-[6px] left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 bg-white border-t border-l border-[rgba(0,0,0,0.06)]" />
 
-          <div className="relative grid grid-cols-1 gap-1 z-10">
+          <div className="relative grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-1.5 z-10">
             {items.map((item, idx) => {
               // Dynamically resolve lucide icons
               const IconComponent = item.iconName ? (Icons as any)[item.iconName] : null;

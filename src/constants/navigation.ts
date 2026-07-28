@@ -44,32 +44,62 @@ export const navigationItems: NavItem[] = [
   },
   {
     label: 'Services',
-    href: '#services',
+    href: '/services',
     hasDropdown: true,
     dropdownItems: [
       {
-        title: 'Consulting & Strategy',
-        description: 'Strategic roadmaps aligned with key enterprise objectives.',
-        href: '#services/consulting',
-        iconName: 'Compass'
+        title: 'Meta Ads Management',
+        description: 'Data-driven social advertising scaled to drive conversions.',
+        href: '/services#meta-ads-management',
+        iconName: 'Megaphone'
       },
       {
-        title: 'Product Design',
-        description: 'Stunning visual assets, interactive prototypes, and premium user experience.',
-        href: '#services/design',
-        iconName: 'Palette'
+        title: 'Ecommerce Sites',
+        description: 'High-performance stores optimized for checkout conversion.',
+        href: '/services#ecommerce-sites',
+        iconName: 'ShoppingCart'
       },
       {
-        title: 'Full-Scale Development',
-        description: 'Clean code architecture and robust integrations designed for production.',
-        href: '#services/development',
+        title: 'Web Development',
+        description: 'Premium enterprise web architecture using modern tech.',
+        href: '/services#web-development',
         iconName: 'Code'
       },
       {
-        title: 'Legacy Modernization',
-        description: 'Upgrade your systems to modern technological stacks without downtime.',
-        href: '#services/modernization',
-        iconName: 'RefreshCw'
+        title: 'App Development',
+        description: 'Beautiful native and hybrid mobile applications.',
+        href: '/services#app-development',
+        iconName: 'Smartphone'
+      },
+      {
+        title: 'Social Media Marketing',
+        description: 'Organic branding strategies that create active communities.',
+        href: '/services#social-media-marketing',
+        iconName: 'Share2'
+      },
+      {
+        title: 'Digital Marketing Strategy',
+        description: 'Complete digital growth systems built around goals.',
+        href: '/services#digital-marketing-strategy',
+        iconName: 'Target'
+      },
+      {
+        title: 'Influencer Marketing',
+        description: 'Connect your brand with trusted creators for authentic reach.',
+        href: '/services#influencer-marketing',
+        iconName: 'Users'
+      },
+      {
+        title: 'SEO Growth',
+        description: 'Organic search intent optimization and content excellence.',
+        href: '/services#seo-growth',
+        iconName: 'TrendingUp'
+      },
+      {
+        title: 'Photoshoot Services',
+        description: 'Premium product, lifestyle, and marketing photography.',
+        href: '/services#photoshoot-services',
+        iconName: 'Camera'
       }
     ]
   },
