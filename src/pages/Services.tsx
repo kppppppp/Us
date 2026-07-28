@@ -177,7 +177,7 @@ const services: ServiceItem[] = [
     glowColor: 'rgba(93, 70, 216, 0.10)',
     imgRotate: 1,
     textSide: 'left',
-    spacing: 'pt-40 pb-44 lg:pt-52 lg:pb-56',
+    spacing: 'pt-12 pb-36 lg:pt-16 lg:pb-48',
   },
   {
     id: 'ecommerce-sites',
@@ -193,7 +193,7 @@ const services: ServiceItem[] = [
     glowColor: 'rgba(93, 70, 216, 0.08)',
     imgRotate: -2,
     textSide: 'right',
-    spacing: 'pt-32 pb-36 lg:pt-44 lg:pb-48',
+    spacing: 'pt-32 pb-36 lg:pt-48 lg:pb-48',
   },
   {
     id: 'web-development',
@@ -209,7 +209,7 @@ const services: ServiceItem[] = [
     glowColor: 'rgba(70, 100, 216, 0.08)',
     imgRotate: 2,
     textSide: 'left',
-    spacing: 'pt-28 pb-32 lg:pt-36 lg:pb-40',
+    spacing: 'pt-32 pb-36 lg:pt-48 lg:pb-48',
   },
   {
     id: 'app-development',
@@ -225,7 +225,7 @@ const services: ServiceItem[] = [
     glowColor: 'rgba(93, 70, 216, 0.08)',
     imgRotate: 4,
     textSide: 'left',
-    spacing: 'pt-32 pb-36 lg:pt-40 lg:pb-44',
+    spacing: 'pt-32 pb-36 lg:pt-48 lg:pb-48',
   },
   {
     id: 'social-media-marketing',
@@ -241,7 +241,7 @@ const services: ServiceItem[] = [
     glowColor: 'rgba(120, 70, 216, 0.06)',
     imgRotate: -1,
     textSide: 'right',
-    spacing: 'pt-24 pb-28 lg:pt-28 lg:pb-32',
+    spacing: 'pt-32 pb-36 lg:pt-48 lg:pb-48',
   },
   {
     id: 'digital-marketing-strategy',
@@ -257,7 +257,7 @@ const services: ServiceItem[] = [
     glowColor: 'rgba(80, 50, 180, 0.10)',
     imgRotate: 2,
     textSide: 'right',
-    spacing: 'pt-28 pb-36 lg:pt-36 lg:pb-44',
+    spacing: 'pt-32 pb-36 lg:pt-48 lg:pb-48',
   },
   {
     id: 'influencer-marketing',
@@ -273,7 +273,7 @@ const services: ServiceItem[] = [
     glowColor: 'rgba(100, 70, 200, 0.06)',
     imgRotate: -3,
     textSide: 'left',
-    spacing: 'pt-24 pb-28 lg:pt-28 lg:pb-32',
+    spacing: 'pt-32 pb-36 lg:pt-48 lg:pb-48',
   },
   {
     id: 'seo-growth',
@@ -289,7 +289,7 @@ const services: ServiceItem[] = [
     glowColor: 'rgba(60, 40, 140, 0.10)',
     imgRotate: 1,
     textSide: 'left',
-    spacing: 'pt-40 pb-44 lg:pt-52 lg:pb-56',
+    spacing: 'pt-32 pb-36 lg:pt-52 lg:pb-52',
   },
   {
     id: 'photoshoot-services',
@@ -305,7 +305,7 @@ const services: ServiceItem[] = [
     glowColor: 'rgba(160, 140, 200, 0.06)',
     imgRotate: -2,
     textSide: 'left',
-    spacing: 'pt-28 pb-32 lg:pt-32 lg:pb-40',
+    spacing: 'pt-32 pb-36 lg:pt-48 lg:pb-48',
   },
 ];
 
@@ -568,23 +568,28 @@ export const Services: React.FC = () => {
         subtitle="Every conversion. Engineered."
         scrollToExpand="Scroll to expand"
       >
-        <div className="max-w-[1600px] mx-auto grid grid-cols-12 gap-12 items-center w-full min-h-[50vh] py-16">
-          <div className="col-span-12 lg:col-span-6 flex flex-col justify-center">
+        <div className="max-w-[1600px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-center w-full min-h-[40vh] pt-12 pb-20">
+          <div className="col-span-1 lg:col-span-6 flex flex-col justify-center">
             <span className="text-[10px] font-bold text-brand-purple tracking-[0.45em] uppercase mb-6 block font-sans">
               OUR MISSION
             </span>
-            <h2 className="text-[clamp(36px,4.5vw,56px)] font-extrabold uppercase font-sans leading-[1.1] text-neutral-900">
-              Ideas become systems.
-            </h2>
-            <h3 className="text-[clamp(30px,3.8vw,48px)] font-normal italic font-serif leading-[1.2] text-neutral-800 mt-1">
-              Systems become growth.
-            </h3>
+            <div className="flex flex-col">
+              <h2 className="text-[clamp(32px,4vw,52px)] font-extrabold uppercase font-sans leading-[1.0] text-neutral-900">
+                Ideas become
+              </h2>
+              <h2 className="text-[clamp(32px,4vw,52px)] font-extrabold uppercase font-sans leading-[1.0] text-neutral-900 mt-1">
+                Systems.
+              </h2>
+              <h3 className="text-[clamp(26px,3.2vw,40px)] font-normal italic font-serif leading-[1.2] text-neutral-800 mt-3">
+                Systems become growth.
+              </h3>
+            </div>
             <p className="mt-8 text-neutral-500 text-base md:text-lg leading-relaxed max-w-[480px]">
               From acquisition to automation, we engineer digital experiences
               that create measurable, compounding growth.
             </p>
           </div>
-          <div className="col-span-12 lg:col-span-6">
+          <div className="col-span-1 lg:col-span-6">
             <div className="p-8 border border-neutral-100 rounded-2xl bg-white/50 backdrop-blur-md">
               <span className="text-xs font-bold text-neutral-400 tracking-[0.2em] uppercase mb-4 block">
                 Unexpected Approach
@@ -601,7 +606,7 @@ export const Services: React.FC = () => {
       {/* ═══════════════════════════════════════════
           EDITORIAL INTRO
          ═══════════════════════════════════════════ */}
-      <section className="relative py-32 lg:py-44 px-6 md:px-12 xl:pl-32 z-20">
+      <section className="relative pt-16 pb-6 px-6 md:px-12 xl:pl-32 z-20">
         <div className="max-w-[1600px] mx-auto">
           <div className="max-w-[900px]">
             <ScrollFloat
@@ -614,11 +619,6 @@ export const Services: React.FC = () => {
             >
               Our Services
             </ScrollFloat>
-            <p className="mt-10 text-neutral-500 text-lg lg:text-xl leading-relaxed max-w-[580px]">
-              From strategy to execution, every solution is engineered
-              for long-term business growth. Nine disciplines.
-              One unified approach.
-            </p>
           </div>
         </div>
       </section>
