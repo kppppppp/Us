@@ -21,7 +21,17 @@ export interface ProjectItem {
 }
 
 export const projectsData: ProjectItem[] = [
- 
+  {
+    id: "unexpected",
+    title: "Unexpected Solutions 2.0",
+    category: "Brand Engineering & Web Platform",
+    description: "A cinematic, performance-optimized brand identity and web architecture representing next-generation enterprise solutions.",
+    image: unexpected,
+    technologies: ["React", "TypeScript", "GSAP", "Vite", "Tailwind CSS"],
+    link: "/contact?project=unexpected",
+    year: "2026",
+    accentColor: "#5D46D8"
+  },
   {
     id: "ariya",
     title: "Ariya Jwellery Shop",

@@ -113,7 +113,7 @@ export const navigationItems: NavItem[] = [
   },
   {
     label: 'About Us',
-    href: '#about-us'
+    href: '/about'
   },
   {
     label: 'Insights',

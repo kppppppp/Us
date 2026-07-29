@@ -254,7 +254,7 @@ export const Projects: React.FC = () => {
           <div className="max-w-[1280px] mx-auto w-full flex flex-col justify-center bg-white rounded-[32px] p-6 md:p-10 border border-brand-border/60 shadow-brand-sm relative z-10">
             {/* Top Large Contained Image wrapper */}
             <div 
-              className="project-img-wrapper relative w-full h-[30vh] md:h-[38vh] rounded-2xl overflow-hidden border border-brand-border/60 flex items-center justify-center p-4 md:p-6 group cursor-pointer shrink-0"
+              className="project-img-wrapper relative w-full h-[32vh] sm:h-[45vh] md:h-[40vh] rounded-2xl overflow-hidden border border-brand-border/60 flex items-center justify-center p-2 sm:p-4 md:p-6 group cursor-pointer shrink-0"
               style={{ backgroundColor: `${project.accentColor}06` }}
             >
               <img 
@@ -360,7 +360,7 @@ export const Projects: React.FC = () => {
 
             {/* Right Contained Image column */}
             <div 
-              className="project-img-wrapper w-full md:w-[55%] h-[30vh] md:h-[45vh] rounded-2xl overflow-hidden border border-brand-border/60 flex items-center justify-center p-4 md:p-6 group cursor-pointer relative"
+              className="project-img-wrapper w-full md:w-[55%] h-[35vh] sm:h-[50vh] md:h-[48vh] rounded-2xl overflow-hidden border border-brand-border/60 flex items-center justify-center p-2 sm:p-4 md:p-6 group cursor-pointer relative"
               style={{ backgroundColor: `${project.accentColor}06` }}
             >
               <img 
@@ -427,7 +427,7 @@ export const Projects: React.FC = () => {
 
             {/* Bottom Large Contained Image wrapper */}
             <div 
-              className="project-img-wrapper relative w-full h-[30vh] md:h-[38vh] rounded-2xl overflow-hidden border border-brand-border/60 flex items-center justify-center p-4 md:p-6 group cursor-pointer shrink-0"
+              className="project-img-wrapper relative w-full h-[32vh] sm:h-[45vh] md:h-[40vh] rounded-2xl overflow-hidden border border-brand-border/60 flex items-center justify-center p-2 sm:p-4 md:p-6 group cursor-pointer shrink-0"
               style={{ backgroundColor: `${project.accentColor}06` }}
             >
               <img 
@@ -493,7 +493,7 @@ export const Projects: React.FC = () => {
 
           {/* Left Contained Image column */}
           <div 
-            className="project-img-wrapper w-full md:w-[55%] h-[30vh] md:h-[45vh] rounded-2xl overflow-hidden border border-brand-border/60 flex items-center justify-center p-4 md:p-6 group cursor-pointer relative"
+            className="project-img-wrapper w-full md:w-[55%] h-[35vh] sm:h-[50vh] md:h-[48vh] rounded-2xl overflow-hidden border border-brand-border/60 flex items-center justify-center p-2 sm:p-4 md:p-6 group cursor-pointer relative"
             style={{ backgroundColor: `${project.accentColor}06` }}
           >
             <img 
