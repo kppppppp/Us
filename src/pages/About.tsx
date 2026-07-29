@@ -162,8 +162,8 @@ export const About: React.FC = () => {
           </div>
         </div>
 
-        {/* Branded Three.js Lanyard (Floats absolutely on the right on larger desktop viewports, avoiding text collision) */}
-        <div className="hidden lg:block absolute right-8 xl:right-20 top-1/2 -translate-y-1/2 w-[35%] max-w-[420px] h-[550px] pointer-events-auto z-20">
+        {/* Branded Three.js Lanyard (Floats absolutely on the right, starts from the top navbar level and covers a wide viewport area to prevent drag clipping) */}
+        <div className="hidden lg:block absolute right-0 top-0 h-full w-[60vw] max-w-[900px] pointer-events-none z-20">
           <Suspense fallback={null}>
             <Lanyard position={[0, 0, 20]} />
           </Suspense>

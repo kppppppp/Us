@@ -267,7 +267,7 @@ export const Lanyard: React.FC<LanyardProps> = ({
   position = [0, 0, 20],
   fov = 20,
   transparent = true,
-  lanyardWidth = 1.15
+  lanyardWidth = 1.2
 }) => {
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
 
@@ -280,7 +280,7 @@ export const Lanyard: React.FC<LanyardProps> = ({
   const textures = useMemo(() => createBrandedBadgeTextures(), []);
 
   return (
-    <div className="lanyard-wrapper w-full h-full min-h-[450px]">
+    <div className="lanyard-wrapper w-full h-full min-h-[450px] pointer-events-auto">
       <Canvas
         camera={{ position: position, fov: fov }}
         dpr={[1, isMobile ? 1.25 : 1.75]}
@@ -400,16 +400,17 @@ const SwayingBadge: React.FC<SwayingBadgeProps> = ({
   }, [frontImage, backImage, frontTex, backTex, materials.base.map]);
 
   // Spring Physics States (Pendulum dynamics)
-  const pos = useMemo(() => new THREE.Vector3(0, -0.4, 0), []);
+  // Shifted x to 2.3 so the card rests on the right-hand side of the wide canvas, lowering y to -1.3 (longer strap)
+  const pos = useMemo(() => new THREE.Vector3(2.3, -1.1, 0), []);
   const vel = useMemo(() => new THREE.Vector3(0, 0, 0), []);
   const rot = useMemo(() => new THREE.Vector3(0, 0, 0), []);
   const rotVel = useMemo(() => new THREE.Vector3(0, 0, 0), []);
 
   const [curve] = useState(() => new THREE.CatmullRomCurve3([
-    new THREE.Vector3(0, 4, 0),
-    new THREE.Vector3(0.5, 2, 0),
-    new THREE.Vector3(0.3, 0.8, 0),
-    new THREE.Vector3(0, -0.4, 0)
+    new THREE.Vector3(2.3, 4.8, 0),
+    new THREE.Vector3(2.4, 2.6, 0),
+    new THREE.Vector3(2.35, 1.0, 0),
+    new THREE.Vector3(2.3, -1.1, 0)
   ]));
 
   const pointer = useMemo(() => new THREE.Vector2(), []);
@@ -428,7 +429,6 @@ const SwayingBadge: React.FC<SwayingBadgeProps> = ({
   }, [hovered, dragged]);
 
   useFrame((state, delta) => {
-    // Clamp delta to prevent massive physics explosion spikes on tab swap
     const dt = Math.min(delta, 0.05);
 
     // Map pointer coordinates
@@ -448,10 +448,10 @@ const SwayingBadge: React.FC<SwayingBadgeProps> = ({
       rot.y = THREE.MathUtils.lerp(rot.y, state.pointer.x * 0.9, 0.2);
       rot.z = THREE.MathUtils.lerp(rot.z, -state.pointer.x * 0.35, 0.2);
     } else {
-      // 1. Spring forces pulling back to center
-      const restingPos = new THREE.Vector3(0, -0.5, 0);
+      // Resting position shifted to x = 2.3, y = -1.3 (longer strap)
+      const restingPos = new THREE.Vector3(2.3, -1.3, 0);
       
-      // Subtle pendulum sway based on mouse pointer hover proximity
+      // Pendulum sway based on mouse pointer hover proximity
       if (hovered) {
         restingPos.x += state.pointer.x * 1.5;
         restingPos.y += state.pointer.y * 0.8;
@@ -467,11 +467,11 @@ const SwayingBadge: React.FC<SwayingBadgeProps> = ({
       vel.addScaledVector(force, dt);
       pos.addScaledVector(vel, dt);
 
-      // 2. Rotational spring physics
+      // Rotational spring physics
       const targetRot = new THREE.Vector3(
-        vel.y * 0.12,  // Pitch based on Y speed
-        -vel.x * 0.18 + (hovered ? state.pointer.x * 0.6 : 0), // Yaw based on X speed + mouse yaw look
-        -vel.x * 0.08  // Roll based on X speed
+        vel.y * 0.12,
+        -vel.x * 0.18 + (hovered ? state.pointer.x * 0.6 : 0),
+        -vel.x * 0.08
       );
       
       const rotForce = new THREE.Vector3().subVectors(targetRot, rot);
@@ -486,13 +486,13 @@ const SwayingBadge: React.FC<SwayingBadgeProps> = ({
       cardGroupRef.current.rotation.set(rot.x, rot.y, rot.z);
     }
 
-    // Draw flexible lanyard strap curve connecting anchor [0, 4, 0] to the card clip position
+    // Draw flexible lanyard strap curve connecting anchor [2.3, 4.8, 0] (behind navbar) to card clamp
     if (bandRef.current) {
-      curve.points[0].set(0, 3.8, 0); // top anchor
+      curve.points[0].set(2.3, 4.8, 0); // top anchor
       
       // Control points sway lag behind card
-      curve.points[1].set(pos.x * 0.24, 2.0 + pos.y * 0.1, pos.z * 0.15);
-      curve.points[2].set(pos.x * 0.65, 0.6 + pos.y * 0.3, pos.z * 0.5);
+      curve.points[1].set(2.3 + (pos.x - 2.3) * 0.24, 2.3 + pos.y * 0.1, pos.z * 0.15);
+      curve.points[2].set(2.3 + (pos.x - 2.3) * 0.65, 0.5 + pos.y * 0.3, pos.z * 0.5);
       
       // Connection point (top of card clamp at card group space offset)
       curve.points[3].copy(pos).add(new THREE.Vector3(0, 1.45, 0).applyEuler(new THREE.Euler(rot.x, rot.y, rot.z)));
@@ -512,11 +512,9 @@ const SwayingBadge: React.FC<SwayingBadgeProps> = ({
         onPointerOut={() => setHovered(false)}
         onPointerDown={e => {
           (e.target as HTMLElement).setPointerCapture(e.pointerId);
-          // Set drag origin offset
           const intersectionPoint = e.point.clone();
           setDragged(intersectionPoint.sub(pos));
           
-          // Rotate Z plane to match camera rotation
           rayPlaneRef.current.setFromNormalAndCoplanarPoint(
             new THREE.Vector3(0, 0, 1).applyQuaternion(camera.quaternion),
             e.point
@@ -562,3 +560,4 @@ const SwayingBadge: React.FC<SwayingBadgeProps> = ({
 };
 
 useGLTF.preload(cardGLB);
+export default Lanyard;
