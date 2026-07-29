@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import DotField from '../components/ui/DotField';
 import VariableProximity from '../components/ui/VariableProximity';
 import TeamShowcase from '../components/ui/team-showcase';
+import ScrollReveal from '../components/ui/ScrollReveal';
 
 // Import local JPG visual assets
 import aboutVision from '../assets/about_vision.jpg';
@@ -85,6 +86,30 @@ export const About: React.FC = () => {
       btn.addEventListener('mouseleave', onMouseLeave);
     });
 
+    // Scroll reveal animations for principles card panels
+    const cards = container.querySelectorAll('.about-pillar-card');
+    cards.forEach((card) => {
+      gsap.fromTo(card, 
+        { 
+          opacity: 0, 
+          y: 40,
+          scale: 0.98
+        },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: card,
+            start: 'top bottom-=10%', // Triggers when the top of the card is 10% inside the viewport from the bottom
+            toggleActions: 'play none none none' // Play once on scroll entrance
+          }
+        }
+      );
+    });
+
   }, []);
 
   return (
@@ -156,39 +181,67 @@ export const About: React.FC = () => {
       </div>
 
       {/* Pillars Section Content (Goated Compact Alternating Cards) */}
-      <div className="max-w-[1200px] mx-auto px-6 md:px-12 relative z-10 space-y-8 md:space-y-12 mb-20 md:mb-32">
-        {aboutPillars.map((pillar, idx) => {
-          const isEven = idx % 2 === 0;
-          return (
-            <div 
-              key={idx}
-              className={`about-pillar-card group w-full flex flex-col ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-8 md:gap-16 bg-white/40 backdrop-blur-md rounded-[32px] p-6 md:p-8 border border-brand-border/60 hover:border-brand-purple/20 transition-all duration-500 hover:shadow-brand-sm`}
-            >
-              {/* Image column */}
-              <div className="w-full md:w-[45%] h-[240px] md:h-[300px] rounded-2xl overflow-hidden border border-brand-border/60 flex items-center justify-center relative shrink-0 bg-neutral-950">
-                <img 
-                  src={pillar.image} 
-                  alt={pillar.title} 
-                  className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-700 ease-out opacity-90 group-hover:opacity-100" 
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none" />
-              </div>
+      <div className="max-w-[1200px] mx-auto px-6 md:px-12 relative z-10 mb-20 md:mb-32">
+        <div className="text-center md:text-left mb-12 md:mb-16">
+          <span className="text-xs md:text-sm font-bold tracking-[0.4em] text-brand-purple uppercase mb-3 block">
+            OUR PRINCIPLES
+          </span>
+          <h2 className="text-3xl md:text-5xl font-serif font-bold text-brand-text tracking-tight mb-4">
+            Built on Principles, Delivered with Precision
+          </h2>
+          <ScrollReveal
+            baseOpacity={0.15}
+            enableBlur={true}
+            baseRotation={2}
+            blurStrength={8}
+            containerClassName="max-w-[700px] mt-4"
+            textClassName="text-base md:text-lg text-neutral-600 font-normal leading-relaxed font-sans"
+          >
+            Every decision we make is guided by a commitment to premium design, scalable engineering, senior-first partnership, and aligned velocity.
+          </ScrollReveal>
+        </div>
 
-              {/* Text details column */}
-              <div className="w-full md:w-[55%] flex flex-col items-start text-left px-2 md:px-4">
+        <div className="space-y-6 md:space-y-8">
+          {aboutPillars.map((pillar, idx) => {
+            const isEven = idx % 2 === 0;
+            return (
+              <div 
+                key={idx}
+                className={`about-pillar-card group w-full flex flex-col ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-6 md:gap-10 bg-white/40 backdrop-blur-md rounded-[24px] p-5 md:p-6 border border-brand-border/60 hover:border-brand-purple/20 transition-all duration-500 hover:shadow-brand-sm`}
+              >
+                {/* Image column */}
+                <div className="w-full md:w-[45%] h-[200px] md:h-[250px] rounded-xl overflow-hidden border border-brand-border/60 flex items-center justify-center relative shrink-0 bg-neutral-950">
+                  <img 
+                    src={pillar.image} 
+                    alt={pillar.title} 
+                    className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-700 ease-out opacity-90 group-hover:opacity-100" 
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none" />
+                </div>
+
+                {/* Text details column */}
+                <div className="w-full md:w-[55%] flex flex-col items-start text-left px-2 md:px-4">
                 <span className="text-xs md:text-sm uppercase tracking-[0.3em] font-extrabold text-brand-purple block mb-3">
                   {`0${idx + 1} — ${pillar.title.toUpperCase()}`}
                 </span>
                 <h3 className="text-2xl md:text-3xl font-serif font-black text-brand-text tracking-tight mb-4 group-hover:text-brand-purple transition-colors duration-300">
                   {pillar.title}
                 </h3>
-                <p className="text-sm md:text-base text-neutral-500 font-light leading-relaxed">
+                <ScrollReveal
+                  baseOpacity={0.15}
+                  enableBlur={true}
+                  baseRotation={0}
+                  blurStrength={6}
+                  containerClassName="mt-1"
+                  textClassName="text-sm md:text-base text-neutral-600 font-normal leading-relaxed font-sans"
+                >
                   {pillar.description}
-                </p>
+                </ScrollReveal>
               </div>
             </div>
           );
         })}
+        </div>
       </div>
 
       {/* Team Showcase Section */}
