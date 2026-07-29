@@ -116,7 +116,7 @@ export const navigationItems: NavItem[] = [
     href: '/about'
   },
   {
-    label: 'Insights',
+    label: 'Contact',
     href: '#insights'
   }
 ];
