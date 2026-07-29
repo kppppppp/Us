@@ -5,6 +5,7 @@ import DotField from '../components/ui/DotField';
 import VariableProximity from '../components/ui/VariableProximity';
 import TeamShowcase from '../components/ui/team-showcase';
 import ScrollReveal from '../components/ui/ScrollReveal';
+import TestimonialsDemo from '../components/ui/demo';
 
 // Import local JPG visual assets
 import aboutVision from '../assets/about_vision.jpg';
@@ -259,6 +260,23 @@ export const About: React.FC = () => {
         </div>
 
         <TeamShowcase />
+      </div>
+
+      {/* Testimonials Section */}
+      <div className="max-w-[1200px] mx-auto px-6 md:px-12 relative z-10 mb-20 md:mb-32 flex flex-col items-center">
+        <div className="w-full text-center md:text-left mb-10 md:mb-16">
+          <span className="text-xs md:text-sm font-bold tracking-[0.4em] text-brand-purple uppercase mb-3 block">
+            TESTIMONIALS
+          </span>
+          <h2 className="text-3xl md:text-5xl font-serif font-bold text-brand-text tracking-tight mb-4">
+            Trusted by Builders & Visionaries
+          </h2>
+          <p className="text-base md:text-lg text-neutral-500 font-light leading-relaxed max-w-[700px]">
+            Hear from founders, directors, and developers who have experienced our commitment to high-velocity engineering and premium craft.
+          </p>
+        </div>
+
+        <TestimonialsDemo />
       </div>
 
       <div className="max-w-[1200px] mx-auto px-6 relative z-10">
