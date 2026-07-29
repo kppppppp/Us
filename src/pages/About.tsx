@@ -3,8 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import DotField from '../components/ui/DotField';
 import VariableProximity from '../components/ui/VariableProximity';
-import ScrollRevealContentA from '../components/ui/scroll-reveal-content-a';
-import type { ItemContent } from '../components/ui/scroll-reveal-content-a';
+import TeamShowcase from '../components/ui/team-showcase';
 
 // Import local JPG visual assets
 import aboutVision from '../assets/about_vision.jpg';
@@ -17,46 +16,32 @@ const Lanyard = React.lazy(() => import('../components/ui/Lanyard').then(m => ({
 
 gsap.registerPlugin(ScrollTrigger);
 
-const aboutPillars: ItemContent[] = [
+interface PillarItem {
+  title: string;
+  description: string;
+  image: string;
+}
+
+const aboutPillars: PillarItem[] = [
   {
     title: "Aligned Velocity",
     description: "We don't just write code or assemble layouts. We align your product's architecture directly with your business goals, ensuring every screen, service, and database interaction is built to drive performance and real revenue momentum.",
-    image: {
-      url: aboutVision,
-      width: 657,
-      height: 715,
-      alt: "Aligned Velocity"
-    }
+    image: aboutVision
   },
   {
     title: "Zero Compromise",
     description: "From low-latency database schemas to pixel-perfect micro-animations, our philosophy is anchored in outstanding craft. We refuse compromises, ensuring your platform launches secure, responsive, and robust enough to scale exponentially.",
-    image: {
-      url: aboutPhilosophy,
-      width: 657,
-      height: 715,
-      alt: "Zero Compromise"
-    }
+    image: aboutPhilosophy
   },
   {
     title: "Senior-First Delivery",
     description: "We do not pass your project down to junior account executives or offshore teams. You partner directly with veteran product designers and senior software architects who have designed and deployed enterprise systems.",
-    image: {
-      url: aboutPeople,
-      width: 657,
-      height: 715,
-      alt: "Senior-First Delivery"
-    }
+    image: aboutPeople
   },
   {
     title: "Measurable Momentum",
     description: "Our code translates to business scale. Whether optimizing direct checkout performance for global networks or deploying telemetry systems, we map design and architectural milestones directly to conversions and growth.",
-    image: {
-      url: aboutInfluence,
-      width: 657,
-      height: 715,
-      alt: "Measurable Momentum"
-    }
+    image: aboutInfluence
   }
 ];
 
@@ -170,15 +155,60 @@ export const About: React.FC = () => {
         </div>
       </div>
 
-      {/* Dynamic Scroll Reveal Pillars Component */}
-      <div className="relative z-10 w-full mb-20 md:mb-32">
-        <ScrollRevealContentA 
-          items={aboutPillars} 
-          className="bg-transparent"
-        />
+      {/* Pillars Section Content (Goated Compact Alternating Cards) */}
+      <div className="max-w-[1200px] mx-auto px-6 md:px-12 relative z-10 space-y-8 md:space-y-12 mb-20 md:mb-32">
+        {aboutPillars.map((pillar, idx) => {
+          const isEven = idx % 2 === 0;
+          return (
+            <div 
+              key={idx}
+              className={`about-pillar-card group w-full flex flex-col ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-8 md:gap-16 bg-white/40 backdrop-blur-md rounded-[32px] p-6 md:p-8 border border-brand-border/60 hover:border-brand-purple/20 transition-all duration-500 hover:shadow-brand-sm`}
+            >
+              {/* Image column */}
+              <div className="w-full md:w-[45%] h-[240px] md:h-[300px] rounded-2xl overflow-hidden border border-brand-border/60 flex items-center justify-center relative shrink-0 bg-neutral-950">
+                <img 
+                  src={pillar.image} 
+                  alt={pillar.title} 
+                  className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-700 ease-out opacity-90 group-hover:opacity-100" 
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none" />
+              </div>
+
+              {/* Text details column */}
+              <div className="w-full md:w-[55%] flex flex-col items-start text-left px-2 md:px-4">
+                <span className="text-xs md:text-sm uppercase tracking-[0.3em] font-extrabold text-brand-purple block mb-3">
+                  {`0${idx + 1} — ${pillar.title.toUpperCase()}`}
+                </span>
+                <h3 className="text-2xl md:text-3xl font-serif font-black text-brand-text tracking-tight mb-4 group-hover:text-brand-purple transition-colors duration-300">
+                  {pillar.title}
+                </h3>
+                <p className="text-sm md:text-base text-neutral-500 font-light leading-relaxed">
+                  {pillar.description}
+                </p>
+              </div>
+            </div>
+          );
+        })}
       </div>
 
-      <div className="max-w-[1400px] mx-auto px-6 md:px-12 relative z-10">
+      {/* Team Showcase Section */}
+      <div className="max-w-[1200px] mx-auto px-6 md:px-12 relative z-10 mb-20 md:mb-32">
+        <div className="text-center md:text-left mb-10 md:mb-16">
+          <span className="text-xs md:text-sm font-bold tracking-[0.4em] text-brand-purple uppercase mb-3 block">
+            OUR TEAM
+          </span>
+          <h2 className="text-3xl md:text-5xl font-serif font-bold text-brand-text tracking-tight mb-4">
+            The People Behind Unexpected Solutions
+          </h2>
+          <p className="text-base md:text-lg text-neutral-500 font-light leading-relaxed max-w-[700px]">
+            A passionate team of strategists, designers, developers, and growth specialists dedicated to building digital experiences that help businesses grow with confidence.
+          </p>
+        </div>
+
+        <TeamShowcase />
+      </div>
+
+      <div className="max-w-[1200px] mx-auto px-6 relative z-10">
         {/* CTA / Momentum Footer Section */}
         <div className="w-full text-center py-20 bg-white rounded-[32px] border border-brand-border/60 shadow-brand-sm relative overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(93,70,216,0.03),transparent_70%)] pointer-events-none" />
