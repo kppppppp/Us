@@ -35,9 +35,9 @@ export const DesktopHero: React.FC = () => {
   ];
 
   return (
-    <section className="relative h-[850px] w-full bg-gradient-to-b from-[#F9F8FF] to-white flex items-center pt-[140px] pb-16 px-8 overflow-hidden select-none">
+    <section id="solutions-hero" className="relative min-h-[750px] h-screen w-full bg-gradient-to-b from-[#F9F8FF] to-white flex items-center pt-[135px] pb-12 px-8 overflow-hidden select-none">
       {/* Global Fixed DotField Canvas Background */}
-      <div className="absolute inset-0 w-full h-full z-0 pointer-events-none opacity-95">
+      <div className="absolute inset-0 w-full h-full z-0 pointer-events-none opacity-60">
         <DotField
           dotRadius={2.8}
           dotSpacing={16}
@@ -56,9 +56,9 @@ export const DesktopHero: React.FC = () => {
   className="
   absolute
   top-0
-  right-[-8%]
+  right-[-4%]
   w-[68%]
-  h-[calc(100%+140px)]
+  h-full
   pointer-events-none
   select-none
   z-10
@@ -74,13 +74,13 @@ export const DesktopHero: React.FC = () => {
             alt="Unexpected Solutions abstract glass sculpture" 
 className="
 absolute
-top-[-70px]
+top-[-60px]
 right-0
 w-full
-h-full
+h-[calc(100%+120px)]
 object-contain
 object-right
-scale-[1.22]
+scale-[1.24]
 "
           />
         </div>
@@ -88,14 +88,45 @@ scale-[1.22]
 
       <div className="max-w-[1500px] w-full mx-auto grid grid-cols-12 relative z-20">
         
-        {/* Left Side: Vertical Indicator (01 / 04) */}
-        <div className="col-span-1 hidden lg:flex flex-col items-center justify-between h-[360px] self-center pr-8">
-          <div className="flex flex-col items-center gap-4">
-            <span className="text-[11px] font-bold text-brand-purple tracking-wider">01</span>
-            <div className="w-[1.5px] h-20 bg-gradient-to-b from-brand-purple via-neutral-200 to-neutral-200 relative">
-              <div className="absolute top-0 left-0 w-full h-1/2 bg-brand-purple" />
-            </div>
-            <span className="text-[11px] font-bold text-neutral-300 tracking-wider">04</span>
+        {/* Left Side: Premium Interactive Vertical Navigation Track */}
+        <div className="col-span-1 hidden lg:flex flex-col items-center justify-center self-center pr-8 relative z-30">
+          <div className="flex flex-col items-center gap-7 relative">
+            {/* Sleek track line background */}
+            <div className="absolute top-2 bottom-2 left-1/2 -translate-x-1/2 w-[1px] bg-neutral-200/60 z-0" />
+            
+            {[
+              { num: '01', label: 'INTRO', href: '#' },
+              { num: '02', label: 'SERVICES', href: '#services-section' },
+              { num: '03', label: 'WORK', href: '#case-studies' },
+              { num: '04', label: 'VISION', href: '#about-us' }
+            ].map((step, idx) => (
+              <a
+                key={idx}
+                href={step.href}
+                onClick={(e) => {
+                  if (step.href === '#') {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  } else {
+                    e.preventDefault();
+                    document.querySelector(step.href)?.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+                className="group flex flex-col items-center gap-1 relative z-10 cursor-pointer select-none"
+              >
+                {/* Indicator dot wrapper with hover glow */}
+                <div className="w-5 h-5 rounded-full bg-white/80 backdrop-blur-[2px] border border-neutral-200/80 flex items-center justify-center transition-all duration-300 group-hover:border-brand-purple group-hover:shadow-[0_0_12px_rgba(93,70,216,0.35)]">
+                  <div className={`w-2 h-2 rounded-full ${idx === 0 ? 'bg-brand-purple' : 'bg-neutral-300 group-hover:bg-brand-purple'} transition-colors duration-300`} />
+                </div>
+                {/* Tooltip label or number on hover */}
+                <span className="text-[9px] font-bold tracking-wider text-neutral-400 group-hover:text-brand-purple transition-colors duration-300">
+                  {step.num}
+                </span>
+                <span className="absolute left-8 top-1/2 -translate-y-1/2 whitespace-nowrap text-[10px] font-extrabold tracking-widest text-brand-purple bg-white/95 border border-brand-purple/20 px-2.5 py-1 rounded-md opacity-0 translate-x-[-10px] pointer-events-none group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 shadow-brand-sm">
+                  {step.label}
+                </span>
+              </a>
+            ))}
           </div>
         </div>
 
@@ -109,7 +140,7 @@ scale-[1.22]
           {/* Top Tagline */}
           <motion.span 
             variants={itemVariants}
-            className="text-[11px] md:text-xs font-bold uppercase tracking-[0.22em] text-neutral-400 mb-6"
+            className="text-[10px] md:text-xs font-bold uppercase tracking-[0.22em] text-neutral-400 mb-4"
           >
             Enterprise Software &nbsp;•&nbsp; AI &nbsp;•&nbsp; Digital Transformation
           </motion.span>
@@ -117,7 +148,7 @@ scale-[1.22]
           {/* Headline */}
           <motion.h1 
             variants={itemVariants}
-            className="text-[30px] sm:text-[54px] md:text-[76px] font-medium leading-[1.08] text-brand-text mb-6 tracking-[-0.03em] font-sans"
+            className="text-[40px] sm:text-[50px] md:text-[58px] font-medium leading-[1.05] text-brand-text mb-4 tracking-[-0.03em] font-sans"
           >
             Solving today's <br />
             complexity. <br />
@@ -128,7 +159,7 @@ scale-[1.22]
           {/* Subtitle */}
           <motion.p 
             variants={itemVariants}
-            className="text-base sm:text-lg text-neutral-500 leading-relaxed max-w-xl mb-10"
+            className="text-sm sm:text-base text-neutral-500 leading-relaxed max-w-xl mb-6"
           >
             We partner with forward-thinking organizations to design, engineer and scale digital solutions that create measurable business impact.
           </motion.p>
@@ -136,7 +167,7 @@ scale-[1.22]
           {/* Actions */}
           <motion.div 
             variants={itemVariants}
-            className="flex flex-wrap items-center gap-6 mb-16"
+            className="flex flex-wrap items-center gap-6 mb-10"
           >
             {/* Primary Action */}
             <motion.button
