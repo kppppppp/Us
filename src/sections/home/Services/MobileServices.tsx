@@ -4,6 +4,7 @@ import { ChevronRight, Infinity as InfinityIcon, ShoppingCart, Code, Smartphone,
 import { SERVICES_DATA } from '../../../constants/layout';
 import { PROMISE_DATA } from '../../../constants/promise';
 import sculptureImg from '../../../assets/purple_glass_sculpture.jpg';
+import DotField from '../../../components/ui/DotField';
 import { UnderlineLink } from '../../../components/ui/UnderlineLink';
 import { ArrowCircleButton } from '../../../components/ui/ArrowCircleButton';
 
@@ -22,6 +23,20 @@ const iconMap: Record<string, React.ComponentType<any>> = {
 export const MobileServices: React.FC = () => {
   return (
     <section className="relative w-full bg-[#F7F5FC] py-16 px-6 overflow-hidden flex flex-col gap-12" id="services-mobile">
+      {/* Global Fixed DotField Canvas Background */}
+      <div className="absolute inset-0 w-full h-full z-0 pointer-events-none opacity-60">
+        <DotField
+          dotRadius={2.8}
+          dotSpacing={16}
+          bulgeStrength={55}
+          glowRadius={180}
+          sparkle={false}
+          waveAmplitude={0}
+          gradientFrom="rgba(0, 0, 0, 0.28)"
+          gradientTo="rgba(0, 0, 0, 0.12)"
+          glowColor="rgba(0, 0, 0, 0.02)"
+        />
+      </div>
       
       {/* Top Heading Section */}
       <div className="flex flex-col gap-5 select-none">

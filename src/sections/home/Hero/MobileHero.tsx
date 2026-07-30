@@ -14,7 +14,7 @@ export const MobileHero: React.FC = () => {
   return (
     <section className="relative min-h-screen w-full bg-gradient-to-b from-[#F9F8FF] to-white flex flex-col pt-[110px] pb-12 px-6 overflow-hidden select-none">
       {/* Global Fixed DotField Canvas Background */}
-      <div className="absolute inset-0 w-full h-full z-0 pointer-events-none opacity-95">
+      <div className="absolute inset-0 w-full h-full z-0 pointer-events-none opacity-60">
         <DotField
           dotRadius={2.8}
           dotSpacing={16}

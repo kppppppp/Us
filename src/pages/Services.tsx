@@ -5,6 +5,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import ScrollFloat from '../components/ui/ScrollFloat';
 import ScrollExpandMedia from '../components/ui/ScrollExpandMedia';
+import DotField from '../components/ui/DotField';
 
 import heroImg from '../assets/image3.png';
 import heroBgImg from '../assets/image2.png';
@@ -512,6 +513,21 @@ export const Services: React.FC = () => {
       className="w-full bg-[#FCFBFF] select-none overflow-x-hidden relative font-sans"
       onMouseMove={handleMouseMove}
     >
+      {/* Global Fixed DotField Canvas Background */}
+      <div className="fixed inset-0 w-full h-full z-0 pointer-events-none opacity-80">
+        <DotField
+          dotRadius={2.8}
+          dotSpacing={16}
+          bulgeStrength={55}
+          glowRadius={180}
+          sparkle={false}
+          waveAmplitude={0}
+          gradientFrom="rgba(0, 0, 0, 0.28)"
+          gradientTo="rgba(0, 0, 0, 0.12)"
+          glowColor="rgba(0, 0, 0, 0.02)"
+        />
+      </div>
+
       {/* ─── Background Depth Layers ─── */}
       <div className="fixed inset-0 pointer-events-none z-0">
         {/* Grain texture */}

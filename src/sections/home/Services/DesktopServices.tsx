@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Orbit } from './Orbit/Orbit';
 import { PromiseBar } from '../../../components/Promise/PromiseBar';
+import DotField from '../../../components/ui/DotField';
 import { UnderlineLink } from '../../../components/ui/UnderlineLink';
 import { ArrowCircleButton } from '../../../components/ui/ArrowCircleButton';
 import { BackgroundRibbon } from '../../../components/decorative/BackgroundRibbon';
@@ -28,6 +29,21 @@ export const DesktopServices: React.FC = () => {
      className="relative min-h-[920px] w-full bg-[#F7F5FC] py-[100px] px-12 overflow-hidden flex flex-col justify-between items-center"
       id="services-section"
     >
+      {/* Global Fixed DotField Canvas Background */}
+      <div className="absolute inset-0 w-full h-full z-0 pointer-events-none opacity-60">
+        <DotField
+          dotRadius={2.8}
+          dotSpacing={16}
+          bulgeStrength={55}
+          glowRadius={180}
+          sparkle={false}
+          waveAmplitude={0}
+          gradientFrom="rgba(0, 0, 0, 0.28)"
+          gradientTo="rgba(0, 0, 0, 0.12)"
+          glowColor="rgba(0, 0, 0, 0.02)"
+        />
+      </div>
+
       {/* Decorative Layer */}
       <BackgroundGrid />
       <BackgroundRibbon position="top-right" />
