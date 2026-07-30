@@ -13,34 +13,7 @@ export interface NavItem {
 export const navigationItems: NavItem[] = [
   {
     label: 'Solutions',
-    href: '#',
-    hasDropdown: true,
-    dropdownItems: [
-      {
-        title: 'Intelligent Systems',
-        description: 'AI-driven architecture designed to optimize complex enterprise processes and decisions.',
-        href: '#solutions/intelligent-systems',
-        iconName: 'Sparkles'
-      },
-      {
-        title: 'Digital Platforms',
-        description: 'Next-generation web applications built for speed, resilience, and premium UX.',
-        href: '#solutions/digital-platforms',
-        iconName: 'Layers'
-      },
-      {
-        title: 'AI & Automation',
-        description: 'Scale intelligence across your organization with advanced automation frameworks.',
-        href: '#solutions/ai-automation',
-        iconName: 'Cpu'
-      },
-      {
-        title: 'Cloud & DevOps',
-        description: 'Secure, high-availability infrastructure that scales dynamic workloads smoothly.',
-        href: '#solutions/cloud-devops',
-        iconName: 'Cloud'
-      }
-    ]
+    href: '/',
   },
   {
     label: 'Services',
@@ -117,7 +90,7 @@ export const navigationItems: NavItem[] = [
   },
   {
     label: 'Contact',
-    href: '#insights'
+    href: '/contact'
   }
 ];
 

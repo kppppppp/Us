@@ -7,7 +7,7 @@ export const ORBIT_LAYOUT = {
 
   outerRing: 330,
 
-  serviceRadius: 295,
+  serviceRadius: 330,
 
   rotationDuration: 30,
 
@@ -17,27 +17,26 @@ export const ORBIT_LAYOUT = {
 export interface ServicePosition {
   id: string;
   title: string;
-  angle: number; // in degrees
+  angle: number; // in degrees — now auto-calculated, this is a fallback/override
   ring: 'inner' | 'middle' | 'outer';
   icon: string;
   slug: string;
   description: string;
 }
 
-export const SERVICES_DATA: ServicePosition[] = [
+// Service definitions — angles are calculated automatically for even distribution
+const SERVICE_DEFINITIONS: Omit<ServicePosition, 'angle'>[] = [
   {
     id: 'meta-ads',
     title: 'Meta Ads Management',
-    angle: 270, // Top
     ring: 'outer',
     icon: 'Infinity',
-    slug: 'meta-ads',
+    slug: 'meta-ads-management',
     description: 'Data-driven social advertising scaled to drive conversions.'
   },
   {
     id: 'ecommerce',
     title: 'Ecommerce Sites',
-    angle: 320, // Top Right
     ring: 'middle',
     icon: 'ShoppingCart',
     slug: 'ecommerce-sites',
@@ -46,7 +45,6 @@ export const SERVICES_DATA: ServicePosition[] = [
   {
     id: 'web-dev',
     title: 'Web Development',
-    angle: 0, // Right
     ring: 'outer',
     icon: 'Code',
     slug: 'web-development',
@@ -55,7 +53,6 @@ export const SERVICES_DATA: ServicePosition[] = [
   {
     id: 'app-dev',
     title: 'App Development',
-    angle: 40, // Bottom Right
     ring: 'middle',
     icon: 'Smartphone',
     slug: 'app-development',
@@ -64,25 +61,22 @@ export const SERVICES_DATA: ServicePosition[] = [
   {
     id: 'social-media',
     title: 'Social Media Marketing',
-    angle: 75, // Bottom-ish Right
     ring: 'outer',
     icon: 'ThumbsUp',
-    slug: 'social-media',
+    slug: 'social-media-marketing',
     description: 'Organic branding and viral content campaigns across channels.'
   },
   {
     id: 'digital-marketing',
     title: 'Digital Marketing Strategy',
-    angle: 115, // Bottom
     ring: 'middle',
     icon: 'Target',
-    slug: 'digital-strategy',
+    slug: 'digital-marketing-strategy',
     description: 'Strategic growth audits and pipeline conversion mapping.'
   },
   {
     id: 'influencer',
     title: 'Influencer Marketing',
-    angle: 155, // Bottom Left
     ring: 'outer',
     icon: 'User',
     slug: 'influencer-marketing',
@@ -91,7 +85,6 @@ export const SERVICES_DATA: ServicePosition[] = [
   {
     id: 'seo-growth',
     title: 'SEO Growth',
-    angle: 200, // Left
     ring: 'middle',
     icon: 'TrendingUp',
     slug: 'seo-growth',
@@ -100,10 +93,19 @@ export const SERVICES_DATA: ServicePosition[] = [
   {
     id: 'photoshoot',
     title: 'Photoshoot Services',
-    angle: 235, // Upper Left
     ring: 'outer',
     icon: 'Camera',
     slug: 'photoshoot-services',
     description: 'High-end corporate imagery, product photography and visual assets.'
   }
 ];
+
+// Auto-calculate evenly distributed angles starting from top (270°)
+const START_ANGLE = 250; // Offset from top to avoid symmetric bottom collisions
+const TOTAL_SERVICES = SERVICE_DEFINITIONS.length;
+const ANGLE_STEP = 360 / TOTAL_SERVICES;
+
+export const SERVICES_DATA: ServicePosition[] = SERVICE_DEFINITIONS.map((service, index) => ({
+  ...service,
+  angle: (START_ANGLE + index * ANGLE_STEP) % 360
+}));

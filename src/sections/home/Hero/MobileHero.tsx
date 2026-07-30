@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowUpRight, Sparkles, Layers, Cpu, Cloud } from 'lucide-react';
 import sculptureImg from '../../../assets/purple_glass_sculpture.jpg';
+import DotField from '../../../components/ui/DotField';
 
 export const MobileHero: React.FC = () => {
   const impactItems = [
@@ -12,6 +13,20 @@ export const MobileHero: React.FC = () => {
 
   return (
     <section className="relative min-h-screen w-full bg-gradient-to-b from-[#F9F8FF] to-white flex flex-col pt-[110px] pb-12 px-6 overflow-hidden select-none">
+      {/* Global Fixed DotField Canvas Background */}
+      <div className="absolute inset-0 w-full h-full z-0 pointer-events-none opacity-95">
+        <DotField
+          dotRadius={2.8}
+          dotSpacing={16}
+          bulgeStrength={55}
+          glowRadius={180}
+          sparkle={false}
+          waveAmplitude={0}
+          gradientFrom="rgba(0, 0, 0, 0.28)"
+          gradientTo="rgba(0, 0, 0, 0.12)"
+          glowColor="rgba(0, 0, 0, 0.02)"
+        />
+      </div>
       
       {/* Decorative Sculpture at center-top layer */}
       <div className="relative w-full h-[220px] my-4 pointer-events-none select-none z-10 flex items-center justify-center">

@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, Heart, Activity, Building, ShoppingBag } from 'lucide-react';
 import sculptureImg from '../../../assets/purple_glass_sculpture.jpg';
+import DotField from '../../../components/ui/DotField';
 
 export const DesktopHero: React.FC = () => {
   const containerVariants = {
@@ -35,6 +36,20 @@ export const DesktopHero: React.FC = () => {
 
   return (
     <section className="relative h-[850px] w-full bg-gradient-to-b from-[#F9F8FF] to-white flex items-center pt-[140px] pb-16 px-8 overflow-hidden select-none">
+      {/* Global Fixed DotField Canvas Background */}
+      <div className="absolute inset-0 w-full h-full z-0 pointer-events-none opacity-95">
+        <DotField
+          dotRadius={2.8}
+          dotSpacing={16}
+          bulgeStrength={55}
+          glowRadius={180}
+          sparkle={false}
+          waveAmplitude={0}
+          gradientFrom="rgba(0, 0, 0, 0.28)"
+          gradientTo="rgba(0, 0, 0, 0.12)"
+          glowColor="rgba(0, 0, 0, 0.02)"
+        />
+      </div>
       
       {/* Background Flowing Sculpture */}
      <div
@@ -102,7 +117,7 @@ scale-[1.22]
           {/* Headline */}
           <motion.h1 
             variants={itemVariants}
-            className="text-[44px] sm:text-[54px] md:text-[68px] font-medium leading-[1.08] text-brand-text mb-6 tracking-[-0.03em] font-sans"
+            className="text-[30px] sm:text-[54px] md:text-[76px] font-medium leading-[1.08] text-brand-text mb-6 tracking-[-0.03em] font-sans"
           >
             Solving today's <br />
             complexity. <br />
