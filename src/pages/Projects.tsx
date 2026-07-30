@@ -3,6 +3,8 @@ import gsap from 'gsap';
 import { projectsData } from '../constants/projectsData';
 import DotField from '../components/ui/DotField';
 import ScrollStack, { ScrollStackItem } from '../components/ui/ScrollStack';
+import DecayCard from '../components/ui/DecayCard';
+import image4 from '../assets/image5.png';
 
 export const Projects: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -96,7 +98,7 @@ export const Projects: React.FC = () => {
   return (
     <div 
       ref={containerRef}
-      className="relative w-full bg-[#FAF9FC] overflow-x-hidden pt-28 md:pt-36 pb-12 select-none"
+      className="relative w-full bg-[#FAF9FC] overflow-x-hidden pt-28 md:pt-20 pb-12 select-none"
     >
       {/* Global Fixed DotField Canvas Background */}
       <div className="fixed inset-0 w-full h-full z-0 pointer-events-none opacity-95">
@@ -119,31 +121,52 @@ export const Projects: React.FC = () => {
 
       {/* Full-bleed Editorial Launch Hero banner */}
       <div className="relative w-full overflow-hidden border-b border-brand-border/60 bg-white/10 py-16 md:py-24 mb-20 md:mb-32">
-        <div 
-          ref={heroRef}
-          className="relative z-10 max-w-[1400px] mx-auto px-6 md:px-12 w-full flex flex-col items-start text-left"
-        >
-          <span className="hero-subtitle text-xs md:text-sm font-bold tracking-[0.4em] text-brand-purple uppercase mb-5 block">
-            <span className="hero-subtitle-char inline-block">Portfolio Showcase</span>
-          </span>
-          
-          <h1 className="hero-title text-6xl md:text-[9vw] lg:text-[10vw] font-serif font-black text-brand-text tracking-tighter leading-[0.85] max-w-[1200px] mb-10 overflow-hidden">
-            <span className="block mb-2">Selected</span>
-            <span className="block text-brand-purple">Work</span>
-          </h1>
+        <div className="max-w-[1400px] mx-auto px-6 md:px-12 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          {/* Left Column */}
+          <div 
+            ref={heroRef}
+            className="lg:col-span-7 flex flex-col items-start text-left relative z-10"
+          >
+            <span className="hero-subtitle text-xs md:text-sm font-bold tracking-[0.4em] text-brand-purple uppercase mb-5 block">
+              <span className="hero-subtitle-char inline-block">Portfolio Showcase</span>
+            </span>
+            
+            <h1 className="hero-title text-6xl md:text-[6vw] lg:text-[7vw] font-serif font-black text-brand-text tracking-tighter leading-[0.85] max-w-[1200px] mb-8 overflow-hidden">
+              <span className="block mb-2">Selected</span>
+              <span className="block text-brand-purple">Work</span>
+            </h1>
 
-          <p className="hero-subtitle text-xl md:text-3xl font-sans font-light text-neutral-500 leading-relaxed max-w-[850px] mb-12">
-            <span className="hero-subtitle-char inline-block">Crafting digital products and enterprise platforms with custom design systems and zero compromise.</span>
-          </p>
+            <p className="hero-subtitle text-lg md:text-xl font-sans font-light text-neutral-500 leading-relaxed max-w-[850px] mb-10">
+              <span className="hero-subtitle-char inline-block">Crafting digital products and enterprise platforms with custom design systems and zero compromise.</span>
+            </p>
 
-          <div className="hero-cta" data-reveal>
-            <a 
-              href="/contact"
-              className="group inline-flex items-center gap-2.5 px-8 py-5 bg-brand-text text-white hover:bg-brand-purple rounded-full text-sm font-extrabold tracking-widest uppercase transition-all duration-300 shadow-md hover:shadow-brand-md"
+            <div className="hero-cta" data-reveal>
+              <a 
+                href="/contact"
+                className="group inline-flex items-center gap-2.5 px-8 py-4 bg-brand-text text-white hover:bg-brand-purple rounded-full text-xs font-bold tracking-widest uppercase transition-all duration-300 shadow-md hover:shadow-brand-md"
+              >
+                <span>Partner With Us</span>
+                <span className="group-hover:translate-x-1.5 transition-transform duration-300">→</span>
+              </a>
+            </div>
+          </div>
+
+          {/* Right Column: Premium DecayCard Interactive visual */}
+          <div className="lg:col-span-5 flex items-center justify-center w-full relative z-20">
+            <DecayCard 
+              width={340} 
+              height={410} 
+              image={image4}
+              baseFrequency={0.012}
+              numOctaves={5}
+              maxDisplacement={180}
+              movementBound={40}
             >
-              <span>Partner With Us</span>
-              <span className="group-hover:translate-x-1.5 transition-transform duration-300">→</span>
-            </a>
+              <h2 className="text-white text-3xl font-serif font-bold tracking-tight text-center select-none leading-none drop-shadow-md">
+                CREATIVE<br />
+                ARCHIVE
+              </h2>
+            </DecayCard>
           </div>
         </div>
       </div>
