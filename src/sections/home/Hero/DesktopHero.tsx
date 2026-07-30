@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowUpRight, Heart, Activity, Building, ShoppingBag } from 'lucide-react';
 import sculptureImg from '../../../assets/purple_glass_sculpture.jpg';
 import DotField from '../../../components/ui/DotField';
+import TextType from '../../../components/ui/TextType';
 
 export const DesktopHero: React.FC = () => {
   const containerVariants = {
@@ -148,12 +149,24 @@ scale-[1.24]
           {/* Headline */}
           <motion.h1 
             variants={itemVariants}
-            className="text-[40px] sm:text-[50px] md:text-[58px] font-medium leading-[1.05] text-brand-text mb-4 tracking-[-0.03em] font-sans"
+            className="text-[40px] sm:text-[50px] md:text-[58px] font-medium leading-[1.05] text-brand-text mb-4 tracking-[-0.03em] font-sans max-w-[680px]"
           >
             Solving today's <br />
             complexity. <br />
-            <span className="text-brand-purple">Building tomorrow's <br />
-            advantage.</span>
+            <span className="text-brand-purple block min-h-[130px]">
+              <TextType 
+                text={[
+                  "Building tomorrow's advantage.",
+                  "Engineering unexpected scale.",
+                  "Designing premium experiences."
+                ]}
+                typingSpeed={60}
+                pauseDuration={2000}
+                showCursor={true}
+                cursorCharacter="|"
+                className="inline-block"
+              />
+            </span>
           </motion.h1>
 
           {/* Subtitle */}
@@ -184,7 +197,7 @@ scale-[1.24]
 
             {/* Secondary Action */}
             <motion.a 
-              href="#case-studies"
+              href="/projects"
               className="relative py-2 font-medium text-[15px] text-brand-text hover:text-brand-purple flex items-center gap-1.5 transition-colors duration-300 group cursor-pointer"
               whileHover={{ x: 2 }}
             >

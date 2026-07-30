@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowUpRight, Sparkles, Layers, Cpu, Cloud } from 'lucide-react';
 import sculptureImg from '../../../assets/purple_glass_sculpture.jpg';
 import DotField from '../../../components/ui/DotField';
+import TextType from '../../../components/ui/TextType';
 
 export const MobileHero: React.FC = () => {
   const impactItems = [
@@ -48,8 +49,20 @@ export const MobileHero: React.FC = () => {
         <h1 className="text-[34px] font-semibold leading-[1.12] text-brand-text tracking-[-0.02em]">
           Solving today's <br />
           complexity. <br />
-          <span className="text-brand-purple">Building tomorrow's <br />
-          advantage.</span>
+          <span className="text-brand-purple block min-h-[76px]">
+            <TextType 
+              text={[
+                "Building tomorrow's advantage.",
+                "Engineering unexpected scale.",
+                "Designing premium experiences."
+              ]}
+              typingSpeed={60}
+              pauseDuration={2000}
+              showCursor={true}
+              cursorCharacter="|"
+              className="inline-block"
+            />
+          </span>
         </h1>
 
         {/* Subtitle */}

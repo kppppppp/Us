@@ -132,7 +132,7 @@ export const Projects: React.FC = () => {
             </span>
             
             <h1 className="hero-title text-6xl md:text-[6vw] lg:text-[7vw] font-serif font-black text-brand-text tracking-tighter leading-[0.85] max-w-[1200px] mb-8 overflow-hidden">
-              <span className="block mb-2">Selected</span>
+              <span className="block mb-2">Featured</span>
               <span className="block text-brand-purple">Work</span>
             </h1>
 
