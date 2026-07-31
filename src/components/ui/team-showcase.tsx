@@ -5,10 +5,10 @@ import { FaLinkedinIn, FaTwitter, FaBehance, FaInstagram } from 'react-icons/fa'
 import { cn } from '../../lib/utils';
 
 // Import local team photos
-import aditiImg from '../../assets/team/aditi.png';
-import krishImg from '../../assets/team/krish.png';
-import shoneImg from '../../assets/team/shone.png';
-import varadImg from '../../assets/team/varad.png';
+import aditiImg from '../../assets/team/aditi.webp';
+import krishImg from '../../assets/team/krish.webp';
+import shoneImg from '../../assets/team/shone.webp';
+import varadImg from '../../assets/team/varad.webp';
 
 const BLANK_PIXEL =
   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';

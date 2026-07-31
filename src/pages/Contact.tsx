@@ -19,7 +19,7 @@ import DotField from '../components/ui/DotField';
 import DecayCard from '../components/ui/DecayCard';
 import VariableProximity from '../components/ui/VariableProximity';
 import ElectricBorder from '../components/ui/ElectricBorder';
-import purpleGlass from '../assets/image4.png';
+import purpleGlass from '../assets/image4.webp';
 
 gsap.registerPlugin(ScrollTrigger);
 

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useRef } from 'react';
 import Lenis from 'lenis';
+import gsap from 'gsap';
 
 const LenisContext = createContext<Lenis | null>(null);
 
@@ -23,13 +24,13 @@ export const LenisProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     lenisRef.current = lenis;
 
-    // Handle scroll animations manually
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-
-    requestAnimationFrame(raf);
+    // Synchronize Lenis scroll ticks with GSAP ticker loop
+    const updatePhysics = (time: number) => {
+      lenis.raf(time * 1000);
+    };
+    
+    gsap.ticker.add(updatePhysics);
+    gsap.ticker.lagSmoothing(0);
 
     // Allow external components (e.g. ScrollExpandMedia) to pause / resume Lenis
     const handleStop  = () => lenis.stop();
@@ -62,6 +63,7 @@ export const LenisProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     return () => {
       lenis.destroy();
+      gsap.ticker.remove(updatePhysics);
       document.removeEventListener('click', handleAnchorClick);
       window.removeEventListener('lenisStop',  handleStop);
       window.removeEventListener('lenisStart', handleStart);

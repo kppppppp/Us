@@ -1,9 +1,9 @@
 import React from 'react';
 import FlowingMenu from '../../../components/ui/FlowingMenu';
-import visionImg from '../../../assets/about_vision.jpg';
-import philosophyImg from '../../../assets/about_philosophy.jpg';
-import peopleImg from '../../../assets/about_people.jpg';
-import influenceImg from '../../../assets/about_influence.jpg';
+import visionImg from '../../../assets/about_vision.webp';
+import philosophyImg from '../../../assets/about_philosophy.webp';
+import peopleImg from '../../../assets/about_people.webp';
+import influenceImg from '../../../assets/about_influence.webp';
 import DotField from '../../../components/ui/DotField';
 
 export const About: React.FC = () => {

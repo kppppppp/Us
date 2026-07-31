@@ -123,6 +123,9 @@ const MenuItem: React.FC<MenuItemProps> = ({
         ease: 'none',
         repeat: -1
       });
+      
+      // Pause initially
+      animationRef.current.pause();
     };
 
     const timer = setTimeout(setupMarquee, 50);
@@ -142,6 +145,10 @@ const MenuItem: React.FC<MenuItemProps> = ({
     const y = ev.clientY - rect.top;
     const edge = findClosestEdge(x, y, rect.width, rect.height);
 
+    if (animationRef.current) {
+      animationRef.current.play();
+    }
+
     gsap
       .timeline({ defaults: animationDefaults })
       .set(marqueeRef.current, { y: edge === 'top' ? '-101%' : '101%' }, 0)
@@ -157,7 +164,14 @@ const MenuItem: React.FC<MenuItemProps> = ({
     const edge = findClosestEdge(x, y, rect.width, rect.height);
 
     gsap
-      .timeline({ defaults: animationDefaults })
+      .timeline({ 
+        defaults: animationDefaults,
+        onComplete: () => {
+          if (animationRef.current) {
+            animationRef.current.pause();
+          }
+        }
+      })
       .to(marqueeRef.current, { y: edge === 'top' ? '-101%' : '101%' }, 0)
       .to(marqueeInnerRef.current, { y: edge === 'top' ? '101%' : '-101%' }, 0);
   };

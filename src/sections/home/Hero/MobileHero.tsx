@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowUpRight, Sparkles, Layers, Cpu, Cloud } from 'lucide-react';
-import sculptureImg from '../../../assets/purple_glass_sculpture.jpg';
+import sculptureImg from '../../../assets/purple_glass_sculpture.webp';
 import DotField from '../../../components/ui/DotField';
 import TextType from '../../../components/ui/TextType';
 

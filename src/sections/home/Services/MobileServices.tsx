@@ -1,9 +1,8 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { ChevronRight, Infinity as InfinityIcon, ShoppingCart, Code, Smartphone, ThumbsUp, Target, User, TrendingUp, Camera } from 'lucide-react';
 import { SERVICES_DATA } from '../../../constants/layout';
 import { PROMISE_DATA } from '../../../constants/promise';
-import sculptureImg from '../../../assets/purple_glass_sculpture.jpg';
+import sculptureImg from '../../../assets/purple_glass_sculpture.webp';
 import DotField from '../../../components/ui/DotField';
 import { UnderlineLink } from '../../../components/ui/UnderlineLink';
 import { ArrowCircleButton } from '../../../components/ui/ArrowCircleButton';
@@ -62,12 +61,11 @@ export const MobileServices: React.FC = () => {
       {/* Floating Center Glass Sculpture */}
       <div className="relative w-full h-[220px] pointer-events-none select-none z-10 flex items-center justify-center">
         <div className="absolute w-[200px] h-[200px] rounded-full bg-brand-purple/10 blur-[50px] pointer-events-none" />
-        <motion.img 
+        <img 
           src={sculptureImg} 
           alt="Translucent Ribbon Sculpture" 
-          className="w-full h-full object-contain rounded-full bg-white/20 border border-white/20 backdrop-blur-[2px] shadow-brand-md"
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+          loading="lazy"
+          className="w-full h-full object-contain rounded-full bg-white/20 border border-white/20 backdrop-blur-[2px] shadow-brand-md animate-float"
         />
       </div>
 

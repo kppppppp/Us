@@ -4,7 +4,7 @@ import { projectsData } from '../constants/projectsData';
 import DotField from '../components/ui/DotField';
 import ScrollStack, { ScrollStackItem } from '../components/ui/ScrollStack';
 import DecayCard from '../components/ui/DecayCard';
-import image4 from '../assets/image5.png';
+import image4 from '../assets/image5.webp';
 
 export const Projects: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);

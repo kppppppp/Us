@@ -7,18 +7,18 @@ import ScrollFloat from '../components/ui/ScrollFloat';
 import ScrollExpandMedia from '../components/ui/ScrollExpandMedia';
 import DotField from '../components/ui/DotField';
 
-import heroImg from '../assets/image3.png';
-import heroBgImg from '../assets/image2.png';
-import metaImg from '../assets/services_meta.jpg';
-import ecomImg from '../assets/services_ecom.jpg';
-import webImg from '../assets/services_web.jpg';
-import appImg from '../assets/services_app.jpg';
-import socialImg from '../assets/services_social.jpg';
-import strategyImg from '../assets/services_strategy.jpg';
-import influencerImg from '../assets/services_influencer.jpg';
-import seoImg from '../assets/services_seo.jpg';
-import photoshootImg from '../assets/services_photoshoot.jpg';
-import ctaImg from '../assets/services_cta.jpg';
+import heroImg from '../assets/image3.webp';
+import heroBgImg from '../assets/image2.webp';
+import metaImg from '../assets/services_meta.webp';
+import ecomImg from '../assets/services_ecom.webp';
+import webImg from '../assets/services_web.webp';
+import appImg from '../assets/services_app.webp';
+import socialImg from '../assets/services_social.webp';
+import strategyImg from '../assets/services_strategy.webp';
+import influencerImg from '../assets/services_influencer.webp';
+import seoImg from '../assets/services_seo.webp';
+import photoshootImg from '../assets/services_photoshoot.webp';
+import ctaImg from '../assets/services_cta.webp';
 
 gsap.registerPlugin(ScrollTrigger);
 

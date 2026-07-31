@@ -726,9 +726,34 @@ export const SplashCursor: React.FC<SplashCursorProps> = ({
     initFramebuffers();
     let lastUpdateTime = Date.now();
     let colorUpdateTimer = 0.0;
+    
+    let isLoopRunning = true;
+    let lastInteractionTime = Date.now();
+
+    function wakeUpLoop() {
+      lastInteractionTime = Date.now();
+      if (!isLoopRunning && isActive) {
+        isLoopRunning = true;
+        lastUpdateTime = Date.now();
+        animationFrameId.current = requestAnimationFrame(updateFrame);
+      }
+    }
 
     function updateFrame() {
       if (!isActive) return;
+      
+      const now = Date.now();
+      if (now - lastInteractionTime > 3000) {
+        gl.viewport(0, 0, canvas.width, canvas.height);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        gl.clearColor(0.0, 0.0, 0.0, 0.0);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        
+        isLoopRunning = false;
+        animationFrameId.current = null;
+        return;
+      }
+
       const dt = calcDeltaTime();
       if (resizeCanvas()) initFramebuffers();
       updateColors(dt);
@@ -1026,6 +1051,7 @@ export const SplashCursor: React.FC<SplashCursorProps> = ({
     }
 
     function handleMouseDown(e: MouseEvent) {
+      wakeUpLoop();
       let pointer = pointers[0];
       let posX = scaleByPixelRatio(e.clientX);
       let posY = scaleByPixelRatio(e.clientY);
@@ -1035,6 +1061,7 @@ export const SplashCursor: React.FC<SplashCursorProps> = ({
 
     let firstMouseMoveHandled = false;
     function handleMouseMove(e: MouseEvent) {
+      wakeUpLoop();
       let pointer = pointers[0];
       let posX = scaleByPixelRatio(e.clientX);
       let posY = scaleByPixelRatio(e.clientY);
@@ -1048,6 +1075,7 @@ export const SplashCursor: React.FC<SplashCursorProps> = ({
     }
 
     function handleTouchStart(e: TouchEvent) {
+      wakeUpLoop();
       const touches = e.targetTouches;
       let pointer = pointers[0];
       for (let i = 0; i < touches.length; i++) {
@@ -1058,6 +1086,7 @@ export const SplashCursor: React.FC<SplashCursorProps> = ({
     }
 
     function handleTouchMove(e: TouchEvent) {
+      wakeUpLoop();
       const touches = e.targetTouches;
       let pointer = pointers[0];
       for (let i = 0; i < touches.length; i++) {
@@ -1068,6 +1097,7 @@ export const SplashCursor: React.FC<SplashCursorProps> = ({
     }
 
     function handleTouchEnd(e: TouchEvent) {
+      wakeUpLoop();
       const touches = e.changedTouches;
       let pointer = pointers[0];
       for (let i = 0; i < touches.length; i++) {
@@ -1075,11 +1105,16 @@ export const SplashCursor: React.FC<SplashCursorProps> = ({
       }
     }
 
+    function handleResize() {
+      wakeUpLoop();
+    }
+
     window.addEventListener('mousedown', handleMouseDown);
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('touchstart', handleTouchStart);
     window.addEventListener('touchmove', handleTouchMove, false);
     window.addEventListener('touchend', handleTouchEnd);
+    window.addEventListener('resize', handleResize);
 
     updateFrame();
 
@@ -1096,6 +1131,7 @@ export const SplashCursor: React.FC<SplashCursorProps> = ({
       window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('touchend', handleTouchEnd);
+      window.removeEventListener('resize', handleResize);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

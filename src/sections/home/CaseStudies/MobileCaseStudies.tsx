@@ -26,6 +26,7 @@ export const MobileCaseStudies: React.FC = () => {
         <img 
           src={project.image} 
           alt={project.name} 
+          loading="lazy"
           className="card-image"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />

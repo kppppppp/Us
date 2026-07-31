@@ -1,5 +1,5 @@
 import React from 'react';
-import sculptureImg from '../../../../assets/image1.png';
+import sculptureImg from '../../../../assets/image1.webp';
 
 export const CenterObject: React.FC = () => {
   return (
@@ -13,6 +13,7 @@ export const CenterObject: React.FC = () => {
       <img 
         src={sculptureImg} 
         alt="Translucent Ribbon Sculpture" 
+        loading="lazy"
         className="w-full h-full object-contain rounded-full border border-white/20 shadow-brand-lg bg-white/20 backdrop-blur-[2px]" 
       />
     </div>

@@ -10,7 +10,7 @@ import './Lanyard.css';
 // @ts-ignore
 import cardGLB from '../../assets/lanyard/card.glb';
 // @ts-ignore
-import lanyardDefaultPng from '../../assets/lanyard/lanyard.png';
+import lanyardDefaultPng from '../../assets/lanyard/lanyard.webp';
 
 extend({ MeshLineGeometry, MeshLineMaterial });
 

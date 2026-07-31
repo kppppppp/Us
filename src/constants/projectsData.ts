@@ -1,12 +1,12 @@
-import ariya from '../assets/projects/ariya.png';
-import deltaorbit from '../assets/projects/deltaorbit.png';
-import downtime from '../assets/projects/downtime.png';
-import gaimauli from '../assets/projects/gaimauli.png';
-import newstar from '../assets/projects/newstar.png';
-import shantabai from '../assets/projects/shantabai.png';
-import unexpected from '../assets/projects/unexpected.png';
-import yash from '../assets/projects/yash.png';
-import yjp from '../assets/projects/yjp.png';
+import ariya from '../assets/projects/ariya.webp';
+import deltaorbit from '../assets/projects/deltaorbit.webp';
+import downtime from '../assets/projects/downtime.webp';
+import gaimauli from '../assets/projects/gaimauli.webp';
+import newstar from '../assets/projects/newstar.webp';
+import shantabai from '../assets/projects/shantabai.webp';
+import unexpected from '../assets/projects/unexpected.webp';
+import yash from '../assets/projects/yash.webp';
+import yjp from '../assets/projects/yjp.webp';
 
 export interface ProjectItem {
   id: string;

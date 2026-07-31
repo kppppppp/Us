@@ -7,14 +7,17 @@ import TeamShowcase from '../components/ui/team-showcase';
 import ScrollReveal from '../components/ui/ScrollReveal';
 import TestimonialsDemo from '../components/ui/demo';
 
-// Import local JPG visual assets
-import aboutVision from '../assets/about_vision.jpg';
-import aboutPhilosophy from '../assets/about_philosophy.jpg';
-import aboutPeople from '../assets/about_people.jpg';
-import aboutInfluence from '../assets/about_influence.jpg';
+// Prefetch Lanyard chunk immediately when About module loads (not when component renders).
+// The import() starts the network fetch the instant the user navigates to /about,
+// and the same promise is reused by React.lazy so there's no duplicate fetch.
+const lanyardImport = import('../components/ui/Lanyard');
+const Lanyard = React.lazy(() => lanyardImport.then(m => ({ default: m.Lanyard })));
 
-// Lazy-load the interactive Three.js Lanyard component for optimized performance
-const Lanyard = React.lazy(() => import('../components/ui/Lanyard').then(m => ({ default: m.Lanyard })));
+// Import local JPG visual assets
+import aboutVision from '../assets/about_vision.webp';
+import aboutPhilosophy from '../assets/about_philosophy.webp';
+import aboutPeople from '../assets/about_people.webp';
+import aboutInfluence from '../assets/about_influence.webp';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -58,59 +61,94 @@ export const About: React.FC = () => {
     const container = pageContainerRef.current;
     if (!container) return;
 
-    // Magnetic button effects (Universal)
-    const magneticButtons = container.querySelectorAll('.magnetic-button');
-    magneticButtons.forEach((btn: any) => {
-      const onMouseMove = (e: MouseEvent) => {
-        const rect = btn.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
-        
-        gsap.to(btn, {
-          x: x * 0.45,
-          y: y * 0.45,
-          duration: 0.3,
-          ease: 'power2.out'
-        });
-      };
+    // ============================================================
+    // Smooth staggered hero entrance timeline
+    // ============================================================
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-      const onMouseLeave = () => {
-        gsap.to(btn, {
-          x: 0,
-          y: 0,
-          duration: 0.5,
-          ease: 'elastic.out(1.1, 0.4)'
-        });
-      };
-
-      btn.addEventListener('mousemove', onMouseMove);
-      btn.addEventListener('mouseleave', onMouseLeave);
-    });
-
-    // Scroll reveal animations for principles card panels
-    const cards = container.querySelectorAll('.about-pillar-card');
-    cards.forEach((card) => {
-      gsap.fromTo(card, 
-        { 
-          opacity: 0, 
-          y: 40,
-          scale: 0.98
-        },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.8,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: card,
-            start: 'top bottom-=10%', // Triggers when the top of the card is 10% inside the viewport from the bottom
-            toggleActions: 'play none none none' // Play once on scroll entrance
-          }
-        }
+      tl.fromTo('.hero-subtitle',
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.6 }
+      )
+      .fromTo('.hero-title',
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.8 },
+        '-=0.35'
+      )
+      .fromTo('.hero-description',
+        { opacity: 0, y: 25 },
+        { opacity: 1, y: 0, duration: 0.7 },
+        '-=0.4'
+      )
+      .fromTo('.hero-cta',
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.6 },
+        '-=0.3'
+      )
+      .fromTo('.hero-lanyard-container',
+        { opacity: 0, x: 40 },
+        { opacity: 1, x: 0, duration: 1, ease: 'power2.out' },
+        '-=0.7'
       );
-    });
 
+      // Magnetic button effects (Universal)
+      const magneticButtons = container.querySelectorAll('.magnetic-button');
+      magneticButtons.forEach((btn: any) => {
+        const onMouseMove = (e: MouseEvent) => {
+          const rect = btn.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
+          
+          gsap.to(btn, {
+            x: x * 0.45,
+            y: y * 0.45,
+            duration: 0.3,
+            ease: 'power2.out'
+          });
+        };
+
+        const onMouseLeave = () => {
+          gsap.to(btn, {
+            x: 0,
+            y: 0,
+            duration: 0.5,
+            ease: 'elastic.out(1.1, 0.4)'
+          });
+        };
+
+        btn.addEventListener('mousemove', onMouseMove);
+        btn.addEventListener('mouseleave', onMouseLeave);
+      });
+
+      // Scroll reveal animations for principles card panels
+      const cards = container.querySelectorAll('.about-pillar-card');
+      cards.forEach((card) => {
+        gsap.fromTo(card, 
+          { 
+            opacity: 0, 
+            y: 40,
+            scale: 0.98
+          },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.8,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: card,
+              start: 'top bottom-=10%',
+              toggleActions: 'play none none none'
+            }
+          }
+        );
+      });
+    }, container);
+
+    return () => {
+      ctx.revert();
+    };
   }, []);
 
   return (
@@ -143,11 +181,11 @@ export const About: React.FC = () => {
       >
         {/* Original Left-aligned text container (unmodified, same styling & padding) */}
         <div className="relative z-10 max-w-[1400px] mx-auto px-6 md:px-12 w-full flex flex-col items-start text-left">
-          <span className="hero-subtitle text-xs md:text-sm font-bold tracking-[0.4em] text-brand-purple uppercase mb-5 block">
+          <span className="hero-subtitle text-xs md:text-sm font-bold tracking-[0.4em] text-brand-purple uppercase mb-5 block" style={{ opacity: 0 }}>
             ABOUT US
           </span>
           
-          <h1 className="hero-title text-4xl md:text-[5vw] lg:text-[5.5vw] font-serif font-black text-brand-text tracking-tight leading-[0.95] max-w-[1200px] mb-8 relative">
+          <h1 className="hero-title text-4xl md:text-[5vw] lg:text-[5.5vw] font-serif font-black text-brand-text tracking-tight leading-[0.95] max-w-[1200px] mb-8 relative" style={{ opacity: 0 }}>
             <VariableProximity
               label="We Don't Just Build Digital Products. We Build Business Momentum."
               fromFontVariationSettings="'wght' 400, 'opsz' 9"
@@ -158,11 +196,11 @@ export const About: React.FC = () => {
             />
           </h1>
 
-          <p className="hero-description text-lg md:text-2xl font-sans font-light text-neutral-600 leading-relaxed max-w-[900px] mb-12">
+          <p className="hero-description text-lg md:text-2xl font-sans font-light text-neutral-600 leading-relaxed max-w-[900px] mb-12" style={{ opacity: 0 }}>
             Every project is a combination of thoughtful strategy, premium design, scalable technology, and measurable outcomes—crafted to help businesses grow with confidence.
           </p>
 
-          <div className="hero-cta">
+          <div className="hero-cta" style={{ opacity: 0 }}>
             <a 
               href="/contact"
               className="magnetic-button group inline-flex items-center gap-2.5 px-8 py-5 bg-brand-text text-white hover:bg-brand-purple rounded-full text-sm font-extrabold tracking-widest uppercase transition-all duration-300 shadow-md hover:shadow-brand-md"
@@ -173,8 +211,8 @@ export const About: React.FC = () => {
           </div>
         </div>
 
-        {/* Branded Three.js Lanyard (Floats absolutely on the right, starts from the top navbar level and covers a wide viewport area to prevent drag clipping) */}
-        <div className="hidden lg:block absolute right-0 top-0 h-full w-[60vw] max-w-[900px] pointer-events-none z-20">
+        {/* Branded Three.js Lanyard — prefetched on module load for near-instant rendering */}
+        <div className="hero-lanyard-container hidden lg:block absolute right-0 top-0 h-full w-[60vw] max-w-[900px] pointer-events-none z-20" style={{ opacity: 0 }}>
           <Suspense fallback={null}>
             <Lanyard position={[0, 0, 20]} />
           </Suspense>
@@ -215,6 +253,7 @@ export const About: React.FC = () => {
                   <img 
                     src={pillar.image} 
                     alt={pillar.title} 
+                    loading="lazy"
                     className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-700 ease-out opacity-90 group-hover:opacity-100" 
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent pointer-events-none" />
@@ -307,3 +346,4 @@ export const About: React.FC = () => {
 };
 
 export default About;
+

@@ -8,6 +8,7 @@ import { BackgroundRibbon } from '../../../components/decorative/BackgroundRibbo
 import { PurpleGlow } from '../../../components/decorative/PurpleGlow';
 import { BackgroundGrid } from '../../../components/decorative/BackgroundGrid';
 import { createServicesTimeline } from '../../../animations/servicesTimeline';
+import gsap from 'gsap';
 
 export const DesktopServices: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -16,10 +17,12 @@ export const DesktopServices: React.FC = () => {
     const el = containerRef.current;
     if (!el) return;
 
-    const timeline = createServicesTimeline(el);
+    const ctx = gsap.context(() => {
+      createServicesTimeline(el);
+    }, el);
 
     return () => {
-      timeline.kill();
+      ctx.revert();
     };
   }, []);
 

@@ -4,6 +4,7 @@ import { CASE_STUDIES } from '../../../constants/caseStudies';
 import Stack from '../../../components/ui/Stack';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { createCaseStudiesTimeline } from '../../../animations/caseStudiesTimeline';
+import gsap from 'gsap';
 
 interface DesktopCaseStudiesProps {
   activeIndex: number;
@@ -18,10 +19,15 @@ export const DesktopCaseStudies: React.FC<DesktopCaseStudiesProps> = ({
   const activeProject = CASE_STUDIES[activeIndex];
 
   useEffect(() => {
-    if (!containerRef.current) return;
-    const tl = createCaseStudiesTimeline(containerRef.current);
+    const el = containerRef.current;
+    if (!el) return;
+
+    const ctx = gsap.context(() => {
+      createCaseStudiesTimeline(el);
+    }, el);
+
     return () => {
-      tl.kill();
+      ctx.revert();
     };
   }, []);
 
@@ -32,6 +38,7 @@ export const DesktopCaseStudies: React.FC<DesktopCaseStudiesProps> = ({
         <img 
           src={project.image} 
           alt={project.name} 
+          loading="lazy"
           className="card-image"
         />
         {/* Dark gradient overlay */}

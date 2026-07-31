@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, Heart, Activity, Building, ShoppingBag } from 'lucide-react';
-import sculptureImg from '../../../assets/purple_glass_sculpture.jpg';
+import sculptureImg from '../../../assets/purple_glass_sculpture.webp';
 import DotField from '../../../components/ui/DotField';
 import TextType from '../../../components/ui/TextType';
 
