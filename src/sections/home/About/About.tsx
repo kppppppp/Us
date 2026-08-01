@@ -46,15 +46,7 @@ export const About: React.FC = () => {
 
       {/* Premium Accordion */}
       <div className="w-full max-w-[1500px] mx-auto px-6 md:px-12 relative z-10">
-        <div className="relative rounded-3xl overflow-hidden border border-brand-purple/10 shadow-lg bg-white/40 backdrop-blur-md py-8 md:py-12 px-4 md:px-8">
-          {/* Subtle inner glow */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(93,70,216,0.04),transparent_60%)] pointer-events-none rounded-3xl" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(93,70,216,0.03),transparent_60%)] pointer-events-none rounded-3xl" />
-          
-          <div className="relative z-10">
-            <AboutAccordion />
-          </div>
-        </div>
+        <AboutAccordion />
       </div>
     </section>
   );
