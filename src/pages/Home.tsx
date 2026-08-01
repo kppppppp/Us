@@ -3,6 +3,7 @@ import { DesktopHero } from '../sections/home/Hero/DesktopHero';
 import { MobileHero } from '../sections/home/Hero/MobileHero';
 import { Services } from '../sections/home/Services/Services';
 import { CaseStudies } from '../sections/home/CaseStudies/CaseStudies';
+import { WebsiteAudit } from '../sections/home/WebsiteAudit/WebsiteAudit';
 import { About } from '../sections/home/About/About';
 
 export const Home: React.FC = () => {
@@ -21,6 +22,9 @@ export const Home: React.FC = () => {
 
       {/* Case Studies Section */}
       <CaseStudies />
+
+      {/* Website Audit Tool Section */}
+      <WebsiteAudit />
 
       {/* About Us Section with Flowing Menu */}
       <About />

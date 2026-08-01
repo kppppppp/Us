@@ -140,7 +140,7 @@ export const Footer: React.FC = () => {
               <div className="flex flex-col items-start gap-1">
                 <span className="text-[9px] font-extrabold text-neutral-500 uppercase tracking-widest flex items-center gap-1">
                   <MapPin className="w-3 h-3 text-neutral-400" />
-                  India HQ Office
+                  Navi Mumbai ,India
                 </span>
                 <span className="text-xs text-neutral-400 leading-normal mt-0.5 max-w-[220px]">{contactInfo.address}</span>
               </div>
