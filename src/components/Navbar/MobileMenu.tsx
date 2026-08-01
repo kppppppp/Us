@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Variants } from 'framer-motion';
 import { X, ArrowRight, Mail, Phone, MapPin } from 'lucide-react';
@@ -77,14 +78,14 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
             <div className="flex flex-col gap-6 my-auto">
               {navigationItems.map((item) => (
                 <motion.div key={item.label} variants={itemVariants}>
-                  <a
-                    href={item.href}
+                  <Link
+                    to={item.href}
                     onClick={onClose}
                     className="group flex items-center justify-between text-[28px] md:text-[34px] font-bold text-brand-text hover:text-brand-purple transition-colors"
                   >
                     <span>{item.label}</span>
                     <ArrowRight className="w-6 h-6 opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-brand-purple" />
-                  </a>
+                  </Link>
                 </motion.div>
               ))}
             </div>

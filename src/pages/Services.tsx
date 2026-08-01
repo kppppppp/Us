@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import gsap from 'gsap';
@@ -6,6 +7,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import ScrollFloat from '../components/ui/ScrollFloat';
 import ScrollExpandMedia from '../components/ui/ScrollExpandMedia';
 import DotField from '../components/ui/DotField';
+import { scrollToSection } from '../utils/navigation';
 
 import heroImg from '../assets/image3.webp';
 import heroBgImg from '../assets/image2.webp';
@@ -315,6 +317,7 @@ const services: ServiceItem[] = [
    ═══════════════════════════════════════════ */
 
 export const Services: React.FC = () => {
+  const navigate = useNavigate();
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [activeService, setActiveService] = useState(-1);
 
@@ -485,7 +488,7 @@ export const Services: React.FC = () => {
         if (features.length) tl.from(features, { autoAlpha: 0, y: 15, duration: 0.5, stagger: 0.08, ease: 'power3.out' }, '-=0.3');
         if (cta) tl.from(cta, { autoAlpha: 0, y: 15, duration: 0.5, ease: 'power3.out' }, '-=0.2');
 
-        // Active service tracking for sticky nav
+        // Active service tracking for sticky nav and URL hash sync
         ScrollTrigger.create({
           trigger: section,
           start: 'top center',
@@ -493,8 +496,15 @@ export const Services: React.FC = () => {
           onToggle: (self) => {
             if (self.isActive) {
               setActiveService(idx);
+              const targetHash = `#${services[idx].id}`;
+              if (window.location.hash !== targetHash) {
+                history.replaceState(null, '', `/services${targetHash}`);
+              }
             } else if (idx === 0 && self.progress === 0) {
               setActiveService(-1);
+              if (window.location.hash) {
+                history.replaceState(null, '', '/services');
+              }
             }
           },
         });
@@ -503,6 +513,18 @@ export const Services: React.FC = () => {
 
     return () => ctx.revert();
   }, []);
+
+  // Listen to hash changes or initial mounts
+  const location = useLocation();
+  useEffect(() => {
+    if (location.hash) {
+      // Small timeout to guarantee DOM is fully rendered and height settled
+      const timer = setTimeout(() => {
+        scrollToSection(location.hash);
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [location.hash]);
 
   /* ═══════════════════════════════════════════
      Render
@@ -552,6 +574,11 @@ export const Services: React.FC = () => {
           <a
             key={s.id}
             href={`#${s.id}`}
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToSection(s.id);
+              history.replaceState(null, '', `/services#${s.id}`);
+            }}
             className="group flex items-center gap-3"
           >
             <span
@@ -792,7 +819,7 @@ export const Services: React.FC = () => {
             <Magnetic range={20}>
               <button
                 className="bg-brand-purple hover:bg-brand-purple/90 text-white font-medium text-sm md:text-base px-12 py-5 rounded-full flex items-center gap-4 cursor-pointer shadow-[0_10px_40px_rgba(93,70,216,0.4)] hover:shadow-[0_10px_60px_rgba(93,70,216,0.6)] transition-all duration-500 group"
-                onClick={() => { window.location.href = '/contact'; }}
+                onClick={() => { navigate('/contact'); }}
               >
                 <span className="tracking-wide">Schedule Discovery Call</span>
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-500" />

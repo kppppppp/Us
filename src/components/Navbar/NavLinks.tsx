@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { navigationItems } from '../../constants/navigation';
@@ -6,12 +7,31 @@ import { NavDropdown } from './NavDropdown';
 
 export const NavLinks: React.FC = () => {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const location = useLocation();
+
+  // Helper to determine if path matches item.href
+  const getIsActive = (href: string) => {
+    const currentPath = location.pathname;
+    
+    if (href === '/') {
+      // Solutions link corresponds to home '/'
+      return currentPath === '/';
+    }
+
+    if (href === '/services') {
+      // Keep services active on sub-routes e.g., /services/web-development
+      return currentPath.startsWith('/services');
+    }
+
+    return currentPath === href;
+  };
 
   return (
     <nav className="hidden lg:flex items-center gap-8 xl:gap-10">
       {navigationItems.map((item) => {
         const hasDropdown = item.hasDropdown && item.dropdownItems;
         const isOpen = activeDropdown === item.label;
+        const isActive = getIsActive(item.href);
 
         return (
           <div
@@ -20,8 +40,8 @@ export const NavLinks: React.FC = () => {
             onMouseEnter={() => hasDropdown && setActiveDropdown(item.label)}
             onMouseLeave={() => hasDropdown && setActiveDropdown(null)}
           >
-            <a
-              href={item.href}
+            <Link
+              to={item.href}
               className={`flex items-center gap-1.5 text-base font-medium py-3 text-brand-text hover:text-brand-purple transition-colors duration-300 relative select-none`}
             >
               <span>{item.label}</span>
@@ -43,15 +63,23 @@ export const NavLinks: React.FC = () => {
                 whileHover={{ scaleX: 1 }}
               />
 
-              {/* Show the approved design purple dot indicator under active Solutions item */}
-              {item.label === 'Solutions' && !isOpen && (
-                <span className="absolute bottom-[2px] left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-brand-purple" />
+              {/* Show the dynamic premium layoutId purple dot active indicator */}
+              {isActive && (
+                <motion.span
+                  layoutId="activeIndicator"
+                  className="absolute bottom-[2px] left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-brand-purple"
+                  transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                />
               )}
-            </a>
+            </Link>
 
             {/* Dropdown Menu */}
             {hasDropdown && (
-              <NavDropdown isOpen={isOpen} items={item.dropdownItems || []} />
+              <NavDropdown 
+                isOpen={isOpen} 
+                items={item.dropdownItems || []} 
+                onClose={() => setActiveDropdown(null)} 
+              />
             )}
           </div>
         );
@@ -59,3 +87,4 @@ export const NavLinks: React.FC = () => {
     </nav>
   );
 };
+

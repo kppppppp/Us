@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, memo, useMemo, useCallback } from 'react';
+import { useState, memo, useMemo, useCallback } from 'react';
 import { FaLinkedinIn, FaTwitter, FaBehance, FaInstagram } from 'react-icons/fa';
 import { cn } from '../../lib/utils';
 

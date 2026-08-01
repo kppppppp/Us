@@ -1,6 +1,8 @@
 import React from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import * as Icons from 'lucide-react';
+import { navigateToServiceSection } from '../../utils/navigation';
 
 interface DropdownItem {
   title: string;
@@ -12,9 +14,24 @@ interface DropdownItem {
 interface NavDropdownProps {
   isOpen: boolean;
   items: DropdownItem[];
+  onClose?: () => void;
 }
 
-export const NavDropdown: React.FC<NavDropdownProps> = ({ isOpen, items }) => {
+export const NavDropdown: React.FC<NavDropdownProps> = ({ isOpen, items, onClose }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleItemClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    if (href.startsWith('/services#')) {
+      const hash = href.substring(href.indexOf('#'));
+      navigateToServiceSection(hash, location.pathname, navigate);
+    } else {
+      navigate(href);
+    }
+    if (onClose) onClose();
+  };
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -37,6 +54,7 @@ export const NavDropdown: React.FC<NavDropdownProps> = ({ isOpen, items }) => {
                 <a
                   key={idx}
                   href={item.href}
+                  onClick={(e) => handleItemClick(e, item.href)}
                   className="flex items-start gap-4 p-3.5 rounded-2xl transition-colors hover:bg-neutral-50 group/item"
                 >
                   {IconComponent && (
@@ -61,3 +79,4 @@ export const NavDropdown: React.FC<NavDropdownProps> = ({ isOpen, items }) => {
     </AnimatePresence>
   );
 };
+
