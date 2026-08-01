@@ -4,35 +4,35 @@ import { Marquee } from './3d-testimonails';
 
 const testimonials = [
   {
-    name: 'Ava Green',
-    username: '@ava',
+    name: 'R jhunjhunwala',
+    username: '@rj',
     body: 'Unexpected Solutions made our workflow 10x faster and extremely seamless!',
     img: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
     country: '🇦🇺 AU',
   },
   {
-    name: 'Ana Miller',
-    username: '@ana',
+    name: 'R jhunjhunwala',
+    username: '@rj',
     body: 'The speed, communication, and visual fidelity are out of this world.',
     img: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&auto=format&fit=crop&q=80',
     country: '🇩🇪 DE',
   },
   {
-    name: 'Mateo Rossi',
+    name: 'Abhnya Events',
     username: '@mat',
     body: 'Buttery smooth interactions. The lanyard logic alone is worth five stars!',
     img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
     country: '🇮🇹 IT',
   },
   {
-    name: 'Maya Patel',
-    username: '@maya',
+    name: 'Ariya Shop',
+    username: '@ariya.in',
     body: 'Partnering with them was the best business decision we made this year.',
     img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
     country: '🇮🇳 IN',
   },
   {
-    name: 'Noah Smith',
+    name: 'Yash Furniture',
     username: '@noah',
     body: 'Incredibly professional frontend engineering. Pure design masterclass.',
     img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
