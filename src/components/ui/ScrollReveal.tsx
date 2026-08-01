@@ -71,7 +71,7 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
 
     const oAnim = gsap.fromTo(
       wordElements,
-      { opacity: baseOpacity, willChange: 'opacity' },
+      { opacity: baseOpacity, willChange: enableBlur ? 'opacity, filter' : 'opacity' },
       {
         ease: 'none',
         opacity: 1,
@@ -116,7 +116,7 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
         bAnim.kill();
       }
     };
-  }, [scrollContainerRef, enableBlur, baseRotation, baseOpacity, rotationEnd, wordAnimationEnd, blurStrength]);
+  }, [children, scrollContainerRef, enableBlur, baseRotation, baseOpacity, rotationEnd, wordAnimationEnd, blurStrength]);
 
   return (
     <div ref={containerRef} className={`scroll-reveal ${containerClassName}`}>

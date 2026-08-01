@@ -70,7 +70,7 @@ const testimonials = [
 
 function TestimonialCard({ img, name, username, body, country }: (typeof testimonials)[number]) {
   return (
-    <Card className="w-[260px] bg-white/40 backdrop-blur-md border border-brand-border/60 hover:border-brand-purple/20 transition-all duration-300 hover:shadow-brand-sm rounded-2xl p-5 shrink-0 flex flex-col justify-between">
+    <Card className="w-[260px] bg-white/70 border border-brand-border/60 hover:border-brand-purple/20 transition-all duration-300 hover:shadow-brand-sm rounded-2xl p-5 shrink-0 flex flex-col justify-between">
       <CardContent className="p-0">
         <div className="flex items-center gap-2.5">
           <Avatar className="size-9 border border-brand-border/60">
@@ -100,28 +100,29 @@ export default function TestimonialsDemo() {
         style={{
           transform:
             'translateX(-20px) translateY(0px) translateZ(-50px) rotateX(15deg) rotateY(-8deg) rotateZ(12deg)',
+          willChange: 'transform',
         }}
       >
         {/* Vertical Marquee 1 */}
-        <Marquee vertical pauseOnHover repeat={3} className="[--duration:30s] h-full">
+        <Marquee vertical pauseOnHover repeat={2} className="[--duration:30s] h-full">
           {testimonials.map((review) => (
             <TestimonialCard key={review.username} {...review} />
           ))}
         </Marquee>
         {/* Vertical Marquee 2 */}
-        <Marquee vertical pauseOnHover reverse repeat={3} className="[--duration:25s] h-full">
+        <Marquee vertical pauseOnHover reverse repeat={2} className="[--duration:25s] h-full">
           {testimonials.map((review) => (
             <TestimonialCard key={review.username} {...review} />
           ))}
         </Marquee>
         {/* Vertical Marquee 3 */}
-        <Marquee vertical pauseOnHover repeat={3} className="[--duration:35s] h-full">
+        <Marquee vertical pauseOnHover repeat={2} className="[--duration:35s] h-full">
           {testimonials.map((review) => (
             <TestimonialCard key={review.username} {...review} />
           ))}
         </Marquee>
         {/* Vertical Marquee 4 */}
-        <Marquee vertical pauseOnHover reverse repeat={3} className="[--duration:28s] h-full">
+        <Marquee vertical pauseOnHover reverse repeat={2} className="[--duration:28s] h-full">
           {testimonials.map((review) => (
             <TestimonialCard key={review.username} {...review} />
           ))}
