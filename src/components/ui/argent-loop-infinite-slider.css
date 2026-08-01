@@ -34,10 +34,19 @@
   will-change: transform;
 }
 
+.project::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(5, 4, 9, 0.25) 0%, rgba(5, 4, 9, 0.85) 100%);
+  pointer-events: none;
+}
+
 .project img {
   width: 100%;
   height: 120%;
   object-fit: cover;
+  filter: brightness(0.8) contrast(1.1);
 }
 
 /* Premium Split White Card (Minimap) */
@@ -182,44 +191,48 @@
 .minimap-item-info-row:nth-child(1) p:nth-child(1) {
   font-family: 'Outfit', sans-serif;
   font-weight: 800;
-  font-size: 16px;
-  letter-spacing: 0.15em;
+  font-size: 15px;
+  letter-spacing: 0.12em;
   color: #000000; /* Solid Black */
   text-align: left;
-  width: 35%;
+  width: 34%;
+  max-width: calc(50% - 135px);
 }
 
 .minimap-item-info-row:nth-child(1) p:nth-child(2) {
   font-family: 'Outfit', sans-serif;
   font-weight: 800;
-  font-size: 16px;
-  letter-spacing: 0.15em;
+  font-size: 15px;
+  letter-spacing: 0.12em;
   color: #000000; /* Solid Black */
   text-transform: uppercase;
   text-align: right;
-  width: 35%;
+  width: 34%;
+  max-width: calc(50% - 135px);
 }
 
 /* Row 2 Typography */
 .minimap-item-info-row:nth-child(2) p:nth-child(1) {
   font-family: 'Outfit', sans-serif;
   font-weight: 800;
-  font-size: 16px;
-  letter-spacing: 0.15em;
+  font-size: 15px;
+  letter-spacing: 0.12em;
   color: #000000; /* Solid Black */
   text-transform: uppercase;
   text-align: left;
-  width: 35%;
+  width: 34%;
+  max-width: calc(50% - 135px);
 }
 
 .minimap-item-info-row:nth-child(2) p:nth-child(2) {
   font-family: 'Outfit', sans-serif;
   font-weight: 800;
-  font-size: 16px;
-  letter-spacing: 0.15em;
+  font-size: 15px;
+  letter-spacing: 0.12em;
   color: #000000; /* Solid Black */
   text-align: right;
-  width: 35%;
+  width: 34%;
+  max-width: calc(50% - 135px);
 }
 
 /* Row 3 Typography */
@@ -232,19 +245,22 @@
 .minimap-item-info-row:nth-child(3) p {
   font-family: 'Outfit', sans-serif;
   font-weight: 800;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.45;
   color: #000000; /* Solid Black */
   text-transform: uppercase;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
   text-align: left;
-  width: 42%;
+  width: 34%;
+  max-width: calc(50% - 135px);
 }
 
 @media (max-width: 768px) {
   .minimap-item-info-row:nth-child(1) p:nth-child(1),
   .minimap-item-info-row:nth-child(1) p:nth-child(2) {
     font-size: 12px;
+    width: 33%;
+    max-width: calc(50% - 95px);
   }
   
   /* Push row 2 closer to row 1 on mobile to clear the center image */
@@ -256,11 +272,14 @@
   .minimap-item-info-row:nth-child(2) p:nth-child(1),
   .minimap-item-info-row:nth-child(2) p:nth-child(2) {
     font-size: 12px;
+    width: 33%;
+    max-width: calc(50% - 95px);
   }
   
   .minimap-item-info-row:nth-child(3) p {
     font-size: 12px;
-    width: 48%;
+    width: 33%;
+    max-width: calc(50% - 95px);
   }
 }
 
@@ -269,12 +288,14 @@
   .minimap-item-info-row:nth-child(1) p:nth-child(2),
   .minimap-item-info-row:nth-child(2) p:nth-child(1),
   .minimap-item-info-row:nth-child(2) p:nth-child(2) {
-    width: 32% !important;
+    width: 30% !important;
+    max-width: calc(50% - 60px) !important;
     font-size: 10px;
   }
   
   .minimap-item-info-row:nth-child(3) p {
-    width: 32% !important;
+    width: 30% !important;
+    max-width: calc(50% - 60px) !important;
     font-size: 10px;
     line-height: 1.45;
   }

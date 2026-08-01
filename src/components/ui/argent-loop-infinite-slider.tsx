@@ -12,28 +12,28 @@ interface ProjectData {
 const PROJECT_DATA: ProjectData[] = [
   {
     title: "Healthcare",
-    image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=2070&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=2070&auto=format&fit=crop",
     category: "Clinics & Care Systems",
     year: "2026",
     description: "Digital experiences that build patient trust."
   },
   {
     title: "E-commerce",
-    image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=2070&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop",
     category: "Storefronts & Checkouts",
     year: "2026",
     description: "Immersive retail platforms that scale conversions."
   },
   {
     title: "Real Estate",
-    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop",
     category: "Skyscrapers & Portals",
     year: "2026",
     description: "Premium showcases for elite architecture."
   },
   {
     title: "Finance & FinTech",
-    image: "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?q=80&w=2070&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=2070&auto=format&fit=crop",
     category: "Capital & Analytics",
     year: "2026",
     description: "Secure applications for modern capital."
@@ -43,28 +43,28 @@ const PROJECT_DATA: ProjectData[] = [
     category: "LMS & Student Portals",
     year: "2026",
     description: "Workspaces shaping future minds.",
-    image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2070&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop"
   },
   {
     title: "Fitness & Wellness",
     category: "Membership & Apps",
     year: "2026",
     description: "Logic for active lifestyles.",
-    image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=2070&auto=format&fit=crop"
   },
   {
     title: "Hospitality",
     category: "Booking & Luxury Dining",
     year: "2026",
     description: "Reservations for curated journeys.",
-    image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?q=80&w=2070&auto=format&fit=crop"
   },
   {
     title: "Manufacturing & Industrial",
     category: "Supply Chains & ERP",
     year: "2026",
     description: "Connected ecosystems driving production.",
-    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?q=80&w=2070&auto=format&fit=crop"
   }
 ];
 

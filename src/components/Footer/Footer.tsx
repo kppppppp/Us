@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowUpRight, Mail, Phone, MapPin, Copy, Check } from 'lucide-react';
-import { Logo } from '../Navbar/Logo';
+import  Logofoot  from '../../assets/footer.png';
 import { socialLinks, contactInfo } from '../../constants/navigation';
 import DotField from '../ui/DotField';
 
@@ -66,9 +66,13 @@ export const Footer: React.FC = () => {
           {/* Identity */}
           <div className="flex flex-col items-start gap-5">
             {/* Custom Inverse Logo for Dark Footer */}
-            <div className="text-white hover:opacity-95 transition-opacity duration-300">
-              <Logo />
-            </div>
+            <div className="hover:opacity-95 transition-opacity duration-300">
+  <img
+    src={Logofoot}
+    alt="Unexpected Solutions"
+    className="h-14 w-auto object-contain"
+  />
+</div>
             <p className="text-xs md:text-sm text-neutral-400 leading-relaxed max-w-xs mt-2">
               Engineering high-performance software, custom design systems, and digital strategy with zero compromise.
             </p>
