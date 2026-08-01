@@ -88,6 +88,18 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
                   </Link>
                 </motion.div>
               ))}
+              
+              {/* Client Portal Link inside drawer */}
+              <motion.div variants={itemVariants}>
+                <Link
+                  to="#"
+                  onClick={onClose}
+                  className="group flex items-center justify-between text-[28px] md:text-[34px] font-bold text-neutral-400 hover:text-brand-purple transition-colors"
+                >
+                  <span>Client Portal</span>
+                  <ArrowRight className="w-6 h-6 opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-brand-purple" />
+                </Link>
+              </motion.div>
             </div>
 
             {/* Bottom Section with CTA and Contact/Socials */}
