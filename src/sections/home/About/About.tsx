@@ -1,19 +1,8 @@
 import React from 'react';
-import FlowingMenu from '../../../components/ui/FlowingMenu';
-import visionImg from '../../../assets/about_vision.webp';
-import philosophyImg from '../../../assets/about_philosophy.webp';
-import peopleImg from '../../../assets/about_people.webp';
-import influenceImg from '../../../assets/about_influence.webp';
+import { AboutAccordion } from '../../../components/ui/about-accordion';
 import DotField from '../../../components/ui/DotField';
 
 export const About: React.FC = () => {
-  const aboutItems = [
-    { link: '#vision', text: 'Our Vision', image: visionImg },
-    { link: '#philosophy', text: 'Our Philosophy', image: philosophyImg },
-    { link: '#people', text: 'Our People', image: peopleImg },
-    { link: '#influence', text: 'Our Influence', image: influenceImg }
-  ];
-
   return (
     <section className="relative w-full bg-[#F7F5FC] py-16 lg:py-[120px] overflow-hidden select-none" id="about-us">
       {/* Global Fixed DotField Canvas Background */}
@@ -38,7 +27,8 @@ export const About: React.FC = () => {
       <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-brand-purple/5 blur-[130px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full bg-[#FF9FFC]/5 blur-[120px] pointer-events-none" />
 
-      <div className="w-full max-w-[1500px] mx-auto px-6 md:px-12 mb-16 grid grid-cols-12 gap-8 items-end">
+      {/* Header */}
+      <div className="w-full max-w-[1500px] mx-auto px-6 md:px-12 mb-12 md:mb-16 grid grid-cols-12 gap-8 items-end relative z-10">
         <div className="col-span-12 md:col-span-5">
           <span className="text-[11px] font-bold text-brand-purple tracking-[0.35em] uppercase block mb-4">
             Who We Are
@@ -54,17 +44,16 @@ export const About: React.FC = () => {
         </div>
       </div>
 
-      <div className="w-full max-w-[1500px] mx-auto px-6 md:px-12">
-        <div className="h-[400px] md:h-[450px] relative rounded-3xl overflow-hidden border border-brand-purple/10 shadow-lg">
-          <FlowingMenu
-            items={aboutItems}
-            speed={18}
-            textColor="#120F17"
-            bgColor="#F7F5FC"
-            marqueeBgColor="#5d46d8"
-            marqueeTextColor="#ffffff"
-            borderColor="rgba(93, 70, 216, 0.08)"
-          />
+      {/* Premium Accordion */}
+      <div className="w-full max-w-[1500px] mx-auto px-6 md:px-12 relative z-10">
+        <div className="relative rounded-3xl overflow-hidden border border-brand-purple/10 shadow-lg bg-white/40 backdrop-blur-md py-8 md:py-12 px-4 md:px-8">
+          {/* Subtle inner glow */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(93,70,216,0.04),transparent_60%)] pointer-events-none rounded-3xl" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(93,70,216,0.03),transparent_60%)] pointer-events-none rounded-3xl" />
+          
+          <div className="relative z-10">
+            <AboutAccordion />
+          </div>
         </div>
       </div>
     </section>
