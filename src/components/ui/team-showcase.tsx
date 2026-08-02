@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, memo, useMemo, useCallback } from 'react';
 import { FaLinkedinIn, FaTwitter, FaBehance, FaInstagram } from 'react-icons/fa';
 import { cn } from '../../lib/utils';
 
@@ -134,28 +134,23 @@ interface TeamShowcaseProps {
 
 export default function TeamShowcase({ members = DEFAULT_MEMBERS }: TeamShowcaseProps) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
-  const [processedMembers, setProcessedMembers] = useState<TeamMember[]>([]);
 
-  useEffect(() => {
-    // Generate initials placeholders dynamically on the client to avoid server hydration issues
-    const updated = members.map(m => {
+  const processedMembers = useMemo(() => {
+    return members.map(m => {
       if (m.image === 'Placeholder') {
-        return {
-          ...m,
-          image: createInitialsPlaceholder(m.name)
-        };
+        return { ...m, image: createInitialsPlaceholder(m.name) };
       }
       return m;
     });
-    setProcessedMembers(updated);
   }, [members]);
 
-  // Fallback to initial members array in case mount hasn't occurred yet (or SSR)
-  const activeMembers = processedMembers.length > 0 ? processedMembers : members;
+  const activeMembers = processedMembers;
 
-  const col1 = activeMembers.filter((_, i) => i % 3 === 0);
-  const col2 = activeMembers.filter((_, i) => i % 3 === 1);
-  const col3 = activeMembers.filter((_, i) => i % 3 === 2);
+  const col1 = useMemo(() => activeMembers.filter((_, i) => i % 3 === 0), [activeMembers]);
+  const col2 = useMemo(() => activeMembers.filter((_, i) => i % 3 === 1), [activeMembers]);
+  const col3 = useMemo(() => activeMembers.filter((_, i) => i % 3 === 2), [activeMembers]);
+
+  const handleHover = useCallback((id: string | null) => setHoveredId(id), []);
 
   return (
     <div className="flex flex-col md:flex-row items-start gap-8 md:gap-16 lg:gap-24 select-none w-full max-w-[1200px] mx-auto py-8 px-4 md:px-6 font-sans">
@@ -169,7 +164,7 @@ export default function TeamShowcase({ members = DEFAULT_MEMBERS }: TeamShowcase
               member={member}
               className="w-[110px] h-[120px] sm:w-[140px] sm:h-[150px] md:w-[170px] md:h-[185px]"
               hoveredId={hoveredId}
-              onHover={setHoveredId}
+              onHover={handleHover}
             />
           ))}
         </div>
@@ -182,7 +177,7 @@ export default function TeamShowcase({ members = DEFAULT_MEMBERS }: TeamShowcase
               member={member}
               className="w-[122px] h-[132px] sm:w-[155px] sm:h-[165px] md:w-[188px] md:h-[200px]"
               hoveredId={hoveredId}
-              onHover={setHoveredId}
+              onHover={handleHover}
             />
           ))}
         </div>
@@ -195,7 +190,7 @@ export default function TeamShowcase({ members = DEFAULT_MEMBERS }: TeamShowcase
               member={member}
               className="w-[115px] h-[125px] sm:w-[145px] sm:h-[155px] md:w-[178px] md:h-[190px]"
               hoveredId={hoveredId}
-              onHover={setHoveredId}
+              onHover={handleHover}
             />
           ))}
         </div>
@@ -208,7 +203,7 @@ export default function TeamShowcase({ members = DEFAULT_MEMBERS }: TeamShowcase
             key={member.id}
             member={member}
             hoveredId={hoveredId}
-            onHover={setHoveredId}
+            onHover={handleHover}
           />
         ))}
       </div>
@@ -220,7 +215,7 @@ export default function TeamShowcase({ members = DEFAULT_MEMBERS }: TeamShowcase
    Photo card 
 ───────────────────────────────────────── */
 
-function PhotoCard({
+const PhotoCard = memo(function PhotoCard({
   member,
   className,
   hoveredId,
@@ -250,6 +245,7 @@ function PhotoCard({
       <img
         src={imgSrc}
         alt={member.name}
+        loading="lazy"
         className="w-full h-full object-cover transition-[filter,transform] duration-500 hover:scale-103"
         style={{
           filter: isActive ? 'grayscale(0) brightness(1)' : 'grayscale(1) brightness(0.82)',
@@ -257,13 +253,15 @@ function PhotoCard({
       />
     </div>
   );
-}
+});
+
+PhotoCard.displayName = 'PhotoCard';
 
 /* ─────────────────────────────────────────
    Member name section
 ───────────────────────────────────────── */
 
-function MemberRow({
+const MemberRow = memo(function MemberRow({
   member,
   hoveredId,
   onHover,
@@ -370,4 +368,6 @@ function MemberRow({
       </p>
     </div>
   );
-}
+});
+
+MemberRow.displayName = 'MemberRow';

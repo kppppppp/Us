@@ -6,6 +6,7 @@ import VariableProximity from '../components/ui/VariableProximity';
 import TeamShowcase from '../components/ui/team-showcase';
 import ScrollReveal from '../components/ui/ScrollReveal';
 import TestimonialsDemo from '../components/ui/demo';
+import LazyMount from '../components/ui/LazyMount';
 
 // Prefetch Lanyard chunk immediately when About module loads (not when component renders).
 // The import() starts the network fetch the instant the user navigates to /about,
@@ -69,26 +70,26 @@ export const About: React.FC = () => {
 
       tl.fromTo('.hero-subtitle',
         { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.6 }
+        { opacity: 1, y: 0, duration: 0.6, force3D: true }
       )
       .fromTo('.hero-title',
         { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.8 },
+        { opacity: 1, y: 0, duration: 0.8, force3D: true },
         '-=0.35'
       )
       .fromTo('.hero-description',
         { opacity: 0, y: 25 },
-        { opacity: 1, y: 0, duration: 0.7 },
+        { opacity: 1, y: 0, duration: 0.7, force3D: true },
         '-=0.4'
       )
       .fromTo('.hero-cta',
         { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.6 },
+        { opacity: 1, y: 0, duration: 0.6, force3D: true },
         '-=0.3'
       )
       .fromTo('.hero-lanyard-container',
         { opacity: 0, x: 40 },
-        { opacity: 1, x: 0, duration: 1, ease: 'power2.out' },
+        { opacity: 1, x: 0, duration: 1, ease: 'power2.out', force3D: true },
         '-=0.7'
       );
 
@@ -128,7 +129,8 @@ export const About: React.FC = () => {
           { 
             opacity: 0, 
             y: 40,
-            scale: 0.98
+            scale: 0.98,
+            willChange: 'transform, opacity'
           },
           {
             opacity: 1,
@@ -136,11 +138,13 @@ export const About: React.FC = () => {
             scale: 1,
             duration: 0.8,
             ease: 'power3.out',
+            force3D: true,
             scrollTrigger: {
               trigger: card,
               start: 'top bottom-=10%',
               toggleActions: 'play none none none'
-            }
+            },
+            clearProps: 'willChange'
           }
         );
       });
@@ -246,7 +250,7 @@ export const About: React.FC = () => {
             return (
               <div 
                 key={idx}
-                className={`about-pillar-card group w-full flex flex-col ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-6 md:gap-10 bg-white/40 backdrop-blur-md rounded-[24px] p-5 md:p-6 border border-brand-border/60 hover:border-brand-purple/20 transition-all duration-500 hover:shadow-brand-sm`}
+                className={`about-pillar-card group w-full flex flex-col ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-6 md:gap-10 bg-white/70 rounded-[24px] p-5 md:p-6 border border-brand-border/60 hover:border-brand-purple/20 transition-all duration-500 hover:shadow-brand-sm`}
               >
                 {/* Image column */}
                 <div className="w-full md:w-[45%] h-[200px] md:h-[250px] rounded-xl overflow-hidden border border-brand-border/60 flex items-center justify-center relative shrink-0 bg-neutral-950">
@@ -285,38 +289,42 @@ export const About: React.FC = () => {
       </div>
 
       {/* Team Showcase Section */}
-      <div className="max-w-[1200px] mx-auto px-6 md:px-12 relative z-10 mb-20 md:mb-32">
-        <div className="text-center md:text-left mb-10 md:mb-16">
-          <span className="text-xs md:text-sm font-bold tracking-[0.4em] text-brand-purple uppercase mb-3 block">
-            OUR TEAM
-          </span>
-          <h2 className="text-3xl md:text-5xl font-serif font-bold text-brand-text tracking-tight mb-4">
-            The People Behind Unexpected Solutions
-          </h2>
-          <p className="text-base md:text-lg text-neutral-500 font-light leading-relaxed max-w-[700px]">
-            A passionate team of strategists, designers, developers, and growth specialists dedicated to building digital experiences that help businesses grow with confidence.
-          </p>
-        </div>
+      <LazyMount minHeight="500px">
+        <div className="max-w-[1200px] mx-auto px-6 md:px-12 relative z-10 mb-20 md:mb-32">
+          <div className="text-center md:text-left mb-10 md:mb-16">
+            <span className="text-xs md:text-sm font-bold tracking-[0.4em] text-brand-purple uppercase mb-3 block">
+              OUR TEAM
+            </span>
+            <h2 className="text-3xl md:text-5xl font-serif font-bold text-brand-text tracking-tight mb-4">
+              The People Behind Unexpected Solutions
+            </h2>
+            <p className="text-base md:text-lg text-neutral-500 font-light leading-relaxed max-w-[700px]">
+              A passionate team of strategists, designers, developers, and growth specialists dedicated to building digital experiences that help businesses grow with confidence.
+            </p>
+          </div>
 
-        <TeamShowcase />
-      </div>
+          <TeamShowcase />
+        </div>
+      </LazyMount>
 
       {/* Testimonials Section */}
-      <div className="max-w-[1200px] mx-auto px-6 md:px-12 relative z-10 mb-20 md:mb-32 flex flex-col items-center">
-        <div className="w-full text-center md:text-left mb-10 md:mb-16">
-          <span className="text-xs md:text-sm font-bold tracking-[0.4em] text-brand-purple uppercase mb-3 block">
-            TESTIMONIALS
-          </span>
-          <h2 className="text-3xl md:text-5xl font-serif font-bold text-brand-text tracking-tight mb-4">
-            Trusted by Builders & Visionaries
-          </h2>
-          <p className="text-base md:text-lg text-neutral-500 font-light leading-relaxed max-w-[700px]">
-            Hear from founders, directors, and developers who have experienced our commitment to high-velocity engineering and premium craft.
-          </p>
-        </div>
+      <LazyMount minHeight="480px">
+        <div className="max-w-[1200px] mx-auto px-6 md:px-12 relative z-10 mb-20 md:mb-32 flex flex-col items-center">
+          <div className="w-full text-center md:text-left mb-10 md:mb-16">
+            <span className="text-xs md:text-sm font-bold tracking-[0.4em] text-brand-purple uppercase mb-3 block">
+              TESTIMONIALS
+            </span>
+            <h2 className="text-3xl md:text-5xl font-serif font-bold text-brand-text tracking-tight mb-4">
+              Trusted by Builders & Visionaries
+            </h2>
+            <p className="text-base md:text-lg text-neutral-500 font-light leading-relaxed max-w-[700px]">
+              Hear from founders, directors, and developers who have experienced our commitment to high-velocity engineering and premium craft.
+            </p>
+          </div>
 
-        <TestimonialsDemo />
-      </div>
+          <TestimonialsDemo />
+        </div>
+      </LazyMount>
 
       <div className="max-w-[1200px] mx-auto px-6 relative z-10">
         {/* CTA / Momentum Footer Section */}

@@ -101,7 +101,7 @@ export const socialLinks = [
 ];
 
 export const contactInfo = {
-  email: 'build@unexpectedsolutions.com',
-  phone: '+1 (800) 555-0199',
-  address: '100 Pine Street, San Francisco, CA 94111'
+  email: 'info@unexpectedsolution.in',
+  phone: '+91 7384923654',
+  address: 'Belapur , Navi Mumbai , Maharashtra'
 };

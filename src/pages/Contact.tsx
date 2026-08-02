@@ -689,9 +689,8 @@ export const Contact: React.FC = () => {
                 India HQ
               </h4>
               <p className="text-sm text-neutral-600 font-light leading-relaxed">
-                402, Elite Business Hub,<br />
-                Opposite Shalby Hospital,<br />
-                Ahmedabad, Gujarat, India
+                
+                Navi Mumbai, Maharashtra, India
               </p>
             </div>
 
@@ -715,7 +714,7 @@ export const Contact: React.FC = () => {
                   className="flex items-center gap-2.5 text-sm text-neutral-600 hover:text-brand-purple transition-colors duration-300 font-light"
                 >
                   <Mail size={16} className="text-brand-purple" />
-                  <span>hello@unexpectedsolns.com</span>
+                  <span>info@unexpectedsolution.in</span>
                 </a>
                 <a 
                   href="tel:+919876543210" 

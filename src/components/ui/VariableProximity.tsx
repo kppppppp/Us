@@ -77,6 +77,19 @@ export const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityPr
   const mousePositionRef = useMousePositionRef(containerRef);
   const lastPositionRef = useRef<{ x: number | null; y: number | null }>({ x: null, y: null });
 
+  const letterPositionsRef = useRef<{ cx: number; cy: number }[]>([]);
+  const isVisibleRef = useRef(true);
+  const rootRef = useRef<HTMLSpanElement | null>(null);
+
+  const mergedRef = (node: HTMLSpanElement | null) => {
+    rootRef.current = node;
+    if (typeof ref === 'function') {
+      ref(node);
+    } else if (ref) {
+      ref.current = node;
+    }
+  };
+
   const parsedSettings = useMemo(() => {
     const parseSettings = (settingsStr: string) =>
       new Map(
@@ -101,7 +114,7 @@ export const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityPr
     }));
   }, [fromFontVariationSettings, toFontVariationSettings]);
 
-  const calculateDistance = (x1: number, y1: number, x2: number, y2: number) => 
+  const calculateDistance = (x1: number, y1: number, x2: number, y2: number) =>
     Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
 
   const calculateFalloff = (distance: number) => {
@@ -117,9 +130,63 @@ export const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityPr
     }
   };
 
+  useEffect(() => {
+    const calculateLetterPositions = () => {
+      if (!containerRef?.current) return;
+      const containerRect = containerRef.current.getBoundingClientRect();
+      
+      letterPositionsRef.current = letterRefs.current.map((letterRef) => {
+        if (!letterRef) return { cx: 0, cy: 0 };
+        const rect = letterRef.getBoundingClientRect();
+        return {
+          cx: rect.left + rect.width / 2 - containerRect.left,
+          cy: rect.top + rect.height / 2 - containerRect.top,
+        };
+      });
+    };
+
+    let timeoutId: number;
+    const handleResize = () => {
+      window.clearTimeout(timeoutId);
+      timeoutId = window.setTimeout(() => {
+        calculateLetterPositions();
+      }, 100);
+    };
+
+    window.addEventListener('resize', handleResize);
+    
+    let resizeObserver: ResizeObserver | null = null;
+    if (containerRef?.current) {
+      resizeObserver = new ResizeObserver(() => {
+        handleResize();
+      });
+      resizeObserver.observe(containerRef.current);
+    }
+
+    calculateLetterPositions();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      window.clearTimeout(timeoutId);
+      if (resizeObserver) {
+        resizeObserver.disconnect();
+      }
+    };
+  }, [containerRef, label]);
+
+  useEffect(() => {
+    if (!rootRef.current) return;
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0]) {
+        isVisibleRef.current = entries[0].isIntersecting;
+      }
+    });
+    observer.observe(rootRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   useAnimationFrame(() => {
-    if (!containerRef?.current) return;
-    const containerRect = containerRef.current.getBoundingClientRect();
+    if (!isVisibleRef.current || !containerRef?.current) return;
     const { x, y } = mousePositionRef.current;
     if (lastPositionRef.current.x === x && lastPositionRef.current.y === y) {
       return;
@@ -128,17 +195,10 @@ export const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityPr
 
     letterRefs.current.forEach((letterRef, index) => {
       if (!letterRef) return;
+      const pos = letterPositionsRef.current[index];
+      if (!pos) return;
 
-      const rect = letterRef.getBoundingClientRect();
-      const letterCenterX = rect.left + rect.width / 2 - containerRect.left;
-      const letterCenterY = rect.top + rect.height / 2 - containerRect.top;
-
-      const distance = calculateDistance(
-        mousePositionRef.current.x,
-        mousePositionRef.current.y,
-        letterCenterX,
-        letterCenterY
-      );
+      const distance = calculateDistance(x, y, pos.cx, pos.cy);
 
       if (distance >= radius) {
         letterRef.style.fontVariationSettings = fromFontVariationSettings;
@@ -163,7 +223,7 @@ export const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityPr
 
   return (
     <span
-      ref={ref}
+      ref={mergedRef}
       className={`${className} variable-proximity`}
       onClick={onClick}
       style={{ display: 'inline', ...style }}
