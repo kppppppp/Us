@@ -1,183 +1,144 @@
-import React from 'react';
-import {
-  ArrowUpRight,
-  Sparkles,
-  Layers,
-  Cpu,
-  Cloud,
-} from 'lucide-react';
+import React from "react";
+import { ArrowUpRight } from "lucide-react";
 
-import sculptureImg from '../../../assets/purple_glass_sculpture.webp';
-import DotField from '../../../components/ui/DotField';
-import TextType from '../../../components/ui/TextType';
+import sculptureImg from "../../../assets/purple_glass_sculpture.webp";
+import TextType from "../../../components/ui/TextType";
+
+const stats = [
+  { value: "150+", label: "Projects" },
+  { value: "40+", label: "Experts" },
+  { value: "98%", label: "Success" },
+];
 
 export const MobileHero: React.FC = () => {
-  const impactItems = [
-    { title: 'Intelligent Systems', icon: Sparkles },
-    { title: 'Digital Platforms', icon: Layers },
-    { title: 'AI & Automation', icon: Cpu },
-    { title: 'Cloud & DevOps', icon: Cloud },
-  ];
-
   return (
-    <section className="relative min-h-screen overflow-hidden bg-gradient-to-b from-[#FBFAFF] via-[#F8F5FF] to-white pt-[110px] pb-12 px-6 select-none">
-
-      {/* ================= Dot Background ================= */}
-      <div className="absolute inset-0 z-0 opacity-60 pointer-events-none">
-        <DotField
-          dotRadius={2.8}
-          dotSpacing={16}
-          bulgeStrength={55}
-          glowRadius={180}
-          sparkle={false}
-          waveAmplitude={0}
-          gradientFrom="rgba(0,0,0,0.28)"
-          gradientTo="rgba(0,0,0,0.12)"
-          glowColor="rgba(0,0,0,0.02)"
-        />
-      </div>
-
-      {/* ================= Full Screen Sculpture Background ================= */}
-      <div className="absolute inset-0 z-[1] overflow-hidden pointer-events-none">
-
-        {/* Purple sculpture */}
+    <section className="relative bg-white pt-[90px] pb-16">
+      {/* Image banner — the thesis of the page, full width, not decorative background */}
+      <div className="relative mx-4 h-[52vh] min-h-[380px] overflow-hidden rounded-[28px]">
         <img
           src={sculptureImg}
           alt=""
-          className="
-            absolute
-            left-1/2
-            top-[44%]
-            -translate-x-1/2
-            -translate-y-1/2
-            w-[145%]
-            max-w-none
-            object-contain
-            opacity-[0.88]
-            scale-[1.45]
-            blur-[1px]
-          "
+          className="absolute inset-0 h-full w-full object-cover scale-110"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-black/0" />
 
-        {/* Soft white overlay */}
-        <div className="absolute inset-0 bg-white/35" />
-
-        {/* Extra radial glow */}
-        <div
+        {/* Eyebrow badge, top-left on the image */}
+        <span
           className="
             absolute
-            left-1/2
-            top-[44%]
-            -translate-x-1/2
-            -translate-y-1/2
-            w-[320px]
-            h-[320px]
+            top-5
+            left-5
             rounded-full
-            bg-brand-purple/10
-            blur-[90px]
+            bg-white/90
+            backdrop-blur-md
+            px-3
+            py-1.5
+            text-[10px]
+            font-bold
+            uppercase
+            tracking-[0.24em]
+            text-brand-purple
           "
-        />
-      </div>
-
-      {/* ================= Content ================= */}
-      <div className="relative z-20 flex flex-col justify-center">
-
-        {/* Tagline */}
-        <span className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-neutral-500 text-center">
-          Enterprise Software &nbsp; • &nbsp; AI &nbsp; • &nbsp; Transformation
+        >
+          Unexpected Solution
         </span>
 
-        {/* Hero Heading */}
-        <div className="mt-20">
-          <h1 className="text-[38px] leading-[1.08] tracking-[-0.03em] font-semibold text-center text-brand-text">
+        {/* Headline, set directly into the image at the bottom */}
+        <h1
+          className="
+            absolute
+            bottom-6
+            left-6
+            right-6
+            text-[42px]
+            leading-[0.95]
+            tracking-[-0.04em]
+            font-bold
+            text-white
+          "
+        >
+          We Build Digital Businesses.
+        </h1>
+      </div>
 
-            Solving today's
-            <br />
-            complexity.
-            <br />
-
-            <span className="block text-brand-purple min-h-[95px] mt-2">
-              <TextType
-                text={[
-                  "Building tomorrow's advantage.",
-                  'Engineering unexpected scale.',
-                  'Designing premium experiences.',
-                ]}
-                typingSpeed={60}
-                pauseDuration={2000}
-                showCursor
-                cursorCharacter="|"
-              />
-            </span>
-
-          </h1>
+      {/* Content below the image — single column, generous rhythm */}
+      <div className="px-7 mt-8">
+        <div className="h-[36px]">
+          <p className="text-[19px] font-semibold leading-tight text-brand-purple">
+            <TextType
+              text={[
+                "Powered by AI.",
+                "Built for Scale.",
+                "Designed for Growth.",
+              ]}
+              typingSpeed={55}
+              pauseDuration={1800}
+              showCursor
+              cursorCharacter="|"
+            />
+          </p>
         </div>
 
-        {/* Subtitle */}
-        <p className="mt-4 text-[15px] leading-7 text-neutral-600 text-center max-w-sm mx-auto">
-          We partner with forward-thinking organizations to design, engineer
-          and scale digital solutions that create measurable business impact.
+        <p className="mt-4 text-[15px] leading-7 text-neutral-600 max-w-[320px]">
+          We help enterprises transform operations with AI, software
+          engineering and scalable digital products designed for
+          measurable business impact.
         </p>
 
-        {/* CTA Buttons */}
-        <div className="flex flex-col gap-4 mt-10">
-
-          <button className="w-full rounded-full bg-[#141414] py-4 text-sm font-semibold text-white flex items-center justify-center gap-2 shadow-xl hover:bg-[#222] transition-all">
-            Let's Build Together
-            <ArrowUpRight className="w-4 h-4" />
+        {/* Single primary action, plain text link as the secondary — no circular icon button */}
+        <div className="mt-8 flex flex-col items-start gap-4">
+          <button
+            className="
+              w-full
+              rounded-full
+              bg-black
+              py-4
+              text-white
+              font-semibold
+              flex
+              items-center
+              justify-center
+              gap-2
+              shadow-xl
+            "
+          >
+            Let's Talk
+            <ArrowUpRight size={18} />
           </button>
 
           <a
-            href="#case-studies"
-            className="w-full rounded-full border border-black/10 bg-white/65 backdrop-blur-md py-4 text-sm font-semibold text-brand-text flex items-center justify-center gap-2"
+            href="#work"
+            className="
+              inline-flex
+              items-center
+              gap-1.5
+              text-[14px]
+              font-semibold
+              text-brand-text
+              underline
+              underline-offset-4
+              decoration-black/20
+            "
           >
-            Explore Our Work
-            <ArrowUpRight className="w-4 h-4 text-neutral-400" />
+            See our work
+            <ArrowUpRight size={14} />
           </a>
-
         </div>
 
-        {/* Impact Card */}
-        <div className="mt-10 rounded-3xl border border-white/40 bg-white/55 backdrop-blur-xl shadow-2xl p-5">
-
-          <span className="text-[10px] uppercase tracking-[0.25em] font-extrabold text-brand-purple">
-            WE CREATE IMPACT
-          </span>
-
-          <div className="mt-5 flex flex-col gap-2">
-
-            {impactItems.map((item, index) => {
-              const Icon = item.icon;
-
-              return (
-                <a
-                  key={index}
-                  href={`#${item.title.toLowerCase().replace(/ & /g, '-').replace(/ /g, '-')}`}
-                  className="flex items-center justify-between rounded-2xl p-3 hover:bg-white/70 transition-all"
-                >
-                  <div className="flex items-center gap-3">
-
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white shadow-md">
-                      <Icon className="w-4 h-4 text-brand-text" />
-                    </div>
-
-                    <span className="text-sm font-semibold text-brand-text">
-                      {item.title}
-                    </span>
-
-                  </div>
-
-                  <ArrowUpRight className="w-4 h-4 text-neutral-400" />
-                </a>
-              );
-            })}
-
-          </div>
-
+        {/* Stats as a single divided row — no cards, no grid */}
+        <div className="mt-12 flex items-stretch divide-x divide-black/10 border-t border-black/10 pt-6">
+          {stats.map((item) => (
+            <div key={item.label} className="flex-1 px-4 first:pl-0 text-left">
+              <div className="text-2xl font-bold text-brand-text">
+                {item.value}
+              </div>
+              <div className="mt-1 text-[11px] uppercase tracking-wider text-neutral-500">
+                {item.label}
+              </div>
+            </div>
+          ))}
         </div>
-
       </div>
-
     </section>
   );
 };
