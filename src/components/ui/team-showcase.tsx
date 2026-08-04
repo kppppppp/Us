@@ -94,7 +94,7 @@ const DEFAULT_MEMBERS: TeamMember[] = [
   {
     id: '3',
     name: 'Krish Panchal',
-    role: 'Team Lead • Full Stack Developer',
+    role: 'Director - Technology & Business Growth',
     image: krishImg,
     social: { linkedin: '#', twitter: '#' },
   },
