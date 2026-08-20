@@ -53,7 +53,7 @@ export const Navbar: React.FC = () => {
           <div className="flex items-center gap-4">
             {/* Client Portal Circular Icon Button (Desktop Only) */}
             <Link
-              to="#"
+              to="https://unexpected-soln-crm.netlify.app/"
               aria-label="Client Portal"
               className="hidden lg:flex w-12 h-12 rounded-full border border-brand-border/80 bg-white/70 backdrop-blur-md items-center justify-center text-brand-text hover:text-brand-purple hover:border-brand-purple hover:bg-brand-purple/5 hover:scale-[1.03] hover:shadow-[0_8px_16px_-6px_rgba(93,70,216,0.12)] transition-all duration-300 select-none cursor-pointer"
             >
