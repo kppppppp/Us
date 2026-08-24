@@ -859,12 +859,12 @@ export const Contact: React.FC = () => {
               Visit or Connect With Us
             </h2>
             <p className="text-sm md:text-base text-neutral-500 font-light leading-relaxed mb-6">
-              Located in Ahmedabad, India's fast-growing business and technology corridor. Drop by for a meeting, or coordinate with us digitally across global standard time zones.
+              Located in Navi Mumbai, India's fast-growing business and technology corridor. Drop by for a meeting, or coordinate with us digitally across global standard time zones.
             </p>
             <div className="flex flex-col gap-3 font-semibold text-xs md:text-sm tracking-wide uppercase text-brand-text">
               <div className="flex items-center gap-3">
                 <MapPin size={18} className="text-brand-purple" />
-                <span>Elite Business Hub, Ahmedabad, India</span>
+                <span> Navi Mumbai, India</span>
               </div>
               <div className="flex items-center gap-3">
                 <Clock size={18} className="text-brand-purple" />
